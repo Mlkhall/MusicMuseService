@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "musicmuseservice"
+version = "0.1.0"
+description = ""
+authors = ["Чумаков Михаил Дмитриевич <chumakov-md@zvuk.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4"
+django = "^5.1.1"
+django-environ = "^0.11.2"
+django-storages = "^1.14.4"
+django-easy-logging = "^0.70"
+django-simple-history = "^3.7.0"
+django-adminactions = "^2.3.0"
+django-model-utils = "^5.0.0"
+django-allauth = "^64.2.1"
+django-redis = "^5.4.0"
+django-prometheus = "^2.3.1"
+django-extensions = "^3.2.3"
+django-health-check = "^3.18.3"
+djangorestframework = "^3.15.2"
+drf-spectacular = "^0.27.2"
+psycopg2-binary = "^2.9.9"
+twc-cli = "^2.6.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+pytest-django = "^4.9.0"
+ruff = "^0.6.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
