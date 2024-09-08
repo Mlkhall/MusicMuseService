@@ -15,6 +15,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import assert_never
 from dotenv import load_dotenv
+from loguru import logger
 
 import environ
 from dj_easy_log import load_loguru
@@ -28,7 +29,7 @@ class FileStoragesTypes(StrEnum):
 load_dotenv()
 
 load_loguru(globals())
-
+logger.info(os.environ)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
