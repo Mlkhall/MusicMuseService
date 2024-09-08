@@ -30,21 +30,19 @@ load_loguru(globals())
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENV_FILE = ".env"
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 if os.path.exists(os.path.join(BASE_DIR, ENV_FILE)):
-    env = environ.Env(
-        # set casting, default value
-        DEBUG=(bool, False)
-    )
     environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
-else:
-    env = environ.FileAwareEnv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY", default=os.getenv("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = env("DEBUG", default=os.getenv("DEBUG"))
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -104,11 +102,11 @@ WSGI_APPLICATION = 'music_muse.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        'NAME': env("POSTGRESQL_DBNAME"),
-        'HOST': env("POSTGRESQL_HOST"),
-        'PORT': env("POSTGRESQL_PORT"),
-        'USER': env("POSTGRESQL_USER"),
-        'PASSWORD': env("POSTGRESQL_PASSWORD"),
+        'NAME': env("POSTGRESQL_DBNAME", default=os.getenv("POSTGRESQL_DBNAME")),
+        'HOST': env("POSTGRESQL_HOST", default=os.getenv("POSTGRESQL_HOST")),
+        'PORT': env("POSTGRESQL_PORT", default=os.getenv("POSTGRESQL_PORT")),
+        'USER': env("POSTGRESQL_USER", default=os.getenv("POSTGRESQL_USER")),
+        'PASSWORD': env("POSTGRESQL_PASSWORD", default=os.getenv("POSTGRESQL_PASSWORD")),
     }
 }
 
@@ -152,10 +150,10 @@ FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.L
 match FILE_UPLOAD_STORAGE:
     case FileStoragesTypes.S3:
         # Настройки AWS
-        AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-        AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-        AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')  # Например, 'us-west-2'
+        AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=os.getenv('AWS_ACCESS_KEY_ID'))
+        AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=os.getenv('AWS_SECRET_ACCESS_KEY'))
+        AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=os.getenv('AWS_STORAGE_BUCKET_NAME'))
+        AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=os.getenv("AWS_S3_REGION_NAME"))  # Например, 'us-west-2'
 
         # Настройки для S3
         S3_DOMAIN = env("S3_DOMAIN")
