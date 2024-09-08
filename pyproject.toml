@@ -23,12 +23,25 @@ djangorestframework = "^3.15.2"
 drf-spectacular = "^0.27.2"
 psycopg2-binary = "^2.9.9"
 twc-cli = "^2.6.0"
+python-slugify = "^8.0.4"
+pillow = "^10.4.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
 pytest-django = "^4.9.0"
 ruff = "^0.6.4"
+
+
+[tool.poetry.group.debug.dependencies]
+pandas = "^2.2.2"
+boto3 = "^1.35.14"
+grequests = "^0.7.0"
+alive-progress = "^3.1.5"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = "^9.5.34"
 
 [build-system]
 requires = ["poetry-core"]

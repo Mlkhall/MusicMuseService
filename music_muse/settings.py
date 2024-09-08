@@ -11,27 +11,42 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+from enum import StrEnum
 from pathlib import Path
+from typing import assert_never
 
 import environ
 from dj_easy_log import load_loguru
 
 
+class FileStoragesTypes(StrEnum):
+    LOCAL = "local"
+    S3 = "s3"
+
+
 load_loguru(globals())
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-
-ENV_FILE = "local.env"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ENV_FILE = ".env"
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env("SECRET_KEY")
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env("DEBUG")
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+]
 
 
 # Application definition
@@ -43,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'music.apps.MusicConfig',
 ]
 
 MIDDLEWARE = [
@@ -82,8 +99,12 @@ WSGI_APPLICATION = 'music_muse.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': env("POSTGRESQL_DBNAME"),
+        'HOST': env("POSTGRESQL_HOST"),
+        'PORT': env("POSTGRESQL_PORT"),
+        'USER': env("POSTGRESQL_USER"),
+        'PASSWORD': env("POSTGRESQL_PASSWORD"),
     }
 }
 
@@ -110,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru-Ru'
 
 TIME_ZONE = 'UTC'
 
@@ -122,7 +143,40 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.LOCAL)
+
+match FILE_UPLOAD_STORAGE:
+    case FileStoragesTypes.S3:
+        # Настройки AWS
+        AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+        AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+        AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')  # Например, 'us-west-2'
+
+        # Настройки для S3
+        S3_DOMAIN = env("S3_DOMAIN")
+        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{S3_DOMAIN}'
+        AWS_S3_ENDPOINT_URL = f'https://{S3_DOMAIN}'
+
+        # Настройки для хранения статических файлов
+        STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+        STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+
+        # Настройки для хранения медиафайлов
+        DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+    case FileStoragesTypes.LOCAL:
+        MEDIA_ROOT_NAME = "media"
+        MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_ROOT_NAME)
+        MEDIA_URL = f"/{MEDIA_ROOT_NAME}/"
+
+        STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+        STATIC_URL = '/static/'
+
+    case _:
+        assert_never(FileStoragesTypes)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

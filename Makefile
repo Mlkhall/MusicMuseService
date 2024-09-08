@@ -9,3 +9,6 @@ runserver:
 
 migrate:
 	@poetry run python manage.py migrate
+
+make-migrations-music:
+	@poetry run python manage.py makemigrations music
