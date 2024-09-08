@@ -19,10 +19,6 @@ COPY . .
 RUN poetry config virtualenvs.create false \
     && poetry install --no-dev
 
-# Устанавливаем переменные окружения
-ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE music_muse.settings
-
 # Открываем порт для приложения
 EXPOSE 8000
 
