@@ -14,6 +14,7 @@ import os
 from enum import StrEnum
 from pathlib import Path
 from typing import assert_never
+from dotenv import load_dotenv
 
 import environ
 from dj_easy_log import load_loguru
@@ -23,6 +24,8 @@ class FileStoragesTypes(StrEnum):
     LOCAL = "local"
     S3 = "s3"
 
+
+load_dotenv()
 
 load_loguru(globals())
 

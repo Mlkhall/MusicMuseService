@@ -25,6 +25,7 @@ psycopg2-binary = "^2.9.9"
 twc-cli = "^2.6.0"
 python-slugify = "^8.0.4"
 pillow = "^10.4.0"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
