@@ -34,7 +34,9 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
-environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
+
+if os.path.exists(os.path.join(BASE_DIR, ENV_FILE)):
+    environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
