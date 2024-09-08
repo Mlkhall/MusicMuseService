@@ -30,13 +30,15 @@ load_loguru(globals())
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENV_FILE = ".env"
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
 
 if os.path.exists(os.path.join(BASE_DIR, ENV_FILE)):
+    env = environ.Env(
+        # set casting, default value
+        DEBUG=(bool, False)
+    )
     environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
+else:
+    env = environ.FileAwareEnv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
