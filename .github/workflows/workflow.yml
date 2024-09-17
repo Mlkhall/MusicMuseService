@@ -1,0 +1,12 @@
+  on: [push]
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - name: executing remote ssh commands to deploy
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            script:
+              echo "Hello, World!"
