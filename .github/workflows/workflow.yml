@@ -9,5 +9,6 @@
             host: ${{ secrets.HOST }}
             username: ${{ secrets.USERNAME }}
             key: ${{ secrets.SSH_KEY }}
+            passphrase: ${{ secrets.PASSPHRASE }}
             script:
               echo "Hello, World!"
