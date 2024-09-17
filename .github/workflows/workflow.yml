@@ -8,6 +8,6 @@
           with:
             host: ${{ secrets.HOST }}
             username: ${{ secrets.USERNAME }}
-            key: ${{ secrets.SSH_PUBLIC_KEY }}
+            key: ${{ secrets.SSH_KEY }}
             script:
               echo "Hello, World!"
