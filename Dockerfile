@@ -19,17 +19,6 @@ COPY . .
 RUN poetry config virtualenvs.create false \
     && poetry install --no-dev
 
-# Устанавливаем переменные окружения
-ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=music_muse.settings
-
-ENV DEBUG=true
-ENV SECRET_KEY=secret_key
-#ENV POSTGRESQL_HOST=0.0.0.0
-ENV POSTGRESQL_PORT=5432
-ENV POSTGRESQL_USER=user
-ENV POSTGRESQL_PASSWORD="password"
-ENV POSTGRESQL_DBNAME=default
 
 # Открываем порт для приложения
 EXPOSE 8000
