@@ -52,6 +52,9 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
+    "176.57.213.174",
+    "musicmuse-preprod.ru",
+    "musicmuse.ru",
 ]
 
 

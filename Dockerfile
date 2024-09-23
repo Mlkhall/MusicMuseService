@@ -28,7 +28,7 @@ ENV SECRET_KEY django-insecure-@093rg0h!mm_$_7o#txw=v(6+@ld9tli7icpxsy*e98)%r0h8
 ENV POSTGRESQL_HOST 92.63.177.30
 ENV POSTGRESQL_PORT 5432
 ENV POSTGRESQL_USER gen_user
-ENV POSTGRESQL_PASSWORD (5\N\cHfhXWsX4
+ENV POSTGRESQL_PASSWORD "(5\N\cHfhXWsX4"
 ENV POSTGRESQL_DBNAME default_db
 
 # Открываем порт для приложения
