@@ -29,7 +29,6 @@ class FileStoragesTypes(StrEnum):
 load_dotenv()
 
 load_loguru(globals())
-logger.info(os.environ)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -182,9 +181,10 @@ match FILE_UPLOAD_STORAGE:
         MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_ROOT_NAME)
         MEDIA_URL = f"/{MEDIA_ROOT_NAME}/"
 
-        STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
         STATIC_URL = '/static/'
+        STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, 'static'),
+        ]
 
     case _:
         assert_never(FileStoragesTypes)
