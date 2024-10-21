@@ -182,8 +182,9 @@ match FILE_UPLOAD_STORAGE:
         MEDIA_URL = f"/{MEDIA_ROOT_NAME}/"
 
         STATIC_URL = '/static/'
+        STATIC_ROOT = os.path.join(BASE_DIR, 'static')
         STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, 'static'),
+            os.path.join(BASE_DIR, 'assets'),
         ]
 
     case _:
