@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музыкальный Плеер - Поиск</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Шапка сайта (тот же код, что и в index.html) -->
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <i class="fab fa-spotify"></i> Музыкальный Плеер
+            </a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Поиск по музыке">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="profile-settings">
+            <a href="#"><i class="fas fa-user-circle"></i></a>
+            <a href="#"><i class="fas fa-cog"></i></a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Боковое меню (тот же код, что и в index.html) -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li class="active"><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="search.html"><i class="fas fa-search"></i> Поиск</a></li>
+                    <li><a href="library.html"><i class="fas fa-bookmark"></i> Библиотека</a></li>
+                    <li><a href="#"><i class="fas fa-music"></i> Жанры</a></li>
+                    <li><a href="#"><i class="fas fa-star"></i> Рекомендации</a></li>
+                </ul>
+            </nav>
+            <!-- Бургер-меню для мобильных устройств -->
+            <div class="burger-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </aside>
+
+        <!-- Основной контент -->
+        <main>
+            <section class="search-section">
+                <h2>Поиск</h2>
+                <div class="search-filters">
+                    <button class="filter active">Песни</button>
+                    <button class="filter">Исполнители</button>
+                    <button class="filter">Альбомы</button>
+                </div>
+                <div class="search-results">
+                    <!-- Здесь будут отображаться результаты поиска -->
+                    <p>Введите поисковый запрос в строку поиска выше.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Футер сайта (тот же код, что и в index.html) -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Музыкальный Плеер. Все права защищены.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Аналогичный скрипт для бургер-меню
+        const burger = document.querySelector('.burger-menu');
+        const sidebar = document.querySelector('.sidebar');
+
+        burger.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

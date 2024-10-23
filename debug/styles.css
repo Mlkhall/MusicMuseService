@@ -1,0 +1,357 @@
+/* Общие стили */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #121212;
+    color: #FFFFFF;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    color: #1DB954;
+    display: flex;
+    align-items: center;
+}
+
+.logo i {
+    margin-right: 10px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 40%;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+}
+
+.search-bar button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #1DB954;
+    color: #FFFFFF;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #1ed760;
+}
+
+.profile-settings a {
+    margin-left: 15px;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.profile-settings a:hover {
+    color: #1DB954;
+}
+
+/* Контейнер с боковым меню и основным контентом */
+.container {
+    display: flex;
+    margin-top: 60px; /* Высота шапки */
+}
+
+/* Боковое меню (Sidebar) */
+.sidebar {
+    width: 240px;
+    background-color: #181818;
+    height: calc(100vh - 60px);
+    position: fixed;
+    top: 60px;
+    left: 0;
+    padding-top: 20px;
+    transition: transform 0.3s ease;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    padding: 15px 20px;
+}
+
+.sidebar nav ul li a {
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.sidebar nav ul li a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar nav ul li:hover a,
+.sidebar nav ul li.active a {
+    color: #1DB954;
+}
+
+.burger-menu {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    color: #FFFFFF;
+}
+
+.burger-menu i {
+    font-size: 1.5rem;
+}
+
+/* Основной контент */
+main {
+    margin-left: 240px;
+    padding: 20px;
+    width: calc(100% - 240px);
+}
+
+.banners {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.banner {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.banner img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.banner-description {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(18, 18, 18, 0.7);
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.playlists {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.playlist-card {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.playlist-card:hover {
+    transform: scale(1.05);
+}
+
+.playlist-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.playlist-info {
+    margin-top: 10px;
+}
+
+.playlist-info h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.playlist-info p {
+    font-size: 0.9rem;
+    color: #b3b3b3;
+}
+
+/* Футер */
+footer {
+    background-color: #000000;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-content p {
+    margin-bottom: 10px;
+}
+
+.social-links a {
+    margin: 0 10px;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #1DB954;
+}
+
+/* Адаптивность */
+
+/* Таблетки и мобильные устройства */
+@media (max-width: 1024px) {
+    .search-bar {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        top: 60px;
+        left: -240px;
+        transform: translateX(0);
+        z-index: 999;
+    }
+
+    .sidebar.active {
+        transform: translateX(240px);
+    }
+
+    main {
+        margin-left: 0;
+        width: 100%;
+        padding: 80px 20px 60px; /* Учитываем шапку и футер */
+    }
+
+    .burger-menu {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-bar {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .search-bar input {
+        width: 80%;
+    }
+
+    .search-bar button {
+        width: 20%;
+    }
+
+    .banners {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .banner {
+        max-width: 90%;
+    }
+
+    .playlists {
+        justify-content: center;
+    }
+}
+
+/* Кнопки и интерактивные элементы */
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Карточки контента */
+.playlist-card,
+.artist-card,
+.album-card {
+    background-color: #181818;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.playlist-card:hover,
+.artist-card:hover,
+.album-card:hover {
+    transform: scale(1.05);
+}
+
+.artist-card img,
+.album-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.artist-info,
+.album-info {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.artist-info h4,
+.album-info h4 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.artist-info p,
+.album-info p {
+    font-size: 0.9rem;
+    color: #b3b3b3;
+}
