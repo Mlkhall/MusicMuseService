@@ -12,3 +12,6 @@ migrate:
 
 make-migrations-music:
 	@poetry run python manage.py makemigrations music
+
+update-requirements:
+	@poetry export -f requirements.txt --output requirements.txt --with docs --without-hashes
