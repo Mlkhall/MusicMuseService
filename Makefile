@@ -15,3 +15,12 @@ make-migrations-music:
 
 update-requirements:
 	@poetry export -f requirements.txt --output requirements.txt --with docs --without-hashes
+
+opensearch-index-create:
+	@poetry run python manage.py opensearch index create
+
+opensearch-index-rebuild:
+	@poetry run python manage.py opensearch index rebuild
+
+opensearch-document:
+	@poetry run python manage.py opensearch document index
