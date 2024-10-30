@@ -58,7 +58,9 @@ ALLOWED_HOSTS = [
     "91.186.196.162"
 ]
 
-CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
+CSRF_TRUSTED_ORIGINS = [
+    "https://musicmuse.ru",
+]
 
 # Application definition
 
