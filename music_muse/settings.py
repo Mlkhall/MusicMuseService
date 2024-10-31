@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from enum import StrEnum
+from logging import fatal
 from pathlib import Path
 from typing import assert_never
+
+from django.core.files.storage import storages
 from dotenv import load_dotenv
 from loguru import logger
-
 import environ
 from dj_easy_log import load_loguru
 
@@ -42,10 +44,10 @@ if os.path.exists(os.path.join(BASE_DIR, ENV_FILE)):
     environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY", default=os.getenv("SECRET_KEY"))
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", default=os.getenv("DEBUG"))
+DEBUG = env("DEBUG", default=False)
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -58,13 +60,18 @@ ALLOWED_HOSTS = [
     "91.186.196.162"
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://musicmuse.ru",
-]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'drf_spectacular',
+    'rest_framework', # https://www.django-rest-framework.org/
+    'embed_video',
+    'storages',
+    'django_opensearch_dsl',
+    'django_prometheus',
+    's3_file_field',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,6 +90,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'music_muse.urls'
@@ -112,12 +121,12 @@ WSGI_APPLICATION = 'music_muse.wsgi.application'
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': env("POSTGRESQL_DBNAME", default=os.getenv("POSTGRESQL_DBNAME")),
-        'HOST': env("POSTGRESQL_HOST", default=os.getenv("POSTGRESQL_HOST")),
-        'PORT': env("POSTGRESQL_PORT", default=os.getenv("POSTGRESQL_PORT", default="5432")),
-        'USER': env("POSTGRESQL_USER", default=os.getenv("POSTGRESQL_USER")),
-        'PASSWORD': env("POSTGRESQL_PASSWORD", default=os.getenv("POSTGRESQL_PASSWORD")),
+        "ENGINE": "django_prometheus.db.backends.postgresql",
+        'NAME': env("POSTGRESQL_DBNAME"),
+        'HOST': env("POSTGRESQL_HOST"),
+        'PORT': env("POSTGRESQL_PORT"),
+        'USER': env("POSTGRESQL_USER"),
+        'PASSWORD': env("POSTGRESQL_PASSWORD"),
     }
 }
 
@@ -141,6 +150,35 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'MusicMuse REST API',
+    'DESCRIPTION': 'API for MusicMuse project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+}
+
+
+OPENSEARCH_DSL = {
+    'default': {
+        'hosts': [
+            {
+                "scheme": "https",
+                "host": env("OPENSEARCH_HOST"),
+                "port": env("OPENSEARCH_PORT"),
+            }
+        ],
+        'http_auth': (env("OPENSEARCH_USERNAME"), env("OPENSEARCH_PASSWORD")),
+        'use_ssl': True,
+        'verify_certs': False,
+        'headers': {'securitytenant': 'default_tenant'},
+    },
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -155,29 +193,49 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.S3)
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
-FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.LOCAL)
+# Настройки AWS
+STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+
+# Настройки для S3
+S3_DOMAIN = env("S3_DOMAIN")
+S3_CUSTOM_DOMAIN = f'{STORAGE_BUCKET_NAME}.{S3_DOMAIN}'
+
+
+default_storages_options = {
+    "access_key": env('AWS_ACCESS_KEY_ID'),
+    "secret_key": env('AWS_SECRET_ACCESS_KEY'),
+    "bucket_name": env('AWS_STORAGE_BUCKET_NAME'),
+    "region_name": env('AWS_S3_REGION_NAME'),
+    "custom_domain": S3_CUSTOM_DOMAIN,
+    "endpoint_url": f'https://{S3_DOMAIN}',
+}
 
 match FILE_UPLOAD_STORAGE:
     case FileStoragesTypes.S3:
-        # Настройки AWS
-        AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=os.getenv('AWS_ACCESS_KEY_ID'))
-        AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=os.getenv('AWS_SECRET_ACCESS_KEY'))
-        AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=os.getenv('AWS_STORAGE_BUCKET_NAME'))
-        AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=os.getenv("AWS_S3_REGION_NAME"))  # Например, 'us-west-2'
-
-        # Настройки для S3
-        S3_DOMAIN = env("S3_DOMAIN")
-        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{S3_DOMAIN}'
-        AWS_S3_ENDPOINT_URL = f'https://{S3_DOMAIN}'
-
-        # Настройки для хранения статических файлов
-        STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-        STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 
         # Настройки для хранения медиафайлов
-        DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+        MEDIA_URL = f'https://{S3_CUSTOM_DOMAIN}/media/'
+
+        STORAGES = {
+            'default': {
+                'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+                "OPTIONS": default_storages_options,
+            },
+            "staticfiles": {
+                'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+                "OPTIONS": default_storages_options,
+            },
+        }
+
+        # Настройки для хранения статических файлов
+        STATIC_URL = f'https://{S3_CUSTOM_DOMAIN}/static/'
+        STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, 'assets'),
+            os.path.join(BASE_DIR, "static")
+        ]
 
     case FileStoragesTypes.LOCAL:
         MEDIA_ROOT_NAME = "media"
@@ -192,6 +250,10 @@ match FILE_UPLOAD_STORAGE:
 
     case _:
         assert_never(FileStoragesTypes)
+
+S3_STATIC_LOCATION = 'static'
+S3_PUBLIC_MEDIA_LOCATION = 'media/public'
+S3_PRIVATE_MEDIA_LOCATION = 'media/private'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

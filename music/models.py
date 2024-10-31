@@ -1,5 +1,6 @@
 from django.db import models
 from slugify import slugify
+from django_prometheus.models import ExportModelOperationsMixin
 
 
 class _CommonDateTimeModel(models.Model):
@@ -33,38 +34,66 @@ class _CommonItemInfoModel(_CommonDateTimeModel):
         super().save(*args, **kwargs)
 
 
-class Genres(_CommonItemInfoModel):
+class GeneratedVideoContent(ExportModelOperationsMixin('gen_video'), _CommonItemInfoModel):
+    duration = models.DurationField(verbose_name="Длительность")
+    video = models.FileField(
+        null=False,
+        verbose_name="Ссылка на сгенерированное видео",
+    )
+
+
+class GeneratedImageContent(ExportModelOperationsMixin('gen_image'), _CommonItemInfoModel):
+    image = models.ImageField(
+        null=False,
+        verbose_name="Ссылка на сгенерированное изображение",
+    )
+
+
+class Genres(ExportModelOperationsMixin('genres'), _CommonItemInfoModel):
+    image = models.ImageField(
+        default=None,
+        verbose_name="Ссылка на изображение жанра",
+        upload_to='genres',
+    )
     description = models.CharField(verbose_name="Описание")
 
 
-class Labels(_CommonItemInfoModel):
+class Labels(ExportModelOperationsMixin('labels'), _CommonItemInfoModel):
     description = models.CharField(verbose_name="Описание")
     cover_image = models.ImageField(verbose_name="Ссылка на изображение")
 
 
-class Artists(_CommonItemInfoModel):
+class Artists(ExportModelOperationsMixin('artist'), _CommonItemInfoModel):
     description = models.CharField(verbose_name="Описание")
     label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
     bio = models.TextField(verbose_name="Биография")
-    avatar_url = models.ImageField(verbose_name="Ссылка на аватар")
+    avatar_url = models.ImageField(
+        verbose_name="Ссылка на аватар",
+    )
     birth_date = models.DateField(verbose_name="Дата рождения")
     country = models.CharField(verbose_name="Страна")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
 
 
-class Albums(_CommonItemInfoModel):
+class Albums(ExportModelOperationsMixin('albums'), _CommonItemInfoModel):
     labels = models.ManyToManyField(Labels, verbose_name="Лейблы")
-    cover_image = models.ImageField(verbose_name="Ссылка на изображение")
+    cover_image = models.ImageField(
+        verbose_name="Ссылка на изображение",
+    )
     release_date = models.DateField(verbose_name="Дата выхода")
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
 
 
-class Tracks(_CommonItemInfoModel):
+class Tracks(ExportModelOperationsMixin('tracks'), _CommonItemInfoModel):
     album = models.ForeignKey(Albums, verbose_name="Альбом", on_delete=models.CASCADE)
     label = models.OneToOneField(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
-    cover_image = models.ImageField(verbose_name="Ссылка на изображение")
-    track = models.FileField(verbose_name="Ссылка на трек")
+    cover_image = models.ImageField(
+        verbose_name="Ссылка на изображение",
+    )
+    track = models.FileField(
+        verbose_name="Ссылка на трек",
+    )
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
     duration = models.DurationField(verbose_name="Длительность")

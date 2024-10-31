@@ -4,39 +4,44 @@ version = "0.1.0"
 description = ""
 authors = ["Чумаков Михаил Дмитриевич <chumakov-md@zvuk.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
-django = "^5.1.2"
+django = "^5.1.1"
 django-environ = "^0.11.2"
-django-storages = "^1.14.4"
+django-storages = {extras = ["s3"], version = "^1.14.4"}
 django-easy-logging = "^0.70"
 django-simple-history = "^3.7.0"
 django-adminactions = "^2.3.0"
 django-model-utils = "^5.0.0"
-django-allauth = "^64.2.1"
+django-allauth = "^65.1.0"
 django-redis = "^5.4.0"
 django-prometheus = "^2.3.1"
 django-extensions = "^3.2.3"
 django-health-check = "^3.18.3"
 djangorestframework = "^3.15.2"
 drf-spectacular = "^0.27.2"
-psycopg2-binary = "^2.9.10"
-twc-cli = "^2.6.0"
+psycopg2-binary = "^2.9.9"
 python-slugify = "^8.0.4"
-pillow = "^10.4.0"
+pillow = "^11.0.0"
 python-dotenv = "^1.0.1"
+django-opensearch-dsl = "^0.6.2"
+django-embed-video = "^1.4.10"
+drf-extra-fields = "^3.7.0"
+django-s3-file-field = {extras = ["s3"], version = "^1.0.1"}
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
 pytest-django = "^4.9.0"
-ruff = "^0.7.0"
+ruff = "^0.6.4"
+twc-cli = "^2.6.0"
 
 
 [tool.poetry.group.debug.dependencies]
 pandas = "^2.2.2"
-boto3 = "^1.35.47"
+boto3 = "^1.35.14"
 grequests = "^0.7.0"
 alive-progress = "^3.1.5"
 
