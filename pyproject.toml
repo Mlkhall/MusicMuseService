@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "musicmuseservice"
-version = "0.1.0"
+name = "MusicMuse-Service"
+version = "2024.10.03"
 description = ""
 authors = ["Чумаков Михаил Дмитриевич <chumakov-md@zvuk.com>"]
 readme = "README.md"
-package-mode = false
+package-mode = true
 
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
@@ -30,24 +30,20 @@ django-opensearch-dsl = "^0.6.2"
 django-embed-video = "^1.4.10"
 drf-extra-fields = "^3.7.0"
 django-s3-file-field = {extras = ["s3"], version = "^1.0.1"}
+django-filter = "^24.3"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.2"
+pytest = "^8.3.3"
 pytest-django = "^4.9.0"
-ruff = "^0.6.4"
-twc-cli = "^2.6.0"
-
-
-[tool.poetry.group.debug.dependencies]
-pandas = "^2.2.2"
-boto3 = "^1.35.14"
-grequests = "^0.7.0"
-alive-progress = "^3.1.5"
+ruff = "^0.7.2"
 
 
 [tool.poetry.group.docs.dependencies]
 mkdocs-material = "^9.5.34"
+
+[tool.poetry.plugins."poetry.application.plugin"]
+export = "poetry_plugin_export.plugins:ExportApplicationPlugin"
 
 [build-system]
 requires = ["poetry-core"]

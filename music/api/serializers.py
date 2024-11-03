@@ -1,23 +1,25 @@
-from drf_spectacular.types import OpenApiTypes
 from rest_framework import serializers
-from drf_spectacular.utils import extend_schema_field
-from music.models import Artists, Albums, Tracks, Labels, Genres, GeneratedImageContent, GeneratedVideoContent
-
-
-@extend_schema_field(OpenApiTypes.BINARY)
-class ImageField(serializers.ImageField):
-    ...
+from music.models import (
+    Artists,
+    Albums,
+    Tracks,
+    Labels,
+    Genres,
+    GeneratedImageContent,
+    GeneratedVideoContent,
+)
 
 
 class ArtistsSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True, default=None)
+
     class Meta:
         model = Artists
         fields = "__all__"
 
 
 class AlbumsSerializer(serializers.ModelSerializer):
-
-    cover_image = ImageField()
+    slug = serializers.SlugField(read_only=True, default=None)
 
     class Meta:
         model = Albums
@@ -25,20 +27,23 @@ class AlbumsSerializer(serializers.ModelSerializer):
 
 
 class TracksSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True, default=None)
+
     class Meta:
         model = Tracks
         fields = "__all__"
 
 
 class LabelsSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True, default=None)
+
     class Meta:
         model = Labels
         fields = "__all__"
 
 
 class GenresSerializer(serializers.ModelSerializer):
-
-    image = ImageField()
+    slug = serializers.SlugField(read_only=True, default=None)
 
     class Meta:
         model = Genres

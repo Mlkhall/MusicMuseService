@@ -6,10 +6,10 @@ from music.models import Tracks, Albums, Genres
 @registry.register_document
 class TracksDocument(Document):
     class Index:
-        name = 'tracks'  # Name of the Opensearch index
+        name = "tracks"  # Name of the Opensearch index
         settings = {  # See Opensearch Indices API reference for available settings
-            'number_of_shards': 1,
-            'number_of_replicas': 0
+            "number_of_shards": 1,
+            "number_of_replicas": 0,
         }
         # Configure how the index should be refreshed after an update.
         # See Opensearch documentation for supported options.
@@ -19,7 +19,7 @@ class TracksDocument(Document):
     class Django:
         model = Tracks  # The model associated with this Document
         fields = [  # The fields of the model you want to be indexed in Opensearch
-            'name',
+            "name",
         ]
         # Paginate the Django queryset used to populate the index with the specified size
         # This per-Document setting overrides settings.OPENSEARCH_DSL_QUERYSET_PAGINATION.
@@ -29,12 +29,12 @@ class TracksDocument(Document):
 @registry.register_document
 class AlbumsDocument(Document):
     class Index:
-        name = 'albums'
+        name = "albums"
 
     class Django:
         model = Albums
         fields = [
-            'name',
+            "name",
         ]
         queryset_pagination = 5000
 
@@ -42,11 +42,11 @@ class AlbumsDocument(Document):
 @registry.register_document
 class GenresDocument(Document):
     class Index:
-        name = 'genres'
+        name = "genres"
 
     class Django:
         model = Genres
         fields = [
-            'name',
+            "name",
         ]
         queryset_pagination = 5000
