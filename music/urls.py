@@ -1,15 +1,14 @@
 from rest_framework import routers
 
 from music.api.views import (
-    ArtistsViewSet,
     AlbumsViewSet,
-    TracksViewSet,
-    LabelsViewSet,
-    GenresViewSet,
+    ArtistsViewSet,
     GeneratedImageContentViewSet,
     GeneratedVideoContentViewSet,
+    GenresViewSet,
+    LabelsViewSet,
+    TracksViewSet,
 )
-
 
 api_router_v1 = routers.DefaultRouter()
 api_router_v1.register(prefix="artists", viewset=ArtistsViewSet)

@@ -12,15 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from enum import StrEnum
-from logging import fatal
 from pathlib import Path
 from typing import assert_never
-from django.core.files.storage import storages
-from dotenv import load_dotenv
-from loguru import logger
+
 import environ
 import tomllib
 from dj_easy_log import load_loguru
+from dotenv import load_dotenv
 
 
 class FileStoragesTypes(StrEnum):
@@ -77,6 +75,9 @@ INSTALLED_APPS = [
     "django_opensearch_dsl",
     "django_prometheus",
     "s3_file_field",
+    "django_countries",
+    "pictures",
+    "import_export",
     "django_filters",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -119,7 +120,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "music_muse.wsgi.application"
 
-
+PICTURES = {
+    "BREAKPOINTS": {
+        "xs": 576,
+        "s": 768,
+        "m": 992,
+        "l": 1200,
+        "xl": 1400,
+    },
+    "GRID_COLUMNS": 12,
+    "CONTAINER_WIDTH": 1200,
+    "FILE_TYPES": ["WEBP"],
+    "PIXEL_DENSITIES": [1, 2],
+    "USE_PLACEHOLDERS": True,
+    "QUEUE_NAME": "pictures",
+    "PROCESSOR": "pictures.tasks.process_picture",
+}
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

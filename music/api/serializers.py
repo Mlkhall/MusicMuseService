@@ -1,12 +1,13 @@
 from rest_framework import serializers
+
 from music.models import (
-    Artists,
     Albums,
-    Tracks,
-    Labels,
-    Genres,
+    Artists,
     GeneratedImageContent,
     GeneratedVideoContent,
+    Genres,
+    Labels,
+    Tracks,
 )
 
 
@@ -16,6 +17,7 @@ class ArtistsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artists
         fields = "__all__"
+        read_only_fields = ("id", "created", "updated", "slug")
 
 
 class AlbumsSerializer(serializers.ModelSerializer):

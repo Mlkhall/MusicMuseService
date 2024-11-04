@@ -16,15 +16,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
-from music_muse.views import index
+from django.urls import include, path
 from drf_spectacular.views import (
+    SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
-    SpectacularAPIView,
 )
-from music.urls import api_router_v1 as music_api_router_v1
+from pictures.conf import get_settings
 
+from music.urls import api_router_v1 as music_api_router_v1
+from music_muse.views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -39,3 +40,8 @@ urlpatterns = [
     path("api/v1/", include(music_api_router_v1.urls)),
     path("", include("django_prometheus.urls")),
 ]
+
+if get_settings().USE_PLACEHOLDERS:
+    urlpatterns.append(
+        path("_pictures/", include("pictures.urls")),
+    )

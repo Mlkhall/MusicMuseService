@@ -1,32 +1,28 @@
-from drf_spectacular.utils import extend_schema_view, extend_schema
-from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
+from rest_framework import viewsets
+
 from music.api.serializers import (
-    ArtistsSerializer,
     AlbumsSerializer,
-    TracksSerializer,
-    LabelsSerializer,
-    GenresSerializer,
+    ArtistsSerializer,
     GeneratedImageContentSerializer,
     GeneratedVideoContentSerializer,
+    GenresSerializer,
+    LabelsSerializer,
+    TracksSerializer,
 )
 from music.models import (
-    Artists,
     Albums,
-    Tracks,
-    Labels,
-    Genres,
+    Artists,
     GeneratedImageContent,
     GeneratedVideoContent,
+    Genres,
+    Labels,
+    Tracks,
 )
 
 
 @extend_schema(tags=["Артисты"])
-@extend_schema_view(
-    list=extend_schema(
-        summary="Получить список артистов",
-    ),
-)
 class ArtistsViewSet(viewsets.ModelViewSet):
     queryset = Artists.objects.all()
     serializer_class = ArtistsSerializer

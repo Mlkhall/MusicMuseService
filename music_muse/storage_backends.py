@@ -1,9 +1,10 @@
-from music_muse.settings import (
-    S3_STATIC_LOCATION,
-    S3_PUBLIC_MEDIA_LOCATION,
-    S3_PRIVATE_MEDIA_LOCATION,
-)
 from storages.backends.s3boto3 import S3Boto3Storage
+
+from music_muse.settings import (
+    S3_PRIVATE_MEDIA_LOCATION,
+    S3_PUBLIC_MEDIA_LOCATION,
+    S3_STATIC_LOCATION,
+)
 
 
 class StaticStorage(S3Boto3Storage):

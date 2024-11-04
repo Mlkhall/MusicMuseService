@@ -24,21 +24,15 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Время создания"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Время создания"),
                 ),
                 (
                     "updated",
-                    models.DateTimeField(
-                        auto_now=True, verbose_name="Время обновления"
-                    ),
+                    models.DateTimeField(auto_now=True, verbose_name="Время обновления"),
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=255, unique=True, verbose_name="Название"
-                    ),
+                    models.CharField(max_length=255, unique=True, verbose_name="Название"),
                 ),
                 ("slug", models.SlugField(blank=True, max_length=255, unique=True)),
                 ("description", models.CharField(verbose_name="Описание")),
@@ -67,29 +61,21 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Время создания"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Время создания"),
                 ),
                 (
                     "updated",
-                    models.DateTimeField(
-                        auto_now=True, verbose_name="Время обновления"
-                    ),
+                    models.DateTimeField(auto_now=True, verbose_name="Время обновления"),
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=255, unique=True, verbose_name="Название"
-                    ),
+                    models.CharField(max_length=255, unique=True, verbose_name="Название"),
                 ),
                 ("slug", models.SlugField(blank=True, max_length=255, unique=True)),
                 ("description", models.CharField(verbose_name="Описание")),
                 (
                     "cover_image",
-                    models.ImageField(
-                        upload_to="", verbose_name="Ссылка на изображение"
-                    ),
+                    models.ImageField(upload_to="", verbose_name="Ссылка на изображение"),
                 ),
             ],
             options={
@@ -116,21 +102,15 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Время создания"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Время создания"),
                 ),
                 (
                     "updated",
-                    models.DateTimeField(
-                        auto_now=True, verbose_name="Время обновления"
-                    ),
+                    models.DateTimeField(auto_now=True, verbose_name="Время обновления"),
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=255, unique=True, verbose_name="Название"
-                    ),
+                    models.CharField(max_length=255, unique=True, verbose_name="Название"),
                 ),
                 ("slug", models.SlugField(blank=True, max_length=255, unique=True)),
                 ("description", models.CharField(verbose_name="Описание")),
@@ -172,35 +152,25 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Время создания"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Время создания"),
                 ),
                 (
                     "updated",
-                    models.DateTimeField(
-                        auto_now=True, verbose_name="Время обновления"
-                    ),
+                    models.DateTimeField(auto_now=True, verbose_name="Время обновления"),
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=255, unique=True, verbose_name="Название"
-                    ),
+                    models.CharField(max_length=255, unique=True, verbose_name="Название"),
                 ),
                 ("slug", models.SlugField(blank=True, max_length=255, unique=True)),
                 (
                     "cover_image",
-                    models.ImageField(
-                        upload_to="", verbose_name="Ссылка на изображение"
-                    ),
+                    models.ImageField(upload_to="", verbose_name="Ссылка на изображение"),
                 ),
                 ("release_date", models.DateField(verbose_name="Дата выхода")),
                 (
                     "artists",
-                    models.ManyToManyField(
-                        to="music.artists", verbose_name="Исполнители"
-                    ),
+                    models.ManyToManyField(to="music.artists", verbose_name="Исполнители"),
                 ),
                 (
                     "genres",
@@ -229,28 +199,20 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Время создания"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Время создания"),
                 ),
                 (
                     "updated",
-                    models.DateTimeField(
-                        auto_now=True, verbose_name="Время обновления"
-                    ),
+                    models.DateTimeField(auto_now=True, verbose_name="Время обновления"),
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=255, unique=True, verbose_name="Название"
-                    ),
+                    models.CharField(max_length=255, unique=True, verbose_name="Название"),
                 ),
                 ("slug", models.SlugField(blank=True, max_length=255, unique=True)),
                 (
                     "cover_image",
-                    models.ImageField(
-                        upload_to="", verbose_name="Ссылка на изображение"
-                    ),
+                    models.ImageField(upload_to="", verbose_name="Ссылка на изображение"),
                 ),
                 (
                     "track",
@@ -267,9 +229,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "artists",
-                    models.ManyToManyField(
-                        to="music.artists", verbose_name="Исполнители"
-                    ),
+                    models.ManyToManyField(to="music.artists", verbose_name="Исполнители"),
                 ),
                 (
                     "genres",
