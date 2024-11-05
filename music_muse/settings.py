@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     "storages",
     "django_opensearch_dsl",
     "django_prometheus",
-    "s3_file_field",
     "django_countries",
     "pictures",
     "import_export",
