@@ -10,6 +10,12 @@ runserver:
 migrate:
 	@poetry run python manage.py migrate
 
+format:
+	@poetry run ruff format .
+
+lint:
+	@poetry run ruff check --fix .
+
 make-migrations-music:
 	@poetry run python manage.py makemigrations music
 
@@ -24,3 +30,6 @@ opensearch-index-rebuild:
 
 opensearch-document:
 	@poetry run python manage.py opensearch document index
+
+squash-migrations:
+	@poetry run python manage.py squashmigrations <appname> <squashfrom> <squashto>

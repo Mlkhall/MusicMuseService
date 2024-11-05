@@ -173,6 +173,9 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"],
+    "PAGE_SIZE": 10,
 }
 
 SPECTACULAR_SETTINGS = {
@@ -181,6 +184,10 @@ SPECTACULAR_SETTINGS = {
     "VERSION": PROJECT_VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
+    # "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+    # "SERVE_AUTHENTICATION": [
+    #     "rest_framework.authentication.BasicAuthentication"
+    # ],
 }
 
 

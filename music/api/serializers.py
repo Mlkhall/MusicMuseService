@@ -3,45 +3,41 @@ from rest_framework import serializers
 from music.models import (
     Albums,
     Artists,
-    GeneratedImageContent,
-    GeneratedVideoContent,
+    Audio,
     Genres,
+    Images,
     Labels,
     Tracks,
+    Video,
 )
 
 
 class ArtistsSerializer(serializers.ModelSerializer):
-    slug = serializers.SlugField(read_only=True, default=None)
-
     class Meta:
         model = Artists
         fields = "__all__"
-        read_only_fields = ("id", "created", "updated", "slug")
+        read_only_fields = ("slug",)
 
 
 class AlbumsSerializer(serializers.ModelSerializer):
-    slug = serializers.SlugField(read_only=True, default=None)
-
     class Meta:
         model = Albums
         fields = "__all__"
+        read_only_fields = ("slug",)
 
 
 class TracksSerializer(serializers.ModelSerializer):
-    slug = serializers.SlugField(read_only=True, default=None)
-
     class Meta:
         model = Tracks
         fields = "__all__"
+        read_only_fields = ("slug",)
 
 
 class LabelsSerializer(serializers.ModelSerializer):
-    slug = serializers.SlugField(read_only=True, default=None)
-
     class Meta:
         model = Labels
         fields = "__all__"
+        read_only_fields = ("slug",)
 
 
 class GenresSerializer(serializers.ModelSerializer):
@@ -52,13 +48,28 @@ class GenresSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class GeneratedImageContentSerializer(serializers.ModelSerializer):
+class ImagesSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(initial="", default="")
+
     class Meta:
-        model = GeneratedImageContent
+        model = Images
         fields = "__all__"
+        read_only_fields = ("slug",)
 
 
-class GeneratedVideoContentSerializer(serializers.ModelSerializer):
+class AudioSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(initial="", default="")
+
     class Meta:
-        model = GeneratedVideoContent
+        model = Audio
         fields = "__all__"
+        read_only_fields = ("slug", "duration")
+
+
+class VideoSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(initial="", default="")
+
+    class Meta:
+        model = Video
+        fields = "__all__"
+        read_only_fields = ("slug", "duration")

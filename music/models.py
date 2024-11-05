@@ -1,40 +1,25 @@
+from datetime import timedelta
+
+import cv2
 from django.core.files.storage import storages
 from django.db import models
 from django_countries.fields import CountryField
 from django_prometheus.models import ExportModelOperationsMixin
+from mutagen import File as MutagenFile
 from pictures.models import PictureField
 from slugify import slugify
 
-IMAGE_WIDTH = 1200
-IMAGE_HEIGHT = 1080
 
-
-def _upload_videos_to(instance, filename) -> str:
-    return f"videos/{instance.slug}/{filename}"
+def _upload_videos_to(_, filename) -> str:
+    return f"videos/{filename}"
 
 
 def _upload_images_to(instance, filename) -> str:
     return f"images/{instance.slug}/{filename}"
 
 
-def _upload_albums_to(instance, filename) -> str:
-    return f"albums/{instance.slug}/{filename}"
-
-
-def _upload_labels_to(instance, filename) -> str:
-    return f"labels/{instance.slug}/{filename}"
-
-
-def _upload_genres_to(instance, filename) -> str:
-    return f"genres/{instance.slug}/{filename}"
-
-
-def _upload_tracks_to(instance, filename) -> str:
-    return f"tracks/{instance.slug}/{filename}"
-
-
-def _upload_artists_to(instance, filename) -> str:
-    return f"artists/{instance.slug}/{filename}"
+def _upload_audio_to(_, filename) -> str:
+    return f"audio/{filename}"
 
 
 def _get_public_media_storage() -> storages:
@@ -70,63 +55,94 @@ class _CommonItemInfoModel(_CommonDateTimeModel):
         if not self.slug:
             self.slug = slugify(self.name)
 
+        if not self.description:
+            self.description = None
+
         super().save(*args, **kwargs)
 
 
-class GeneratedVideoContent(ExportModelOperationsMixin("gen_video"), _CommonDateTimeModel):
-    duration = models.DurationField(verbose_name="Длительность")
+class Images(_CommonItemInfoModel):
+    image = PictureField(
+        default=None,
+        verbose_name="Ссылка на изображение",
+        upload_to=_upload_images_to,
+        storage=_get_public_media_storage,
+        width_field="image_width",
+        height_field="image_height",
+    )
+    image_width = models.PositiveIntegerField(
+        editable=False,
+        null=True,
+        blank=True,
+        verbose_name="Ширина изображения",
+    )
+    image_height = models.PositiveIntegerField(
+        editable=False,
+        null=True,
+        blank=True,
+        verbose_name="Высота изображения",
+    )
+
+
+class Audio(_CommonItemInfoModel):
+    transcription = models.TextField(verbose_name="Текст песни", null=True, blank=True)
+    duration = models.DurationField(verbose_name="Длительность", null=True, blank=True)
+    audio = models.FileField(
+        null=False,
+        verbose_name="Ссылка на аудио",
+        upload_to=_upload_audio_to,
+        storage=_get_public_media_storage,
+    )
+
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
+
+        if self.audio:
+            audio_file = MutagenFile(self.audio)
+            duration_seconds = audio_file.info.length
+
+            self.duration = timedelta(seconds=duration_seconds)
+            Audio.objects.filter(pk=self.pk).update(duration=self.duration)
+
+
+class Video(_CommonItemInfoModel):
+    duration = models.DurationField(verbose_name="Длительность", null=True, blank=True)
     video = models.FileField(
         null=False,
-        verbose_name="Ссылка на сгенерированное видео",
+        verbose_name="Ссылка на видео",
         upload_to=_upload_videos_to,
         storage=_get_public_media_storage,
     )
 
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
 
-class GeneratedImageContent(ExportModelOperationsMixin("gen_image"), _CommonDateTimeModel):
-    image = PictureField(
-        null=False,
-        verbose_name="Ссылка на сгенерированное изображение",
-        upload_to=_upload_images_to,
-        storage=_get_public_media_storage,
-        width_field=IMAGE_WIDTH,
-        height_field=IMAGE_HEIGHT,
-    )
+        if self.video:
+            video = cv2.VideoCapture(self.video.url)
+            if not video.isOpened():
+                raise ValueError("Could not open video")
+
+            fps = video.get(cv2.CAP_PROP_FPS)
+            frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
+            duration = frames / fps if fps else 0
+            video.release()
+
+            self.duration = timedelta(seconds=duration)
+            Video.objects.filter(pk=self.pk).update(duration=self.duration)
 
 
 class Genres(ExportModelOperationsMixin("genres"), _CommonItemInfoModel):
-    image = PictureField(
-        default=None,
-        verbose_name="Ссылка на изображение жанра",
-        upload_to=_upload_genres_to,
-        storage=_get_public_media_storage,
-        width_field=IMAGE_WIDTH,
-        height_field=IMAGE_HEIGHT,
-    )
+    cover_image = models.OneToOneField(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
 
 
 class Labels(ExportModelOperationsMixin("labels"), _CommonItemInfoModel):
-    description = models.CharField(verbose_name="Описание", default=None)
-    cover_image = PictureField(
-        verbose_name="Ссылка на изображение",
-        upload_to=_upload_labels_to,
-        storage=_get_public_media_storage,
-        width_field=IMAGE_WIDTH,
-        height_field=IMAGE_HEIGHT,
-    )
+    cover_image = models.OneToOneField(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
 
 
 class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
-    description = models.CharField(verbose_name="Описание", default=None)
     label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
     bio = models.TextField(verbose_name="Биография")
-    avatar_url = PictureField(
-        verbose_name="Ссылка на аватар",
-        upload_to=_upload_artists_to,
-        storage=_get_public_media_storage,
-        width_field=IMAGE_WIDTH,
-        height_field=IMAGE_HEIGHT,
-    )
+    avatar = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
     birth_date = models.DateField(verbose_name="Дата рождения")
     country = CountryField(verbose_name="Страна", default="RU")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
@@ -134,13 +150,7 @@ class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
 
 class Albums(ExportModelOperationsMixin("albums"), _CommonItemInfoModel):
     labels = models.ManyToManyField(Labels, verbose_name="Лейблы")
-    cover_image = PictureField(
-        verbose_name="Ссылка на изображение",
-        upload_to=_upload_albums_to,
-        storage=_get_public_media_storage,
-        width_field=IMAGE_WIDTH,
-        height_field=IMAGE_HEIGHT,
-    )
+    cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)
     release_date = models.DateField(verbose_name="Дата выхода")
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
@@ -149,18 +159,7 @@ class Albums(ExportModelOperationsMixin("albums"), _CommonItemInfoModel):
 class Tracks(ExportModelOperationsMixin("tracks"), _CommonItemInfoModel):
     album = models.ForeignKey(Albums, verbose_name="Альбом", on_delete=models.CASCADE)
     label = models.OneToOneField(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
-    cover_image = PictureField(
-        verbose_name="Ссылка на изображение",
-        upload_to=_upload_tracks_to,
-        storage=_get_public_media_storage,
-        width_field=IMAGE_WIDTH,
-        height_field=IMAGE_HEIGHT,
-    )
-    track = models.FileField(
-        verbose_name="Ссылка на трек",
-        upload_to=_upload_labels_to,
-        storage=_get_public_media_storage,
-    )
+    cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)
+    track = models.OneToOneField(Audio, verbose_name="Трек", on_delete=models.CASCADE)
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
-    duration = models.DurationField(verbose_name="Длительность")

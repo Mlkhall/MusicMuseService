@@ -5,20 +5,22 @@ from rest_framework import viewsets
 from music.api.serializers import (
     AlbumsSerializer,
     ArtistsSerializer,
-    GeneratedImageContentSerializer,
-    GeneratedVideoContentSerializer,
+    AudioSerializer,
     GenresSerializer,
+    ImagesSerializer,
     LabelsSerializer,
     TracksSerializer,
+    VideoSerializer,
 )
 from music.models import (
     Albums,
     Artists,
-    GeneratedImageContent,
-    GeneratedVideoContent,
+    Audio,
     Genres,
+    Images,
     Labels,
     Tracks,
+    Video,
 )
 
 
@@ -63,12 +65,24 @@ class GenresViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema(tags=["Контент"])
-class GeneratedImageContentViewSet(viewsets.ModelViewSet):
-    queryset = GeneratedImageContent.objects.all()
-    serializer_class = GeneratedImageContentSerializer
+class ImagesViewSet(viewsets.ModelViewSet):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 @extend_schema(tags=["Контент"])
-class GeneratedVideoContentViewSet(viewsets.ModelViewSet):
-    queryset = GeneratedVideoContent.objects.all()
-    serializer_class = GeneratedVideoContentSerializer
+class AudioViewSet(viewsets.ModelViewSet):
+    queryset = Audio.objects.all()
+    serializer_class = AudioSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["name"]
+
+
+@extend_schema(tags=["Контент"])
+class VideoViewSet(viewsets.ModelViewSet):
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["name"]
