@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-import cv2
+# import cv2
 from django.core.files.storage import storages
 from django.db import models
 from django_countries.fields import CountryField
@@ -114,21 +114,21 @@ class Video(_CommonItemInfoModel):
         storage=_get_public_media_storage,
     )
 
-    def save(self, *args, **kwargs) -> None:
-        super().save(*args, **kwargs)
-
-        if self.video:
-            video = cv2.VideoCapture(self.video.url)
-            if not video.isOpened():
-                raise ValueError("Could not open video")
-
-            fps = video.get(cv2.CAP_PROP_FPS)
-            frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
-            duration = frames / fps if fps else 0
-            video.release()
-
-            self.duration = timedelta(seconds=duration)
-            Video.objects.filter(pk=self.pk).update(duration=self.duration)
+    # def save(self, *args, **kwargs) -> None:
+    #     super().save(*args, **kwargs)
+    #
+    #     if self.video:
+    #         video = cv2.VideoCapture(self.video.url)
+    #         if not video.isOpened():
+    #             raise ValueError("Could not open video")
+    #
+    #         fps = video.get(cv2.CAP_PROP_FPS)
+    #         frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
+    #         duration = frames / fps if fps else 0
+    #         video.release()
+    #
+    #         self.duration = timedelta(seconds=duration)
+    #         Video.objects.filter(pk=self.pk).update(duration=self.duration)
 
 
 class Genres(ExportModelOperationsMixin("genres"), _CommonItemInfoModel):
