@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "MusicMuse-Service"
-version = "2024.10.04-1"
+version = "2024.10.06-1"
 description = "MusicMuse Service"
 authors = ["Чумаков Михил Дмитриевич <chumakov-md@zvuk.com>"]
 readme = "README.md"

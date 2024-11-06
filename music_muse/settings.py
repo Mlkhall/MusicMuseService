@@ -182,10 +182,10 @@ SPECTACULAR_SETTINGS = {
     "VERSION": PROJECT_VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
-    # "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
-    # "SERVE_AUTHENTICATION": [
-    #     "rest_framework.authentication.BasicAuthentication"
-    # ],
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+    "SERVE_AUTHENTICATION": [
+        "rest_framework.authentication.BasicAuthentication"
+    ],
 }
 
 
