@@ -65,7 +65,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "musicmuse.ru",
+    "https://musicmuse.ru",
 ]
 
 # Application definition
