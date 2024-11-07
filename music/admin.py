@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from music import models
 
 admin.site.register(models.Tracks)

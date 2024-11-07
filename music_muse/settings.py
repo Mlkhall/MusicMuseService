@@ -14,11 +14,11 @@ import os
 from enum import StrEnum
 from pathlib import Path
 from typing import assert_never
-from dotenv import load_dotenv
-from loguru import logger
 
 import environ
+import tomllib
 from dj_easy_log import load_loguru
+from dotenv import load_dotenv
 
 
 class FileStoragesTypes(StrEnum):
@@ -32,6 +32,12 @@ load_loguru(globals())
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+PYPROJECT_PATH = os.path.join(BASE_DIR, "pyproject.toml")
+
+with open(PYPROJECT_PATH, "rb") as pyproject_file:
+    pyproject_data = tomllib.load(pyproject_file)
+    PROJECT_VERSION = pyproject_data["tool"]["poetry"]["version"]
+
 ENV_FILE = ".env"
 env = environ.Env(
     # set casting, default value
@@ -42,10 +48,10 @@ if os.path.exists(os.path.join(BASE_DIR, ENV_FILE)):
     environ.Env.read_env(os.path.join(BASE_DIR, ENV_FILE))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY", default=os.getenv("SECRET_KEY"))
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", default=os.getenv("DEBUG"))
+DEBUG = env("DEBUG", default=False)
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -55,7 +61,7 @@ ALLOWED_HOSTS = [
     "musicmuse-preprod.ru",
     "musicmuse.ru",
     "mlkhall-musicmuseservice-ef0e.twc1.net",
-    "91.186.196.162"
+    "91.186.196.162",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -65,88 +71,150 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'music.apps.MusicConfig',
+    "drf_spectacular",
+    "rest_framework",  # https://www.django-rest-framework.org/
+    "embed_video",
+    "storages",
+    "django_opensearch_dsl",
+    "django_prometheus",
+    "django_countries",
+    "pictures",
+    "import_export",
+    "rest_framework.authtoken",
+    "django_filters",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "music.apps.MusicConfig",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
-ROOT_URLCONF = 'music_muse.urls'
+ROOT_URLCONF = "music_muse.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'music_muse.wsgi.application'
+WSGI_APPLICATION = "music_muse.wsgi.application"
 
-
+PICTURES = {
+    "BREAKPOINTS": {
+        "xs": 576,
+        "s": 768,
+        "m": 992,
+        "l": 1200,
+        "xl": 1400,
+    },
+    "GRID_COLUMNS": 12,
+    "CONTAINER_WIDTH": 1200,
+    "FILE_TYPES": ["WEBP"],
+    "PIXEL_DENSITIES": [1, 2],
+    "USE_PLACEHOLDERS": True,
+    "QUEUE_NAME": "pictures",
+    "PROCESSOR": "pictures.tasks.process_picture",
+}
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': env("POSTGRESQL_DBNAME", default=os.getenv("POSTGRESQL_DBNAME")),
-        'HOST': env("POSTGRESQL_HOST", default=os.getenv("POSTGRESQL_HOST")),
-        'PORT': env("POSTGRESQL_PORT", default=os.getenv("POSTGRESQL_PORT", default="5432")),
-        'USER': env("POSTGRESQL_USER", default=os.getenv("POSTGRESQL_USER")),
-        'PASSWORD': env("POSTGRESQL_PASSWORD", default=os.getenv("POSTGRESQL_PASSWORD")),
+    "default": {
+        "ENGINE": "django_prometheus.db.backends.postgresql",
+        "NAME": env("POSTGRESQL_DBNAME"),
+        "HOST": env("POSTGRESQL_HOST"),
+        "PORT": env("POSTGRESQL_PORT"),
+        "USER": env("POSTGRESQL_USER"),
+        "PASSWORD": env("POSTGRESQL_PASSWORD"),
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"],
+    "PAGE_SIZE": 10,
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "MusicMuse REST API",
+    "DESCRIPTION": "API for MusicMuse project",
+    "VERSION": PROJECT_VERSION,
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+    "SERVE_AUTHENTICATION": [
+        "rest_framework.authentication.BasicAuthentication"
+    ],
+}
+
+
+OPENSEARCH_DSL = {
+    "default": {
+        "hosts": [
+            {
+                "scheme": "https",
+                "host": env("OPENSEARCH_HOST"),
+                "port": env("OPENSEARCH_PORT"),
+            }
+        ],
+        "http_auth": (env("OPENSEARCH_USERNAME"), env("OPENSEARCH_PASSWORD")),
+        "use_ssl": True,
+        "verify_certs": False,
+        "headers": {"securitytenant": "default_tenant"},
+    },
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-Ru'
+LANGUAGE_CODE = "ru-Ru"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -155,45 +223,76 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.S3)
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
-FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.LOCAL)
+# Настройки AWS
+STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+
+# Настройки для S3
+S3_DOMAIN = env("S3_DOMAIN")
+S3_CUSTOM_DOMAIN = f"{STORAGE_BUCKET_NAME}.{S3_DOMAIN}"
+
+
+default_storages_options = {
+    "access_key": env("AWS_ACCESS_KEY_ID"),
+    "secret_key": env("AWS_SECRET_ACCESS_KEY"),
+    "bucket_name": env("AWS_STORAGE_BUCKET_NAME"),
+    "region_name": env("AWS_S3_REGION_NAME"),
+    "custom_domain": S3_CUSTOM_DOMAIN,
+    "endpoint_url": f"https://{S3_DOMAIN}",
+}
 
 match FILE_UPLOAD_STORAGE:
     case FileStoragesTypes.S3:
-        # Настройки AWS
-        AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=os.getenv('AWS_ACCESS_KEY_ID'))
-        AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=os.getenv('AWS_SECRET_ACCESS_KEY'))
-        AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=os.getenv('AWS_STORAGE_BUCKET_NAME'))
-        AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=os.getenv("AWS_S3_REGION_NAME"))  # Например, 'us-west-2'
+        # Настройки для хранения медиафайлов
+        MEDIA_URL = f"https://{S3_CUSTOM_DOMAIN}/media/"
 
-        # Настройки для S3
-        S3_DOMAIN = env("S3_DOMAIN")
-        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{S3_DOMAIN}'
-        AWS_S3_ENDPOINT_URL = f'https://{S3_DOMAIN}'
+        STORAGES = {
+            "default": {
+                "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+                "OPTIONS": default_storages_options,
+            },
+            "staticfiles": {
+                "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+                "OPTIONS": default_storages_options,
+            },
+            "private": {
+                "BACKEND": "music_muse.storage_backends.PrivateMediaStorage",
+                "OPTIONS": default_storages_options,
+            },
+            "public": {
+                "BACKEND": "music_muse.storage_backends.PublicMediaStorage",
+                "OPTIONS": default_storages_options,
+            },
+        }
 
         # Настройки для хранения статических файлов
-        STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-        STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-
-        # Настройки для хранения медиафайлов
-        DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+        STATIC_URL = f"https://{S3_CUSTOM_DOMAIN}/static/"
+        STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, "assets"),
+            os.path.join(BASE_DIR, "static"),
+        ]
 
     case FileStoragesTypes.LOCAL:
         MEDIA_ROOT_NAME = "media"
         MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_ROOT_NAME)
         MEDIA_URL = f"/{MEDIA_ROOT_NAME}/"
 
-        STATIC_URL = '/static/'
-        STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+        STATIC_URL = "/static/"
+        STATIC_ROOT = os.path.join(BASE_DIR, "static")
         STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, 'assets'),
+            os.path.join(BASE_DIR, "assets"),
         ]
 
     case _:
         assert_never(FileStoragesTypes)
 
+S3_STATIC_LOCATION = "static"
+S3_PUBLIC_MEDIA_LOCATION = "media/public"
+S3_PRIVATE_MEDIA_LOCATION = "media/private"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

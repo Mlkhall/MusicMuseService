@@ -10,8 +10,29 @@ runserver:
 migrate:
 	@poetry run python manage.py migrate
 
+format:
+	@poetry run ruff format .
+
+lint:
+	@poetry run ruff check --fix .
+
 make-migrations-music:
 	@poetry run python manage.py makemigrations music
 
 update-requirements:
 	@poetry export -f requirements.txt --output requirements.txt --with docs --without-hashes
+
+opensearch-index-create:
+	@poetry run python manage.py opensearch index create
+
+opensearch-index-rebuild:
+	@poetry run python manage.py opensearch index rebuild
+
+opensearch-document:
+	@poetry run python manage.py opensearch document index
+
+squash-migrations:
+	@poetry run python manage.py squashmigrations <appname> <squashfrom> <squashto>
+
+generate-swagger-file:
+	@poetry run python manage.py spectacular --color --file swagger.yml

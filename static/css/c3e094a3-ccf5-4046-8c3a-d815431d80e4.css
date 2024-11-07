@@ -1,0 +1,56 @@
+@media screen and (min-width: 1200px) {
+    #n-ae97f0c3-a387-4ef8-9232-ccf986dde93a {
+        font-size: 48px;
+        line-height: 58px;
+    }
+
+    #n-8366381f-bb29-4980-a5dd-d0c08e08f2b5 {
+        font-size: 22px;
+        line-height: 32px;
+    }
+}
+
+#n-ae97f0c3-a387-4ef8-9232-ccf986dde93a {
+    color: rgba(255, 255, 255, 1);
+}
+
+#n-8366381f-bb29-4980-a5dd-d0c08e08f2b5 {
+    color: rgba(255, 255, 255, 1);
+}
+
+#n-9d5d056a-29d7-4351-a3e7-42ad3ac178fe {
+    --normal-border: 0px solid rgb(0, 0, 255);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    --hover-background-color: rgba(56, 54, 185, 1);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+#n-b4948636-4450-4f90-9435-35d68fb05dab {
+    background-image: var(--bg-1920, var(--background-image));
+}
+
+@media screen and (max-width: 1199px) {
+    #n-b4948636-4450-4f90-9435-35d68fb05dab {
+        background-image: var(--bg-1199, var(--background-image));
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    #n-b4948636-4450-4f90-9435-35d68fb05dab {
+        background-image: var(--bg-1023, var(--background-image));
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #n-b4948636-4450-4f90-9435-35d68fb05dab {
+        background-image: var(--bg-767, var(--background-image));
+    }
+}
+
+@media screen and (max-width: 666px) {
+    #n-b4948636-4450-4f90-9435-35d68fb05dab {
+        background-image: var(--bg-666, var(--background-image));
+    }
+}
