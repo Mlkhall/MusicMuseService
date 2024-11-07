@@ -33,3 +33,6 @@ opensearch-document:
 
 squash-migrations:
 	@poetry run python manage.py squashmigrations <appname> <squashfrom> <squashto>
+
+generate-swagger-file:
+	@poetry run python manage.py spectacular --color --file swagger.yml

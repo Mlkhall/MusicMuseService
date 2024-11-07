@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     "django_countries",
     "pictures",
     "import_export",
+    "rest_framework.authtoken",
     "django_filters",
     "django.contrib.admin",
     "django.contrib.auth",
