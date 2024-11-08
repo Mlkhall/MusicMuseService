@@ -10,16 +10,16 @@ from pictures.models import PictureField
 from slugify import slugify
 
 
-def _upload_videos_to(_, filename) -> str:
-    return f"videos/{filename}"
+def _upload_videos_to(instance, filename) -> str:
+    return f"videos/{instance.slug}/{filename}"
 
 
 def _upload_images_to(instance, filename) -> str:
     return f"images/{instance.slug}/{filename}"
 
 
-def _upload_audio_to(_, filename) -> str:
-    return f"audio/{filename}"
+def _upload_audio_to(instance, filename) -> str:
+    return f"audio/{instance.slug}/{filename}"
 
 
 def _get_public_media_storage() -> storages:
