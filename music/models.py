@@ -69,6 +69,7 @@ class Images(_CommonItemInfoModel):
         storage=_get_public_media_storage,
         width_field="image_width",
         height_field="image_height",
+        max_length=255,
     )
     image_width = models.PositiveIntegerField(
         editable=False,
@@ -92,6 +93,7 @@ class Audio(_CommonItemInfoModel):
         verbose_name="Ссылка на аудио",
         upload_to=_upload_audio_to,
         storage=_get_public_media_storage,
+        max_length=255,
     )
 
     def save(self, *args, **kwargs) -> None:
@@ -112,6 +114,7 @@ class Video(_CommonItemInfoModel):
         verbose_name="Ссылка на видео",
         upload_to=_upload_videos_to,
         storage=_get_public_media_storage,
+        max_length=255,
     )
 
     def save(self, *args, **kwargs) -> None:
