@@ -17,31 +17,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularRedocView,
-    SpectacularSwaggerView,
-)
 from pictures.conf import get_settings
-from rest_framework.authtoken.views import obtain_auth_token
 
-from music.urls import api_router_v1 as music_api_router_v1
-from music_muse.views import index
+from core.api import api
+from core.views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", index),
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "api/docs/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
-    ),
-    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
-    path("api/v1/", include(music_api_router_v1.urls)),
-    path("", include("django_prometheus.urls")),
-    path("api/auth/", obtain_auth_token, name="api_token_auth"),
-    path("api/auth/", include("rest_framework.urls")),
+    path("api/", api.urls)
 ]
 
 if get_settings().USE_PLACEHOLDERS:

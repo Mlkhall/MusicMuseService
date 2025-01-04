@@ -2,7 +2,7 @@
 
 import django.db.models.deletion
 import django_countries.fields
-import music.models
+import apps.music.models
 import pictures.models
 from django.db import migrations, models
 
@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(blank=True, default=None, null=True, verbose_name='Описание')),
                 ('transcription', models.TextField(blank=True, null=True, verbose_name='Текст песни')),
                 ('duration', models.DurationField(blank=True, null=True, verbose_name='Длительность')),
-                ('audio', models.FileField(storage=music.models._get_public_media_storage, upload_to=music.models._upload_audio_to, verbose_name='Ссылка на аудио')),
+                ('audio', models.FileField(storage=apps.music.models._get_public_media_storage, upload_to=apps.music.models._upload_audio_to, verbose_name='Ссылка на аудио')),
             ],
             options={
                 'abstract': False,
@@ -111,7 +111,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255, unique=True, verbose_name='Название')),
                 ('slug', models.SlugField(blank=True, default='', max_length=255, unique=True)),
                 ('description', models.CharField(blank=True, default=None, null=True, verbose_name='Описание')),
-                ('image', pictures.models.PictureField(aspect_ratios=[None], breakpoints={'l': 1200, 'm': 992, 's': 768, 'xl': 1400, 'xs': 576}, container_width=1200, default=None, file_types=['WEBP'], grid_columns=12, height_field='image_height', pixel_densities=[1, 2], storage=music.models._get_public_media_storage, upload_to=music.models._upload_images_to, verbose_name='Ссылка на изображение', width_field='image_width')),
+                ('image', pictures.models.PictureField(aspect_ratios=[None], breakpoints={'l': 1200, 'm': 992, 's': 768, 'xl': 1400, 'xs': 576}, container_width=1200, default=None, file_types=['WEBP'], grid_columns=12, height_field='image_height', pixel_densities=[1, 2], storage=apps.music.models._get_public_media_storage, upload_to=apps.music.models._upload_images_to, verbose_name='Ссылка на изображение', width_field='image_width')),
                 ('image_width', models.PositiveIntegerField(blank=True, editable=False, null=True, verbose_name='Ширина изображения')),
                 ('image_height', models.PositiveIntegerField(blank=True, editable=False, null=True, verbose_name='Высота изображения')),
             ],
@@ -155,7 +155,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(blank=True, default='', max_length=255, unique=True)),
                 ('description', models.CharField(blank=True, default=None, null=True, verbose_name='Описание')),
                 ('duration', models.DurationField(blank=True, null=True, verbose_name='Длительность')),
-                ('video', models.FileField(storage=music.models._get_public_media_storage, upload_to=music.models._upload_videos_to, verbose_name='Ссылка на видео')),
+                ('video', models.FileField(storage=apps.music.models._get_public_media_storage, upload_to=apps.music.models._upload_videos_to, verbose_name='Ссылка на видео')),
             ],
             options={
                 'abstract': False,

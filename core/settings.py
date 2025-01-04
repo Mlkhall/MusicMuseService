@@ -71,16 +71,14 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    "drf_spectacular",
-    "rest_framework",  # https://www.django-rest-framework.org/
     "embed_video",
     "storages",
     "django_opensearch_dsl",
     "django_prometheus",
     "django_countries",
+    "ninja",
     "pictures",
     "import_export",
-    "rest_framework.authtoken",
     "django_filters",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -88,7 +86,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "music.apps.MusicConfig",
+    "apps.music.apps.MusicConfig",
 ]
 
 MIDDLEWARE = [
@@ -103,7 +101,7 @@ MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
-ROOT_URLCONF = "music_muse.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -121,7 +119,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "music_muse.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 PICTURES = {
     "BREAKPOINTS": {
@@ -170,33 +168,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
-REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-    "PAGE_SIZE": 10,
-}
-
-SPECTACULAR_SETTINGS = {
-    "TITLE": "MusicMuse REST API",
-    "DESCRIPTION": "API for MusicMuse project",
-    "VERSION": PROJECT_VERSION,
-    "SERVE_INCLUDE_SCHEMA": False,
-    "COMPONENT_SPLIT_REQUEST": True,
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
-    "SERVE_AUTHENTICATION": [
-        "rest_framework.authentication.BasicAuthentication"
-    ],
-}
-
 
 OPENSEARCH_DSL = {
     "default": {
@@ -263,11 +234,11 @@ match FILE_UPLOAD_STORAGE:
                 "OPTIONS": default_storages_options,
             },
             "private": {
-                "BACKEND": "music_muse.storage_backends.PrivateMediaStorage",
+                "BACKEND": "core.storage_backends.PrivateMediaStorage",
                 "OPTIONS": default_storages_options,
             },
             "public": {
-                "BACKEND": "music_muse.storage_backends.PublicMediaStorage",
+                "BACKEND": "core.storage_backends.PublicMediaStorage",
                 "OPTIONS": default_storages_options,
             },
         }

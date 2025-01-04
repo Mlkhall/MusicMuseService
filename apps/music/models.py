@@ -7,6 +7,7 @@ from django_countries.fields import CountryField
 from django_prometheus.models import ExportModelOperationsMixin
 from mutagen import File as MutagenFile
 from pictures.models import PictureField
+from django_enum import EnumField
 from slugify import slugify
 
 
@@ -135,6 +136,15 @@ class Video(_CommonItemInfoModel):
 
 
 class Genres(ExportModelOperationsMixin("genres"), _CommonItemInfoModel):
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        related_name='subgenres',
+        null=True,
+        blank=True
+    )
+    rus_name = models.CharField(max_length=255, verbose_name="Русское название", blank=True, null=True)
+    short_name = models.CharField(max_length=255, verbose_name="Краткое название", blank=True, null=True)
     cover_image = models.OneToOneField(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
 
 
@@ -143,12 +153,21 @@ class Labels(ExportModelOperationsMixin("labels"), _CommonItemInfoModel):
 
 
 class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
-    label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
-    bio = models.TextField(verbose_name="Биография")
+
+    class ArtistGender(models.TextChoices):
+        MA = "male", "Мужской"
+        FE = "female", "Женский"
+        NS = "not_specified", "Не указан"
+        OT = "other", "Другой"
+
+    label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE, null=True)
+    bio = models.TextField(verbose_name="Биография", null=True)
     avatar = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
-    birth_date = models.DateField(verbose_name="Дата рождения")
+    birth_date = models.DateField(verbose_name="Дата рождения", null=True, blank=True)
     country = CountryField(verbose_name="Страна", default="RU")
-    genres = models.ManyToManyField(Genres, verbose_name="Жанры")
+    genres = models.ManyToManyField(Genres, verbose_name="Жанры", blank=True)
+    is_verified = models.BooleanField(verbose_name="Проверен", default=False)
+    gender = EnumField(ArtistGender, verbose_name="Пол", default=ArtistGender.NS)
 
 
 class Albums(ExportModelOperationsMixin("albums"), _CommonItemInfoModel):
@@ -160,9 +179,17 @@ class Albums(ExportModelOperationsMixin("albums"), _CommonItemInfoModel):
 
 
 class Tracks(ExportModelOperationsMixin("tracks"), _CommonItemInfoModel):
+
+    class TrackStatus(models.TextChoices):
+        ACTIVE = "active", "Активный"
+        INACTIVE = "inactive", "Неактивный"
+        DELETED = "deleted", "Удален"
+        MODERATION = "moderation", "На модерации"
+
     album = models.ForeignKey(Albums, verbose_name="Альбом", on_delete=models.CASCADE)
     label = models.OneToOneField(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)
     track = models.OneToOneField(Audio, verbose_name="Трек", on_delete=models.CASCADE)
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
+    status = EnumField(TrackStatus, verbose_name="Статус", default=TrackStatus.ACTIVE)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from music import models
+from apps.music import models
 
 admin.site.register(models.Tracks)
 admin.site.register(models.Artists)
