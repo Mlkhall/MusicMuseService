@@ -1,9 +1,28 @@
 from ninja import NinjaAPI
-
+from django.contrib.admin.views.decorators import staff_member_required
+from ninja.throttling import AnonRateThrottle, AuthRateThrottle
 from apps.music.api.routes.genres import router_v1 as genres_router_v1
 from apps.music.api.routes.artists import router_v1 as artists_router_v1
+from apps.music.api.routes.labels import router_v1 as labels_router_v1
+from apps.music.api.routes.releases import router_v1 as releases_router_v1
+from apps.music.api.routes.tracks import router_v1 as tracks_router_v1
+from core.settings import PROJECT_VERSION, DEBUG
+from ninja_apikey.security import APIKeyAuth
 
-api = NinjaAPI()
+api = NinjaAPI(
+    docs_decorator=staff_member_required if not DEBUG else None,
+    title='MusicMuse REST API',
+    version=PROJECT_VERSION,
+    description='REST API for MusicMuse project',
+    throttle=[
+        AnonRateThrottle('2/s'),
+        AuthRateThrottle('100/s'),
+    ],
+    auth=APIKeyAuth() if not DEBUG else None,
+)
 
-api.add_router(prefix='v1/genres', router=genres_router_v1)
-api.add_router(prefix='v1/artists', router=artists_router_v1)
+api.add_router(prefix='v1/music/genres', router=genres_router_v1)
+api.add_router(prefix='v1/music/artists', router=artists_router_v1)
+api.add_router(prefix='v1/music/labels', router=labels_router_v1)
+api.add_router(prefix='v1/music/releases', router=releases_router_v1)
+api.add_router(prefix='v1/music/tracks', router=tracks_router_v1)

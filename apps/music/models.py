@@ -62,6 +62,13 @@ class _CommonItemInfoModel(_CommonDateTimeModel):
         super().save(*args, **kwargs)
 
 
+class Statuses(models.TextChoices):
+    ACTIVE = "active", "Активный"
+    INACTIVE = "inactive", "Неактивный"
+    DELETED = "deleted", "Удален"
+    MODERATION = "moderation", "На модерации"
+
+
 class Images(_CommonItemInfoModel):
     image = PictureField(
         default=None,
@@ -145,11 +152,11 @@ class Genres(ExportModelOperationsMixin("genres"), _CommonItemInfoModel):
     )
     rus_name = models.CharField(max_length=255, verbose_name="Русское название", blank=True, null=True)
     short_name = models.CharField(max_length=255, verbose_name="Краткое название", blank=True, null=True)
-    cover_image = models.OneToOneField(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
+    cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
 
 
 class Labels(ExportModelOperationsMixin("labels"), _CommonItemInfoModel):
-    cover_image = models.OneToOneField(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
+    cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
 
 
 class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
@@ -170,26 +177,37 @@ class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
     gender = EnumField(ArtistGender, verbose_name="Пол", default=ArtistGender.NS)
 
 
-class Albums(ExportModelOperationsMixin("albums"), _CommonItemInfoModel):
-    labels = models.ManyToManyField(Labels, verbose_name="Лейблы")
+class Releases(ExportModelOperationsMixin("releases"), _CommonItemInfoModel):
+    class TypesOfReleases(models.TextChoices):
+        ALBUM = "album", "Альбом"
+        MINI_ALBUM = "mini_album", "Мини-альбом"
+        SINGLE = "single", "Сингл"
+        MAXI_SINGLE = "maxi_single", "Макси-сингл"
+        PODCAST = "podcast", "Подкаст"
+        BOOK = "book", "Книга"
+        COMPILATION = "compilation", "Сборник"
+        REISSUE = "reissue", "Переиздание"
+        REMIX = "remix", "Ремикс"
+        LIVE = "live", "Концерт"
+        INDEFINITE = "indefinite", "Неопределенный"
+
+    labels = models.ManyToManyField(Labels, verbose_name="Лейблы", blank=True)
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)
-    release_date = models.DateField(verbose_name="Дата выхода")
-    artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
-    genres = models.ManyToManyField(Genres, verbose_name="Жанры")
+    release_date = models.DateField(verbose_name="Дата выхода", null=True, blank=True)
+    publication_time = models.TimeField(verbose_name="Время публикации", null=True, blank=True)
+    artists = models.ManyToManyField(Artists, verbose_name="Исполнители", blank=True)
+    genres = models.ManyToManyField(Genres, verbose_name="Жанры", blank=True)
+    release_type = EnumField(TypesOfReleases, verbose_name="Тип релиза", default=TypesOfReleases.INDEFINITE)
+    status = EnumField(Statuses, verbose_name="Статус", default=Statuses.MODERATION)
 
 
 class Tracks(ExportModelOperationsMixin("tracks"), _CommonItemInfoModel):
 
-    class TrackStatus(models.TextChoices):
-        ACTIVE = "active", "Активный"
-        INACTIVE = "inactive", "Неактивный"
-        DELETED = "deleted", "Удален"
-        MODERATION = "moderation", "На модерации"
-
-    album = models.ForeignKey(Albums, verbose_name="Альбом", on_delete=models.CASCADE)
+    release = models.ForeignKey(Releases, verbose_name="Альбом", on_delete=models.CASCADE)
     label = models.OneToOneField(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)
     track = models.OneToOneField(Audio, verbose_name="Трек", on_delete=models.CASCADE)
+    video = models.ForeignKey(Video, verbose_name="Видео", on_delete=models.CASCADE, null=True)
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
-    status = EnumField(TrackStatus, verbose_name="Статус", default=TrackStatus.ACTIVE)
+    status = EnumField(Statuses, verbose_name="Статус", default=Statuses.MODERATION)

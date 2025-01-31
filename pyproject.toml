@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "MusicMuse-Service"
-version = "2024.10.06-1"
+version = "2025.01.10-1"
 description = "MusicMuse Service"
 authors = ["Чумаков Михил Дмитриевич <chumakov-md@zvuk.com>"]
 readme = "README.md"
@@ -39,12 +39,22 @@ django-ninja = "^1.3.0"
 django-enum = "^2.0.2"
 pydantic-extra-types = "^2.10.1"
 pycountry = "^24.6.1"
+ninja-put-patch-file-upload-middleware = "^0.1.4"
+ninja-api-key = "^1.0.2"
+boto3 = "1.35.92"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
 pytest-django = "^4.9.0"
 ruff = "^0.7.2"
+django-test-migrations = "^1.4.0"
+pytest-cov = "^6.0.0"
+covdefaults = "^2.3.0"
+pytest-randomly = "^3.16.0"
+pytest-timeout = "^2.3.1"
+django-migration-linter = "^5.1.0"
+flake8-pytest-style = "^2.1.0"
 
 
 [tool.poetry.group.docs.dependencies]

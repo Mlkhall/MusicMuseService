@@ -53,6 +53,8 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG", default=False)
 
+HEALTH_SECRET_TOKEN = env("HEALTH_SECRET_TOKEN")
+
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
@@ -77,6 +79,7 @@ INSTALLED_APPS = [
     "django_prometheus",
     "django_countries",
     "ninja",
+    "ninja_apikey",
     "pictures",
     "import_export",
     "django_filters",
@@ -87,6 +90,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.music.apps.MusicConfig",
+
+    'health_check',  # required
+    'health_check.db',  # stock Django health checkers
+    'health_check.cache',
+    'health_check.contrib.s3boto3_storage',  # requires boto3 and S3BotoStorage backend
+    'health_check.contrib.migrations',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +108,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
+    "ninja_put_patch_file_upload_middleware.middlewares.process_put_patch",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -217,7 +227,9 @@ default_storages_options = {
     "region_name": env("AWS_S3_REGION_NAME"),
     "custom_domain": S3_CUSTOM_DOMAIN,
     "endpoint_url": f"https://{S3_DOMAIN}",
+    "use_ssl": True,
 }
+
 
 match FILE_UPLOAD_STORAGE:
     case FileStoragesTypes.S3:

@@ -20,12 +20,14 @@ from django.urls import include, path
 from pictures.conf import get_settings
 
 from core.api import api
+from core.settings import HEALTH_SECRET_TOKEN
 from core.views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", index),
-    path("api/", api.urls)
+    path("api/", api.urls),
+    path(rf'ht/{HEALTH_SECRET_TOKEN}/', include('health_check.urls')),
 ]
 
 if get_settings().USE_PLACEHOLDERS:

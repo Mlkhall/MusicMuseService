@@ -1,7 +1,7 @@
 from django_opensearch_dsl import Document
 from django_opensearch_dsl.registries import registry
 
-from apps.music.models import Albums, Genres, Tracks
+from apps.music.models import Releases, Genres, Tracks
 
 
 @registry.register_document
@@ -28,12 +28,12 @@ class TracksDocument(Document):
 
 
 @registry.register_document
-class AlbumsDocument(Document):
+class ReleaseDocument(Document):
     class Index:
-        name = "albums"
+        name = "release"
 
     class Django:
-        model = Albums
+        model = Releases
         fields = [
             "name",
         ]
