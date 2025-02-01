@@ -5,15 +5,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0005_alter_audio_audio_alter_images_image_and_more'),
+        ("music", "0005_alter_audio_audio_alter_images_image_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='genres',
-            name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='subgenres', to='music.genres'),
+            model_name="genres",
+            name="parent",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="subgenres",
+                to="music.genres",
+            ),
         ),
     ]

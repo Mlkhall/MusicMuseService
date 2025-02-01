@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0009_alter_artists_label'),
+        ("music", "0009_alter_artists_label"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='artists',
-            name='bio',
-            field=models.TextField(null=True, verbose_name='Биография'),
+            model_name="artists",
+            name="bio",
+            field=models.TextField(null=True, verbose_name="Биография"),
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='birth_date',
-            field=models.DateField(null=True, verbose_name='Дата рождения'),
+            model_name="artists",
+            name="birth_date",
+            field=models.DateField(null=True, verbose_name="Дата рождения"),
         ),
     ]

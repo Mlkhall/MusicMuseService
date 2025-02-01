@@ -5,33 +5,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0010_alter_artists_bio_alter_artists_birth_date'),
+        ("music", "0010_alter_artists_bio_alter_artists_birth_date"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='artists',
-            name='music_Artists_gender_ArtistGender',
+            model_name="artists",
+            name="music_Artists_gender_ArtistGender",
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='birth_date',
-            field=models.DateField(blank=True, null=True, verbose_name='Дата рождения'),
+            model_name="artists",
+            name="birth_date",
+            field=models.DateField(blank=True, null=True, verbose_name="Дата рождения"),
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='gender',
-            field=django_enum.fields.EnumCharField(choices=[('male', 'Мужской'), ('female', 'Женский'), ('not_specified', 'Не указан'), ('other', 'Другой')], default='not_specified', max_length=13, verbose_name='Пол'),
+            model_name="artists",
+            name="gender",
+            field=django_enum.fields.EnumCharField(
+                choices=[
+                    ("male", "Мужской"),
+                    ("female", "Женский"),
+                    ("not_specified", "Не указан"),
+                    ("other", "Другой"),
+                ],
+                default="not_specified",
+                max_length=13,
+                verbose_name="Пол",
+            ),
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='genres',
-            field=models.ManyToManyField(blank=True, to='music.genres', verbose_name='Жанры'),
+            model_name="artists",
+            name="genres",
+            field=models.ManyToManyField(blank=True, to="music.genres", verbose_name="Жанры"),
         ),
         migrations.AddConstraint(
-            model_name='artists',
-            constraint=models.CheckConstraint(condition=models.Q(('gender__in', ['male', 'female', 'not_specified', 'other'])), name='music_Artists_gender_ArtistGender'),
+            model_name="artists",
+            constraint=models.CheckConstraint(
+                condition=models.Q(("gender__in", ["male", "female", "not_specified", "other"])),
+                name="music_Artists_gender_ArtistGender",
+            ),
         ),
     ]

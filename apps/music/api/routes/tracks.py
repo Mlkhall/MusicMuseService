@@ -1,16 +1,25 @@
 from http import HTTPStatus
 
-from pydantic import PositiveInt
-from django.shortcuts import get_object_or_404, get_list_or_404
-from ninja import Router, UploadedFile, File, Form, Query
-from loguru import logger
-from django.db import transaction, IntegrityError
-from ninja.errors import HttpError
 from django.core.paginator import Paginator
+from django.db import IntegrityError, transaction
+from django.shortcuts import get_list_or_404, get_object_or_404
+from loguru import logger
+from ninja import File, Form, Query, Router, UploadedFile
+from ninja.errors import HttpError
+from pydantic import PositiveInt
+
 from apps.music.api.docs import Tags
-from apps.music.api.dto.tracks import AddNewTrackIn, AddNewTrackOut, GetFilteredTrackOut, GetFilteredTrackIn, \
-    GetTrackPagesOut, GetTrackPagesItemOut, UpdateTrackOut
-from apps.music.models import Labels, Genres, Artists, Releases, Images, Video, Audio, Tracks
+from apps.music.api.dto.tracks import (
+    AddNewTrackIn,
+    AddNewTrackOut,
+    GetFilteredTrackIn,
+    GetFilteredTrackOut,
+    GetTrackPagesItemOut,
+    GetTrackPagesOut,
+    UpdateTrackOut,
+)
+from apps.music.api.validators import validate_audio_file, validate_video_file, validate_image_file
+from apps.music.models import Artists, Audio, Genres, Images, Labels, Releases, Tracks, Video
 
 router_v1 = Router(tags=[Tags.tracks])
 
@@ -34,6 +43,8 @@ def add_new_track(
     genres = get_list_or_404(Genres, id__in=payload.genres_ids) if payload.genres_ids else None
     artists = get_list_or_404(Artists, id__in=payload.artist_ids) if payload.artist_ids else None
 
+    validate_audio_file(audio)
+
     with transaction.atomic():
         new_video = None
         new_cover = None
@@ -44,12 +55,14 @@ def add_new_track(
         )
 
         if video:
+            validate_video_file(video)
             new_video, was_video_created = Video.objects.get_or_create(
                 name=video.name,
                 defaults={"name": video.name, "video": video},
             )
 
         if cover:
+            validate_image_file(cover)
             new_cover, was_cover_created = Images.objects.get_or_create(
                 name=cover.name,
                 defaults={"name": cover.name, "image": cover},
@@ -217,18 +230,21 @@ def update_track(
         new_audio = None
 
         if video:
+            validate_video_file(video)
             new_video, was_video_created = Video.objects.update_or_create(
                 name=video.name,
                 defaults={"name": video.name, "video": video},
             )
 
         if cover:
+            validate_image_file(cover)
             new_cover, was_cover_created = Images.objects.update_or_create(
                 name=cover.name,
                 defaults={"name": cover.name, "image": cover},
             )
 
         if audio:
+            validate_audio_file(audio)
             new_audio, was_audio_created = Audio.objects.update_or_create(
                 name=audio.name,
                 defaults={"name": audio.name, "audio": audio},

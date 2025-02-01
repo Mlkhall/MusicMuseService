@@ -1,9 +1,10 @@
-from ninja import Schema, ModelSchema, FilterSchema
+from datetime import datetime
+
+from ninja import FilterSchema, ModelSchema, Schema
 from pydantic import PositiveInt
 
 from apps.music.api.dto._base import EmptyStrToDefault
 from apps.music.models import Labels
-from datetime import datetime
 
 
 class LabelSchema(ModelSchema):
@@ -26,8 +27,7 @@ class AddNewLabelIn(Schema):
     description: EmptyStrToDefault[str | None] = None
 
 
-class AddNewLabelOut(LabelSchema):
-    ...
+class AddNewLabelOut(LabelSchema): ...
 
 
 class GetFilteredLabelsIn(FilterSchema):
@@ -35,12 +35,10 @@ class GetFilteredLabelsIn(FilterSchema):
     name: str | None = None
 
 
-class GetFilteredLabelsOut(BaseLabelOutSchema):
-    ...
+class GetFilteredLabelsOut(BaseLabelOutSchema): ...
 
 
-class GetLabelsPagesOut(LabelSchema):
-    ...
+class GetLabelsPagesOut(LabelSchema): ...
 
 
 class UpdateLabelIn(Schema):
@@ -48,5 +46,4 @@ class UpdateLabelIn(Schema):
     description: EmptyStrToDefault[str | None] = None
 
 
-class UpdateLabelOut(BaseLabelOutSchema):
-    ...
+class UpdateLabelOut(BaseLabelOutSchema): ...

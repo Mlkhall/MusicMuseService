@@ -5,24 +5,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0007_genres_rus_name_genres_short_name_tracks_status_and_more'),
+        ("music", "0007_genres_rus_name_genres_short_name_tracks_status_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='artists',
-            name='gender',
-            field=django_enum.fields.EnumCharField(choices=[('male', 'Мужской'), ('female', 'Женский'), ('other', 'Другой')], default='other', max_length=6, verbose_name='Пол'),
+            model_name="artists",
+            name="gender",
+            field=django_enum.fields.EnumCharField(
+                choices=[("male", "Мужской"), ("female", "Женский"), ("other", "Другой")],
+                default="other",
+                max_length=6,
+                verbose_name="Пол",
+            ),
         ),
         migrations.AddField(
-            model_name='artists',
-            name='is_verified',
-            field=models.BooleanField(default=False, verbose_name='Проверен'),
+            model_name="artists",
+            name="is_verified",
+            field=models.BooleanField(default=False, verbose_name="Проверен"),
         ),
         migrations.AddConstraint(
-            model_name='artists',
-            constraint=models.CheckConstraint(condition=models.Q(('gender__in', ['male', 'female', 'other'])), name='music_Artists_gender_ArtistGender'),
+            model_name="artists",
+            constraint=models.CheckConstraint(
+                condition=models.Q(("gender__in", ["male", "female", "other"])),
+                name="music_Artists_gender_ArtistGender",
+            ),
         ),
     ]

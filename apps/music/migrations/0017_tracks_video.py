@@ -5,15 +5,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0016_alter_releases_release_date'),
+        ("music", "0016_alter_releases_release_date"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tracks',
-            name='video',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='music.video', verbose_name='Видео'),
+            model_name="tracks",
+            name="video",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to="music.video", verbose_name="Видео"
+            ),
         ),
     ]

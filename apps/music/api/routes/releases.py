@@ -1,17 +1,26 @@
 from http import HTTPStatus
 
-from django.shortcuts import get_list_or_404, get_object_or_404
-from ninja import Router, UploadedFile, File, Form, Query
-from loguru import logger
-from django.db import transaction, IntegrityError
-from ninja.errors import HttpError
 from django.core.paginator import Paginator
+from django.db import IntegrityError, transaction
+from django.shortcuts import get_list_or_404, get_object_or_404
+from loguru import logger
+from ninja import File, Form, Query, Router, UploadedFile
+from ninja.errors import HttpError
 from pydantic import PositiveInt
 
 from apps.music.api.docs import Tags
-from apps.music.api.dto.releases import AddNewReleaseOut, AddNewReleaseIn, GetFilteredReleaseOut, GetFilteredReleaseIn, \
-    GetReleasesPagesOut, GetReleasePagesItemOut, UpdateReleaseOut, UpdateReleaseIn
-from apps.music.models import Images, Releases, Labels, Artists, Genres
+from apps.music.api.dto.releases import (
+    AddNewReleaseIn,
+    AddNewReleaseOut,
+    GetFilteredReleaseIn,
+    GetFilteredReleaseOut,
+    GetReleasePagesItemOut,
+    GetReleasesPagesOut,
+    UpdateReleaseIn,
+    UpdateReleaseOut,
+)
+from apps.music.api.validators import validate_image_file
+from apps.music.models import Artists, Genres, Images, Labels, Releases
 
 router_v1 = Router(tags=[Tags.releases])
 
@@ -36,6 +45,7 @@ def add_new_release(
         new_cover_image = None
 
         if cover_image:
+            validate_image_file(cover_image)
             new_cover_image, was_cover_image_created = Images.objects.get_or_create(
                 name=cover_image.name,
                 defaults={"name": cover_image.name, "image": cover_image},
@@ -128,7 +138,7 @@ def get_filtered_release(request, release_filter: GetFilteredReleaseIn = Query(.
     path="/pages/",
     response=GetReleasesPagesOut,
     description="Получение всех релизов постранично",
-    summary="Получить страницы релизов"
+    summary="Получить страницы релизов",
 )
 def get_release_pages(request, page: PositiveInt = 1, size: PositiveInt = 10):
     logger.info(request)
@@ -187,6 +197,7 @@ def update_release(
                 setattr(release, field_name, updated_value)
 
         if cover_image:
+            validate_image_file(cover_image)
             new_cover_image, was_cover_image_created = Images.objects.update_or_create(
                 name=cover_image.name,
                 defaults={"name": cover_image.name, "image": cover_image},

@@ -527,19 +527,19 @@ properties = ["enum-properties (>=2.0.0)"]
 
 [[package]]
 name = "django-environ"
-version = "0.11.2"
+version = "0.12.0"
 description = "A package that allows you to utilize 12factor inspired environment variables to configure your Django application."
 optional = false
-python-versions = ">=3.6,<4"
+python-versions = "<4,>=3.9"
 files = [
-    {file = "django-environ-0.11.2.tar.gz", hash = "sha256:f32a87aa0899894c27d4e1776fa6b477e8164ed7f6b3e410a62a6d72caaf64be"},
-    {file = "django_environ-0.11.2-py2.py3-none-any.whl", hash = "sha256:0ff95ab4344bfeff693836aa978e6840abef2e2f1145adff7735892711590c05"},
+    {file = "django_environ-0.12.0-py2.py3-none-any.whl", hash = "sha256:92fb346a158abda07ffe6eb23135ce92843af06ecf8753f43adf9d2366dcc0ca"},
+    {file = "django_environ-0.12.0.tar.gz", hash = "sha256:227dc891453dd5bde769c3449cf4a74b6f2ee8f7ab2361c93a07068f4179041a"},
 ]
 
 [package.extras]
-develop = ["coverage[toml] (>=5.0a4)", "furo (>=2021.8.17b43,<2021.9.dev0)", "pytest (>=4.6.11)", "sphinx (>=3.5.0)", "sphinx-notfound-page"]
-docs = ["furo (>=2021.8.17b43,<2021.9.dev0)", "sphinx (>=3.5.0)", "sphinx-notfound-page"]
-testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)"]
+develop = ["coverage[toml] (>=5.0a4)", "furo (>=2024.8.6)", "pytest (>=4.6.11)", "setuptools (>=71.0.0)", "sphinx (>=5.0)", "sphinx-notfound-page"]
+docs = ["furo (>=2024.8.6)", "sphinx (>=5.0)", "sphinx-notfound-page"]
+testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)", "setuptools (>=71.0.0)"]
 
 [[package]]
 name = "django-extensions"
@@ -832,25 +832,6 @@ files = [
 django = ">=4.2"
 
 [[package]]
-name = "drf-extra-fields"
-version = "3.7.0"
-description = "Additional fields for Django Rest Framework."
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "drf-extra-fields-3.7.0.tar.gz", hash = "sha256:d7e58b8f60432233328b8a64831e50ea5d05932d3cb63ade8fe66c0d3d21ac5b"},
-    {file = "drf_extra_fields-3.7.0-py3-none-any.whl", hash = "sha256:3f3b1a6ec0eea02c9cabd62fe10e1673e1e42c5daa27fa9d4cea758c52c5cc30"},
-]
-
-[package.dependencies]
-Django = ">=2.2"
-djangorestframework = ">=3.9.2"
-filetype = ">=1.2.0"
-
-[package.extras]
-base64imagefield = ["Pillow (>=6.2.1)"]
-
-[[package]]
 name = "et-xmlfile"
 version = "2.0.0"
 description = "An implementation of lxml.xmlfile for the standard library"
@@ -869,17 +850,6 @@ optional = false
 python-versions = "*"
 files = [
     {file = "Events-0.5-py3-none-any.whl", hash = "sha256:a7286af378ba3e46640ac9825156c93bdba7502174dd696090fdfcd4d80a1abd"},
-]
-
-[[package]]
-name = "filetype"
-version = "1.2.0"
-description = "Infer file type and MIME type of any file/buffer. No external dependencies."
-optional = false
-python-versions = "*"
-files = [
-    {file = "filetype-1.2.0-py2.py3-none-any.whl", hash = "sha256:7ce71b6880181241cf7ac8697a2f1eb6a8bd9b429f7ad6d27b8db9ba5f1c2d25"},
-    {file = "filetype-1.2.0.tar.gz", hash = "sha256:66b56cd6474bf41d8c54660347d37afcc3f7d1970648de365c102ef77548aadb"},
 ]
 
 [[package]]
@@ -2759,4 +2729,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<4"
-content-hash = "bfc10d0438c9866c8cd481cec5f253b3ed7023f6ab4529aefba8eaf303ca194a"
+content-hash = "c960acafe2e583b83e44ce8086c097f098a97fc34547954887b32a5b53219950"

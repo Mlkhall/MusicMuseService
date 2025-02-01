@@ -5,15 +5,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0013_alter_labels_cover_image'),
+        ("music", "0013_alter_labels_cover_image"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='genres',
-            name='cover_image',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='music.images', verbose_name='Изображение'),
+            model_name="genres",
+            name="cover_image",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to="music.images", verbose_name="Изображение"
+            ),
         ),
     ]

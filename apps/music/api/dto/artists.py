@@ -1,10 +1,12 @@
-from ninja import Schema, ModelSchema, FilterSchema
-from pydantic import PositiveInt, AnyHttpUrl
 from datetime import date
 from enum import StrEnum
-from apps.music.models import Artists
+
+from ninja import FilterSchema, ModelSchema, Schema
+from pydantic import AnyHttpUrl, PositiveInt
 from pydantic_extra_types.country import CountryAlpha3
+
 from apps.music.api.dto._base import EmptyStrToDefault
+from apps.music.models import Artists
 
 
 class ArtistGender(StrEnum):
@@ -38,7 +40,7 @@ class AddNewArtistIn(Schema):
     name: str
     description: EmptyStrToDefault[str | None] = None
     birth_date: EmptyStrToDefault[date | None] = None
-    country: CountryAlpha3 = 'RUS'
+    country: CountryAlpha3 = "RUS"
     genres_ids: tuple[EmptyStrToDefault[PositiveInt], ...] = ()
     label_id: EmptyStrToDefault[PositiveInt | None] = None
     bio: EmptyStrToDefault[str | None] = None
@@ -46,15 +48,14 @@ class AddNewArtistIn(Schema):
     gender: ArtistGender
 
 
-class AddNewArtistOut(BaseArtistOutSchema):
-    ...
+class AddNewArtistOut(BaseArtistOutSchema): ...
 
 
 class UpdateArtistIn(Schema):
     name: EmptyStrToDefault[str | None] = None
     description: EmptyStrToDefault[str | None] = None
     birth_date: EmptyStrToDefault[date | None] = None
-    country: CountryAlpha3 = 'RUS'
+    country: CountryAlpha3 = "RUS"
     genres_ids: tuple[EmptyStrToDefault[PositiveInt], ...] = ()
     label_id: EmptyStrToDefault[PositiveInt | None] = None
     bio: EmptyStrToDefault[str | None] = None
@@ -62,8 +63,7 @@ class UpdateArtistIn(Schema):
     gender: ArtistGender
 
 
-class UpdateArtistOut(BaseArtistOutSchema):
-    ...
+class UpdateArtistOut(BaseArtistOutSchema): ...
 
 
 class GetFilteredArtistIn(FilterSchema):
@@ -71,12 +71,10 @@ class GetFilteredArtistIn(FilterSchema):
     name: str | None = None
 
 
-class GetFilteredArtistOut(BaseArtistOutSchema):
-    ...
+class GetFilteredArtistOut(BaseArtistOutSchema): ...
 
 
-class GetArtistPagesItemOut(BaseArtistOutSchema):
-    ...
+class GetArtistPagesItemOut(BaseArtistOutSchema): ...
 
 
 class GetArtistPagesOut(Schema):

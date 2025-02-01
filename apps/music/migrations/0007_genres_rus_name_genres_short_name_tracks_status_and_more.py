@@ -5,29 +5,41 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('music', '0006_genres_parent'),
+        ("music", "0006_genres_parent"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='genres',
-            name='rus_name',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Русское название'),
+            model_name="genres",
+            name="rus_name",
+            field=models.CharField(blank=True, max_length=255, null=True, verbose_name="Русское название"),
         ),
         migrations.AddField(
-            model_name='genres',
-            name='short_name',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Краткое название'),
+            model_name="genres",
+            name="short_name",
+            field=models.CharField(blank=True, max_length=255, null=True, verbose_name="Краткое название"),
         ),
         migrations.AddField(
-            model_name='tracks',
-            name='status',
-            field=django_enum.fields.EnumCharField(choices=[('active', 'Активный'), ('inactive', 'Неактивный'), ('deleted', 'Удален'), ('moderation', 'На модерации')], default='active', max_length=10, verbose_name='Статус'),
+            model_name="tracks",
+            name="status",
+            field=django_enum.fields.EnumCharField(
+                choices=[
+                    ("active", "Активный"),
+                    ("inactive", "Неактивный"),
+                    ("deleted", "Удален"),
+                    ("moderation", "На модерации"),
+                ],
+                default="active",
+                max_length=10,
+                verbose_name="Статус",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='tracks',
-            constraint=models.CheckConstraint(condition=models.Q(('status__in', ['active', 'inactive', 'deleted', 'moderation'])), name='music_Tracks_status_TrackStatus'),
+            model_name="tracks",
+            constraint=models.CheckConstraint(
+                condition=models.Q(("status__in", ["active", "inactive", "deleted", "moderation"])),
+                name="music_Tracks_status_TrackStatus",
+            ),
         ),
     ]

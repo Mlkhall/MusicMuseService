@@ -90,12 +90,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.music.apps.MusicConfig",
-
-    'health_check',  # required
-    'health_check.db',  # stock Django health checkers
-    'health_check.cache',
-    'health_check.contrib.s3boto3_storage',  # requires boto3 and S3BotoStorage backend
-    'health_check.contrib.migrations',
+    "health_check",  # required
+    "health_check.db",  # stock Django health checkers
+    "health_check.cache",
+    "health_check.contrib.s3boto3_storage",  # requires boto3 and S3BotoStorage backend
+    "health_check.contrib.migrations",
 ]
 
 MIDDLEWARE = [

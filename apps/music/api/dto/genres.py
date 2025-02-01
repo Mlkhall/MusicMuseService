@@ -1,6 +1,8 @@
-from ninja import ModelSchema, Schema, FilterSchema
 from datetime import datetime
+
+from ninja import FilterSchema, ModelSchema, Schema
 from pydantic import PositiveInt
+
 from apps.music.api.dto._base import EmptyStrToDefault
 from apps.music.models import Genres
 
@@ -17,8 +19,7 @@ class AddNewGenreIn(Schema):
     parent_genre_id: EmptyStrToDefault[PositiveInt | None] = None
 
 
-class AddNewGenreOut(GenresSchema):
-    ...
+class AddNewGenreOut(GenresSchema): ...
 
 
 class GetFilteredGenreIn(FilterSchema):
@@ -37,8 +38,7 @@ class GetFilteredGenreInOut(Schema):
     updated_at: datetime
 
 
-class GetGenrePagesOut(GenresSchema):
-    ...
+class GetGenrePagesOut(GenresSchema): ...
 
 
 class UpdateGenreIn(Schema):
@@ -47,5 +47,4 @@ class UpdateGenreIn(Schema):
     parent_id: EmptyStrToDefault[PositiveInt | None] = None
 
 
-class UpdateGenreOut(GenresSchema):
-    ...
+class UpdateGenreOut(GenresSchema): ...

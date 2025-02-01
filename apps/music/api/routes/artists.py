@@ -1,16 +1,24 @@
 from http import HTTPStatus
 
-from pydantic import PositiveInt
-from django.shortcuts import get_object_or_404, get_list_or_404
-from ninja import Router, UploadedFile, File, Form, Query
-from loguru import logger
-from django.db import transaction, IntegrityError
-from ninja.errors import HttpError
 from django.core.paginator import Paginator
-from apps.music.api.dto.artists import AddNewArtistIn, AddNewArtistOut, UpdateArtistOut, GetFilteredArtistOut, \
-    GetFilteredArtistIn, GetArtistPagesOut, GetArtistPagesItemOut
+from django.db import IntegrityError, transaction
+from django.shortcuts import get_list_or_404, get_object_or_404
+from loguru import logger
+from ninja import File, Form, Query, Router, UploadedFile
+from ninja.errors import HttpError
+from pydantic import PositiveInt
+
 from apps.music.api.docs import Tags
-from apps.music.models import Images, Artists, Labels, Genres
+from apps.music.api.dto.artists import (
+    AddNewArtistIn,
+    AddNewArtistOut,
+    GetArtistPagesItemOut,
+    GetArtistPagesOut,
+    GetFilteredArtistIn,
+    GetFilteredArtistOut,
+    UpdateArtistOut,
+)
+from apps.music.models import Artists, Genres, Images, Labels
 
 router_v1 = Router(tags=[Tags.artists])
 

@@ -2,164 +2,220 @@
 
 import django.db.models.deletion
 import django_countries.fields
-import apps.music.models
 import pictures.models
 from django.db import migrations, models
 
+import apps.music.models
+
 
 class Migration(migrations.Migration):
-
-    replaces = [('music', '0002_remove_artists_avatar_url_remove_tracks_duration_and_more'), ('music', '0003_alter_audio_duration_alter_audio_transcription'), ('music', '0004_alter_video_duration')]
+    replaces = [
+        ("music", "0002_remove_artists_avatar_url_remove_tracks_duration_and_more"),
+        ("music", "0003_alter_audio_duration_alter_audio_transcription"),
+        ("music", "0004_alter_video_duration"),
+    ]
 
     dependencies = [
-        ('music', '0001_initial'),
+        ("music", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='artists',
-            name='avatar_url',
+            model_name="artists",
+            name="avatar_url",
         ),
         migrations.RemoveField(
-            model_name='tracks',
-            name='duration',
+            model_name="tracks",
+            name="duration",
         ),
         migrations.AddField(
-            model_name='albums',
-            name='description',
-            field=models.CharField(blank=True, default=None, null=True, verbose_name='Описание'),
+            model_name="albums",
+            name="description",
+            field=models.CharField(blank=True, default=None, null=True, verbose_name="Описание"),
         ),
         migrations.AddField(
-            model_name='tracks',
-            name='description',
-            field=models.CharField(blank=True, default=None, null=True, verbose_name='Описание'),
+            model_name="tracks",
+            name="description",
+            field=models.CharField(blank=True, default=None, null=True, verbose_name="Описание"),
         ),
         migrations.AlterField(
-            model_name='albums',
-            name='slug',
-            field=models.SlugField(blank=True, default='', max_length=255, unique=True),
+            model_name="albums",
+            name="slug",
+            field=models.SlugField(blank=True, default="", max_length=255, unique=True),
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='country',
-            field=django_countries.fields.CountryField(default='RU', max_length=2, verbose_name='Страна'),
+            model_name="artists",
+            name="country",
+            field=django_countries.fields.CountryField(default="RU", max_length=2, verbose_name="Страна"),
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='description',
-            field=models.CharField(blank=True, default=None, null=True, verbose_name='Описание'),
+            model_name="artists",
+            name="description",
+            field=models.CharField(blank=True, default=None, null=True, verbose_name="Описание"),
         ),
         migrations.AlterField(
-            model_name='artists',
-            name='slug',
-            field=models.SlugField(blank=True, default='', max_length=255, unique=True),
+            model_name="artists",
+            name="slug",
+            field=models.SlugField(blank=True, default="", max_length=255, unique=True),
         ),
         migrations.AlterField(
-            model_name='genres',
-            name='description',
-            field=models.CharField(blank=True, default=None, null=True, verbose_name='Описание'),
+            model_name="genres",
+            name="description",
+            field=models.CharField(blank=True, default=None, null=True, verbose_name="Описание"),
         ),
         migrations.AlterField(
-            model_name='genres',
-            name='slug',
-            field=models.SlugField(blank=True, default='', max_length=255, unique=True),
+            model_name="genres",
+            name="slug",
+            field=models.SlugField(blank=True, default="", max_length=255, unique=True),
         ),
         migrations.AlterField(
-            model_name='labels',
-            name='description',
-            field=models.CharField(blank=True, default=None, null=True, verbose_name='Описание'),
+            model_name="labels",
+            name="description",
+            field=models.CharField(blank=True, default=None, null=True, verbose_name="Описание"),
         ),
         migrations.AlterField(
-            model_name='labels',
-            name='slug',
-            field=models.SlugField(blank=True, default='', max_length=255, unique=True),
+            model_name="labels",
+            name="slug",
+            field=models.SlugField(blank=True, default="", max_length=255, unique=True),
         ),
         migrations.AlterField(
-            model_name='tracks',
-            name='slug',
-            field=models.SlugField(blank=True, default='', max_length=255, unique=True),
+            model_name="tracks",
+            name="slug",
+            field=models.SlugField(blank=True, default="", max_length=255, unique=True),
         ),
         migrations.CreateModel(
-            name='Audio',
+            name="Audio",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name='Время создания')),
-                ('updated', models.DateTimeField(auto_now=True, verbose_name='Время обновления')),
-                ('name', models.CharField(max_length=255, unique=True, verbose_name='Название')),
-                ('slug', models.SlugField(blank=True, default='', max_length=255, unique=True)),
-                ('description', models.CharField(blank=True, default=None, null=True, verbose_name='Описание')),
-                ('transcription', models.TextField(blank=True, null=True, verbose_name='Текст песни')),
-                ('duration', models.DurationField(blank=True, null=True, verbose_name='Длительность')),
-                ('audio', models.FileField(storage=apps.music.models._get_public_media_storage, upload_to=apps.music.models._upload_audio_to, verbose_name='Ссылка на аудио')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, verbose_name="Время создания")),
+                ("updated", models.DateTimeField(auto_now=True, verbose_name="Время обновления")),
+                ("name", models.CharField(max_length=255, unique=True, verbose_name="Название")),
+                ("slug", models.SlugField(blank=True, default="", max_length=255, unique=True)),
+                ("description", models.CharField(blank=True, default=None, null=True, verbose_name="Описание")),
+                ("transcription", models.TextField(blank=True, null=True, verbose_name="Текст песни")),
+                ("duration", models.DurationField(blank=True, null=True, verbose_name="Длительность")),
+                (
+                    "audio",
+                    models.FileField(
+                        storage=apps.music.models._get_public_media_storage,
+                        upload_to=apps.music.models._upload_audio_to,
+                        verbose_name="Ссылка на аудио",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
-                'indexes': [models.Index(fields=['name', '-created', '-updated'], name='music_audio_name_250b96_idx')],
+                "abstract": False,
+                "indexes": [models.Index(fields=["name", "-created", "-updated"], name="music_audio_name_250b96_idx")],
             },
         ),
         migrations.AlterField(
-            model_name='tracks',
-            name='track',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='music.audio', verbose_name='Трек'),
+            model_name="tracks",
+            name="track",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="music.audio", verbose_name="Трек"
+            ),
         ),
         migrations.CreateModel(
-            name='Images',
+            name="Images",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name='Время создания')),
-                ('updated', models.DateTimeField(auto_now=True, verbose_name='Время обновления')),
-                ('name', models.CharField(max_length=255, unique=True, verbose_name='Название')),
-                ('slug', models.SlugField(blank=True, default='', max_length=255, unique=True)),
-                ('description', models.CharField(blank=True, default=None, null=True, verbose_name='Описание')),
-                ('image', pictures.models.PictureField(aspect_ratios=[None], breakpoints={'l': 1200, 'm': 992, 's': 768, 'xl': 1400, 'xs': 576}, container_width=1200, default=None, file_types=['WEBP'], grid_columns=12, height_field='image_height', pixel_densities=[1, 2], storage=apps.music.models._get_public_media_storage, upload_to=apps.music.models._upload_images_to, verbose_name='Ссылка на изображение', width_field='image_width')),
-                ('image_width', models.PositiveIntegerField(blank=True, editable=False, null=True, verbose_name='Ширина изображения')),
-                ('image_height', models.PositiveIntegerField(blank=True, editable=False, null=True, verbose_name='Высота изображения')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, verbose_name="Время создания")),
+                ("updated", models.DateTimeField(auto_now=True, verbose_name="Время обновления")),
+                ("name", models.CharField(max_length=255, unique=True, verbose_name="Название")),
+                ("slug", models.SlugField(blank=True, default="", max_length=255, unique=True)),
+                ("description", models.CharField(blank=True, default=None, null=True, verbose_name="Описание")),
+                (
+                    "image",
+                    pictures.models.PictureField(
+                        aspect_ratios=[None],
+                        breakpoints={"l": 1200, "m": 992, "s": 768, "xl": 1400, "xs": 576},
+                        container_width=1200,
+                        default=None,
+                        file_types=["WEBP"],
+                        grid_columns=12,
+                        height_field="image_height",
+                        pixel_densities=[1, 2],
+                        storage=apps.music.models._get_public_media_storage,
+                        upload_to=apps.music.models._upload_images_to,
+                        verbose_name="Ссылка на изображение",
+                        width_field="image_width",
+                    ),
+                ),
+                (
+                    "image_width",
+                    models.PositiveIntegerField(
+                        blank=True, editable=False, null=True, verbose_name="Ширина изображения"
+                    ),
+                ),
+                (
+                    "image_height",
+                    models.PositiveIntegerField(
+                        blank=True, editable=False, null=True, verbose_name="Высота изображения"
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
-                'indexes': [models.Index(fields=['name', '-created', '-updated'], name='music_image_name_9512d3_idx')],
+                "abstract": False,
+                "indexes": [models.Index(fields=["name", "-created", "-updated"], name="music_image_name_9512d3_idx")],
             },
         ),
         migrations.AddField(
-            model_name='artists',
-            name='avatar',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='music.images', verbose_name='Изображение'),
+            model_name="artists",
+            name="avatar",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to="music.images", verbose_name="Изображение"
+            ),
         ),
         migrations.AddField(
-            model_name='genres',
-            name='cover_image',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='music.images', verbose_name='Изображение'),
+            model_name="genres",
+            name="cover_image",
+            field=models.OneToOneField(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to="music.images", verbose_name="Изображение"
+            ),
         ),
         migrations.AlterField(
-            model_name='albums',
-            name='cover_image',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='music.images', verbose_name='Изображение'),
+            model_name="albums",
+            name="cover_image",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="music.images", verbose_name="Изображение"
+            ),
         ),
         migrations.AlterField(
-            model_name='labels',
-            name='cover_image',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='music.images', verbose_name='Изображение'),
+            model_name="labels",
+            name="cover_image",
+            field=models.OneToOneField(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to="music.images", verbose_name="Изображение"
+            ),
         ),
         migrations.AlterField(
-            model_name='tracks',
-            name='cover_image',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='music.images', verbose_name='Изображение'),
+            model_name="tracks",
+            name="cover_image",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="music.images", verbose_name="Изображение"
+            ),
         ),
         migrations.CreateModel(
-            name='Video',
+            name="Video",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name='Время создания')),
-                ('updated', models.DateTimeField(auto_now=True, verbose_name='Время обновления')),
-                ('name', models.CharField(max_length=255, unique=True, verbose_name='Название')),
-                ('slug', models.SlugField(blank=True, default='', max_length=255, unique=True)),
-                ('description', models.CharField(blank=True, default=None, null=True, verbose_name='Описание')),
-                ('duration', models.DurationField(blank=True, null=True, verbose_name='Длительность')),
-                ('video', models.FileField(storage=apps.music.models._get_public_media_storage, upload_to=apps.music.models._upload_videos_to, verbose_name='Ссылка на видео')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, verbose_name="Время создания")),
+                ("updated", models.DateTimeField(auto_now=True, verbose_name="Время обновления")),
+                ("name", models.CharField(max_length=255, unique=True, verbose_name="Название")),
+                ("slug", models.SlugField(blank=True, default="", max_length=255, unique=True)),
+                ("description", models.CharField(blank=True, default=None, null=True, verbose_name="Описание")),
+                ("duration", models.DurationField(blank=True, null=True, verbose_name="Длительность")),
+                (
+                    "video",
+                    models.FileField(
+                        storage=apps.music.models._get_public_media_storage,
+                        upload_to=apps.music.models._upload_videos_to,
+                        verbose_name="Ссылка на видео",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
-                'indexes': [models.Index(fields=['name', '-created', '-updated'], name='music_video_name_334c9b_idx')],
+                "abstract": False,
+                "indexes": [models.Index(fields=["name", "-created", "-updated"], name="music_video_name_334c9b_idx")],
             },
         ),
     ]

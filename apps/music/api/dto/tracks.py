@@ -1,7 +1,9 @@
-from ninja import Schema, FilterSchema
-from pydantic import PositiveInt
 from datetime import datetime
-from apps.music.api.dto._base import Statuses, EmptyStrToDefault
+
+from ninja import FilterSchema, Schema
+from pydantic import PositiveInt
+
+from apps.music.api.dto._base import EmptyStrToDefault, Statuses
 
 
 class BaseTrackOut(Schema):
@@ -30,8 +32,7 @@ class AddNewTrackIn(Schema):
     status: Statuses = Statuses.moderation
 
 
-class AddNewTrackOut(BaseTrackOut):
-    ...
+class AddNewTrackOut(BaseTrackOut): ...
 
 
 class GetFilteredTrackIn(FilterSchema):
@@ -39,12 +40,10 @@ class GetFilteredTrackIn(FilterSchema):
     name: str | None = None
 
 
-class GetFilteredTrackOut(BaseTrackOut):
-    ...
+class GetFilteredTrackOut(BaseTrackOut): ...
 
 
-class GetTrackPagesItemOut(BaseTrackOut):
-    ...
+class GetTrackPagesItemOut(BaseTrackOut): ...
 
 
 class GetTrackPagesOut(Schema):
@@ -63,5 +62,4 @@ class UpdateTrackIn(Schema):
     status: EmptyStrToDefault[Statuses] = None
 
 
-class UpdateTrackOut(BaseTrackOut):
-    ...
+class UpdateTrackOut(BaseTrackOut): ...

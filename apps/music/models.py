@@ -1,26 +1,31 @@
+import os
 from datetime import timedelta
 
 import cv2
+from django.db import transaction
 from django.core.files.storage import storages
 from django.db import models
 from django_countries.fields import CountryField
+from django_enum import EnumField
 from django_prometheus.models import ExportModelOperationsMixin
 from mutagen import File as MutagenFile
 from pictures.models import PictureField
-from django_enum import EnumField
 from slugify import slugify
 
 
 def _upload_videos_to(instance, filename) -> str:
-    return f"videos/{instance.slug}/{filename}"
+    _, file_extension = os.path.splitext(filename)
+    return f"videos/{instance.slug}{file_extension}"
 
 
 def _upload_images_to(instance, filename) -> str:
-    return f"images/{instance.slug}/{filename}"
+    _, file_extension = os.path.splitext(filename)
+    return f"images/{instance.slug}{file_extension}"
 
 
 def _upload_audio_to(instance, filename) -> str:
-    return f"audio/{instance.slug}/{filename}"
+    _, file_extension = os.path.splitext(filename)
+    return f"audio/{instance.slug}{file_extension}"
 
 
 def _get_public_media_storage() -> storages:
@@ -53,7 +58,10 @@ class _CommonItemInfoModel(_CommonDateTimeModel):
         return self.name
 
     def save(self, *args, **kwargs) -> None:
-        if not self.slug:
+        filename, file_extension = os.path.splitext(self.name)
+        if file_extension:
+            self.slug = slugify(filename)
+        else:
             self.slug = slugify(self.name)
 
         if not self.description:
@@ -77,7 +85,7 @@ class Images(_CommonItemInfoModel):
         storage=_get_public_media_storage,
         width_field="image_width",
         height_field="image_height",
-        max_length=255,
+        max_length=2**10,
     )
     image_width = models.PositiveIntegerField(
         editable=False,
@@ -101,18 +109,19 @@ class Audio(_CommonItemInfoModel):
         verbose_name="Ссылка на аудио",
         upload_to=_upload_audio_to,
         storage=_get_public_media_storage,
-        max_length=255,
+        max_length=2**10,
     )
 
     def save(self, *args, **kwargs) -> None:
-        super().save(*args, **kwargs)
+        with transaction.atomic():
+            super().save(*args, **kwargs)
 
-        if self.audio:
-            audio_file = MutagenFile(self.audio)
-            duration_seconds = audio_file.info.length
+            if self.audio:
+                audio_file = MutagenFile(self.audio)
+                duration_seconds = audio_file.info.length
 
-            self.duration = timedelta(seconds=duration_seconds)
-            Audio.objects.filter(pk=self.pk).update(duration=self.duration)
+                self.duration = timedelta(seconds=duration_seconds)
+                Audio.objects.filter(pk=self.pk).update(duration=self.duration)
 
 
 class Video(_CommonItemInfoModel):
@@ -122,7 +131,7 @@ class Video(_CommonItemInfoModel):
         verbose_name="Ссылка на видео",
         upload_to=_upload_videos_to,
         storage=_get_public_media_storage,
-        max_length=255,
+        max_length=2**10,
     )
 
     def save(self, *args, **kwargs) -> None:
@@ -143,13 +152,7 @@ class Video(_CommonItemInfoModel):
 
 
 class Genres(ExportModelOperationsMixin("genres"), _CommonItemInfoModel):
-    parent = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        related_name='subgenres',
-        null=True,
-        blank=True
-    )
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name="subgenres", null=True, blank=True)
     rus_name = models.CharField(max_length=255, verbose_name="Русское название", blank=True, null=True)
     short_name = models.CharField(max_length=255, verbose_name="Краткое название", blank=True, null=True)
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
@@ -160,7 +163,6 @@ class Labels(ExportModelOperationsMixin("labels"), _CommonItemInfoModel):
 
 
 class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
-
     class ArtistGender(models.TextChoices):
         MA = "male", "Мужской"
         FE = "female", "Женский"
@@ -202,7 +204,6 @@ class Releases(ExportModelOperationsMixin("releases"), _CommonItemInfoModel):
 
 
 class Tracks(ExportModelOperationsMixin("tracks"), _CommonItemInfoModel):
-
     release = models.ForeignKey(Releases, verbose_name="Альбом", on_delete=models.CASCADE)
     label = models.OneToOneField(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)

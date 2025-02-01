@@ -1,15 +1,25 @@
 from http import HTTPStatus
+
+from django.db import IntegrityError, transaction
 from django.shortcuts import get_object_or_404
-from ninja import Router, File, Form, Query
-from ninja.pagination import paginate, PageNumberPagination
 from loguru import logger
-from ninja.files import UploadedFile
-from pydantic import PositiveInt
-from django.db import transaction, IntegrityError
+from ninja import File, Form, Query, Router
 from ninja.errors import HttpError
-from apps.music.api.dto.genres import AddNewGenreIn, GetFilteredGenreIn, \
-    GetFilteredGenreInOut, AddNewGenreOut, GetGenrePagesOut, UpdateGenreIn, UpdateGenreOut
+from ninja.files import UploadedFile
+from ninja.pagination import PageNumberPagination, paginate
+from pydantic import PositiveInt
+
 from apps.music.api.docs import Tags
+from apps.music.api.dto.genres import (
+    AddNewGenreIn,
+    AddNewGenreOut,
+    GetFilteredGenreIn,
+    GetFilteredGenreInOut,
+    GetGenrePagesOut,
+    UpdateGenreIn,
+    UpdateGenreOut,
+)
+from apps.music.api.validators import validate_image_file
 from apps.music.models import Genres, Images
 
 router_v1 = Router(tags=[Tags.genres])
@@ -30,6 +40,7 @@ def add_new_genre(
         new_cover_image = None
 
         if cover_image:
+            validate_image_file(cover_image)
             new_cover_image, was_cover_image_created = Images.objects.get_or_create(
                 name=cover_image.name,
                 defaults={"name": cover_image.name, "image": cover_image},
@@ -57,6 +68,7 @@ def add_new_genre(
             )
 
     return new_genre
+
 
 @router_v1.get(
     path="/filter/",
@@ -95,7 +107,7 @@ def get_filtered_genre(request, genre_filter: GetFilteredGenreIn = Query(...)):
     path="/pages/",
     response=list[GetGenrePagesOut],
     description="Получение всех музыкальных жанров постранично",
-    summary="Получить страницы жанров"
+    summary="Получить страницы жанров",
 )
 @paginate(PageNumberPagination)
 def get_genre_pages(request):
@@ -124,6 +136,7 @@ def update_genre(
                 setattr(genre, filed_name, updated_value)
 
         if cover_image:
+            validate_image_file(cover_image)
             updated_image, was_image_created = Images.objects.update_or_create(
                 name=cover_image.name,
                 defaults={"name": cover_image.name, "image": cover_image},

@@ -7,6 +7,4 @@ class Tags(StrEnum):
     artists = "Исполнители"
     labels = "Лейблы"
     tracks = "Треки"
-    videos = "Видео"
-    images = "Изображения"
-    audio = "Аудио"
+    content = "Контент"

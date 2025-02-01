@@ -1,16 +1,25 @@
+from http import HTTPStatus
+
+from django.db import IntegrityError, transaction
 from django.shortcuts import get_object_or_404
-from ninja import Router, UploadedFile, File, Form, Query
+from loguru import logger
+from ninja import File, Form, Query, Router, UploadedFile
+from ninja.errors import HttpError
+from ninja.pagination import PageNumberPagination, paginate
 from pydantic import PositiveInt
 
 from apps.music.api.docs import Tags
-from loguru import logger
-from http import HTTPStatus
-from ninja.errors import HttpError
-from django.db import transaction, IntegrityError
-from apps.music.api.dto.labels import AddNewLabelIn, AddNewLabelOut, GetFilteredLabelsOut, GetFilteredLabelsIn, \
-    GetLabelsPagesOut, UpdateLabelOut, UpdateLabelIn
-from apps.music.models import Labels, Images
-from ninja.pagination import paginate, PageNumberPagination
+from apps.music.api.dto.labels import (
+    AddNewLabelIn,
+    AddNewLabelOut,
+    GetFilteredLabelsIn,
+    GetFilteredLabelsOut,
+    GetLabelsPagesOut,
+    UpdateLabelIn,
+    UpdateLabelOut,
+)
+from apps.music.api.validators import validate_image_file
+from apps.music.models import Images, Labels
 
 router_v1 = Router(tags=[Tags.labels])
 
@@ -31,6 +40,7 @@ def add_new_label(
         new_logo = None
 
         if logo:
+            validate_image_file(logo)
             new_logo, was_logo_created = Images.objects.get_or_create(
                 name=logo.name,
                 defaults={"name": logo.name, "image": logo},
@@ -115,6 +125,7 @@ def update_label(
 
     with transaction.atomic():
         if logo:
+            validate_image_file(logo)
             new_logo, was_logo_created = Images.objects.update_or_create(
                 name=logo.name,
                 defaults={"name": logo.name, "image": logo},

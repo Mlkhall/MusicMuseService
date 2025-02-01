@@ -1,9 +1,10 @@
-from enum import StrEnum
-from ninja import Schema, FilterSchema
-from pydantic import PositiveInt
 from datetime import date, datetime
+from enum import StrEnum
 
-from apps.music.api.dto._base import Statuses, EmptyStrToDefault
+from ninja import FilterSchema, Schema
+from pydantic import PositiveInt
+
+from apps.music.api.dto._base import EmptyStrToDefault, Statuses
 
 
 class ReleaseTypes(StrEnum):
@@ -47,8 +48,7 @@ class AddNewReleaseIn(Schema):
     status: Statuses = Statuses.moderation
 
 
-class AddNewReleaseOut(BaseReleaseOutSchema):
-    ...
+class AddNewReleaseOut(BaseReleaseOutSchema): ...
 
 
 class GetFilteredReleaseIn(FilterSchema):
@@ -56,12 +56,10 @@ class GetFilteredReleaseIn(FilterSchema):
     name: str | None = None
 
 
-class GetFilteredReleaseOut(BaseReleaseOutSchema):
-    ...
+class GetFilteredReleaseOut(BaseReleaseOutSchema): ...
 
 
-class GetReleasePagesItemOut(BaseReleaseOutSchema):
-    ...
+class GetReleasePagesItemOut(BaseReleaseOutSchema): ...
 
 
 class GetReleasesPagesOut(Schema):
@@ -82,5 +80,4 @@ class UpdateReleaseIn(Schema):
     status: EmptyStrToDefault[Statuses] = None
 
 
-class UpdateReleaseOut(BaseReleaseOutSchema):
-    ...
+class UpdateReleaseOut(BaseReleaseOutSchema): ...

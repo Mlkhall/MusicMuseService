@@ -1,5 +1,6 @@
-from typing import Annotated, TypeVar
 from enum import StrEnum
+from typing import Annotated, TypeVar
+
 from pydantic import WrapValidator
 from pydantic_core import PydanticUseDefault
 
@@ -12,10 +13,10 @@ class Statuses(StrEnum):
 
 
 def _empty_str_to_default(v, handler, _):
-    if isinstance(v, str) and v == '':
+    if isinstance(v, str) and v == "":
         raise PydanticUseDefault
     return handler(v)
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 EmptyStrToDefault = Annotated[T, WrapValidator(_empty_str_to_default)]
