@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "MusicMuse-Service"
-version = "2024.10.06-1"
+version = "2025.02.24-1"
 description = "MusicMuse Service"
 authors = ["Чумаков Михил Дмитриевич <chumakov-md@zvuk.com>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ package-mode = true
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
 django = "^5.1.3"
-django-environ = "^0.11.2"
+django-environ = "^0.12.0"
 django-storages = {extras = ["s3"], version = "^1.14.4"}
 django-easy-logging = "^0.70"
 django-simple-history = "^3.7.0"
@@ -20,15 +20,12 @@ django-redis = "^5.4.0"
 django-prometheus = "^2.3.1"
 django-extensions = "^3.2.3"
 django-health-check = "^3.18.3"
-djangorestframework = "^3.15.2"
-drf-spectacular = "^0.27.2"
 psycopg2-binary = "^2.9.9"
 python-slugify = "^8.0.4"
 pillow = "^11.0.0"
 python-dotenv = "^1.0.1"
 django-opensearch-dsl = "^0.6.2"
 django-embed-video = "^1.4.10"
-drf-extra-fields = "^3.7.0"
 django-s3-file-field = {extras = ["s3"], version = "^1.0.1"}
 django-filter = "^24.3"
 django-countries = {extras = ["pyuca"], version = "^7.6.1"}
@@ -37,12 +34,26 @@ django-import-export = {extras = ["all"], version = "^4.2.0"}
 pyproject-hooks = "^1.2.0"
 mutagen = "^1.47.0"
 opencv-python-headless = "^4.10.0.84"
+django-ninja = "^1.3.0"
+django-enum = "^2.0.2"
+pydantic-extra-types = "^2.10.1"
+pycountry = "^24.6.1"
+ninja-put-patch-file-upload-middleware = "^0.1.4"
+ninja-api-key = "^1.0.2"
+boto3 = "1.35.92"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
 pytest-django = "^4.9.0"
 ruff = "^0.7.2"
+django-test-migrations = "^1.4.0"
+pytest-cov = "^6.0.0"
+covdefaults = "^2.3.0"
+pytest-randomly = "^3.16.0"
+pytest-timeout = "^2.3.1"
+django-migration-linter = "^5.1.0"
+flake8-pytest-style = "^2.1.0"
 
 
 [tool.poetry.group.docs.dependencies]
