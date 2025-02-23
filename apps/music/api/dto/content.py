@@ -1,7 +1,7 @@
-from ninja import ModelSchema, Schema, FilterSchema
+from ninja import FilterSchema, ModelSchema, Schema
 
 from apps.music.api.dto._base import EmptyStrToDefault
-from apps.music.models import Audio, Video, Images
+from apps.music.models import Audio, Images, Video
 
 
 class BaseAudioOutSchema(ModelSchema):

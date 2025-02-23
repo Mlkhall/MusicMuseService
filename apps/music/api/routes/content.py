@@ -4,25 +4,25 @@ from django.db import transaction
 from loguru import logger
 from ninja import File, Form, Query, Router, UploadedFile
 from ninja.errors import HttpError
-from ninja.pagination import paginate, PageNumberPagination
+from ninja.pagination import PageNumberPagination, paginate
 
 from apps.music.api.docs import Tags
 from apps.music.api.dto.content import (
-    AddNewAudioOut,
     AddNewAudioIn,
-    AddNewVideoOut,
-    AddNewVideoIn,
-    AddNewImageOut,
+    AddNewAudioOut,
     AddNewImageIn,
+    AddNewImageOut,
+    AddNewVideoIn,
+    AddNewVideoOut,
+    GetAudioPagesOut,
     GetFilteredAudioOut,
     GetFilteredContentIn,
     GetFilteredVideoOut,
-    GetAudioPagesOut,
-    GetVideoPagesOut,
     GetImagePagesOut,
+    GetVideoPagesOut,
 )
-from apps.music.api.validators import validate_audio_file, validate_video_file, validate_image_file
-from apps.music.models import Audio, Video, Images
+from apps.music.api.validators import validate_audio_file, validate_image_file, validate_video_file
+from apps.music.models import Audio, Images, Video
 
 router_v1 = Router(tags=[Tags.content])
 

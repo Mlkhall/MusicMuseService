@@ -18,7 +18,7 @@ from apps.music.api.dto.tracks import (
     GetTrackPagesOut,
     UpdateTrackOut,
 )
-from apps.music.api.validators import validate_audio_file, validate_video_file, validate_image_file
+from apps.music.api.validators import validate_audio_file, validate_image_file, validate_video_file
 from apps.music.models import Artists, Audio, Genres, Images, Labels, Releases, Tracks, Video
 
 router_v1 = Router(tags=[Tags.tracks])
@@ -40,7 +40,7 @@ def add_new_track(
 
     label = get_object_or_404(Labels, id=payload.label_id) if payload.label_id else None
     release = get_object_or_404(Releases, id=payload.release_id)
-    genres = get_list_or_404(Genres, id__in=payload.genres_ids) if payload.genres_ids else None
+    genres = get_list_or_404(Genres, id__in=payload.genre_ids) if payload.genre_ids else None
     artists = get_list_or_404(Artists, id__in=payload.artist_ids) if payload.artist_ids else None
 
     validate_audio_file(audio)
@@ -72,13 +72,11 @@ def add_new_track(
             new_track = Tracks.objects.create(
                 name=payload.name,
                 description=payload.description,
-                audio=new_audio,
+                track=new_audio,
                 video=new_video,
-                cover=new_cover,
+                cover_image=new_cover,
                 release=release,
                 label=label,
-                genres=genres,
-                artists=artists,
                 status=payload.status,
             )
         except IntegrityError as exc:
@@ -94,24 +92,15 @@ def add_new_track(
         if artists:
             new_track.artists.set(artists)
 
-        if label:
-            new_track.label = label
-
-        if new_video:
-            new_track.video = new_video
-
-        if new_cover:
-            new_track.cover = new_cover
-
         created_new_track = AddNewTrackOut(
             pk=new_track.pk,
             name=new_track.name,
             description=new_track.description,
             cover_image=new_track.cover.image if new_cover else None,
-            track=new_track.audio.audio,
+            track=new_track.track.audio.url,
             video=new_track.video.video if new_video else None,
             release_name=new_track.release.name,
-            labels_names=tuple(label.name for label in new_track.label.all()),
+            label_name=label.name if label else None,
             artists_names=tuple(artist.name for artist in new_track.artists.all()),
             genres_names=tuple(genre.name for genre in new_track.genres.all()),
             status=new_track.status,

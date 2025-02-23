@@ -14,7 +14,7 @@ class BaseTrackOut(Schema):
     track: str
     video: str | None = None
     release_name: str
-    labels_names: tuple[str, ...] | None = None
+    label_name: str | None = None
     artists_names: tuple[str, ...] | None = None
     genres_names: tuple[str, ...] | None = None
     status: Statuses

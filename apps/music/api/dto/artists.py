@@ -2,7 +2,7 @@ from datetime import date
 from enum import StrEnum
 
 from ninja import FilterSchema, ModelSchema, Schema
-from pydantic import AnyHttpUrl, PositiveInt
+from pydantic import PositiveInt
 from pydantic_extra_types.country import CountryAlpha3
 
 from apps.music.api.dto._base import EmptyStrToDefault
@@ -33,7 +33,7 @@ class BaseArtistOutSchema(Schema):
     bio: str | None = None
     is_verified: bool
     gender: ArtistGender
-    avatar: AnyHttpUrl | None = None
+    avatar: str | None = None
 
 
 class AddNewArtistIn(Schema):

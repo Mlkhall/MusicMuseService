@@ -14,9 +14,12 @@ class GenresSchema(ModelSchema):
 
 
 class AddNewGenreIn(Schema):
+    pk: PositiveInt
     name: str
     description: EmptyStrToDefault[str | None] = None
     parent_genre_id: EmptyStrToDefault[PositiveInt | None] = None
+    short_name: EmptyStrToDefault[str | None] = None
+    russian_name: EmptyStrToDefault[str | None] = None
 
 
 class AddNewGenreOut(GenresSchema): ...

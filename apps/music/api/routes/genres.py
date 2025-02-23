@@ -36,6 +36,13 @@ def add_new_genre(
     cover_image: UploadedFile = File(None),
 ):
     logger.info(request)
+
+    if Genres.objects.filter(pk=payload.pk).exists():
+        raise HttpError(
+            status_code=HTTPStatus.CONFLICT,
+            message=f"Жанр с id={payload.pk} уже существует",
+        )
+
     with transaction.atomic():
         new_cover_image = None
 
@@ -55,10 +62,13 @@ def add_new_genre(
 
         try:
             new_genre = Genres.objects.create(
+                pk=payload.pk,
                 name=payload.name,
                 description=payload.description,
                 parent=parent_genre,
                 cover_image=new_cover_image,
+                short_name=payload.short_name,
+                rus_name=payload.russian_name,
             )
         except IntegrityError as exc:
             logger.warning(exc)

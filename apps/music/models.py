@@ -2,9 +2,9 @@ import os
 from datetime import timedelta
 
 import cv2
-from django.db import transaction
 from django.core.files.storage import storages
-from django.db import models
+from django.db import models, transaction
+from django.utils.safestring import mark_safe
 from django_countries.fields import CountryField
 from django_enum import EnumField
 from django_prometheus.models import ExportModelOperationsMixin
@@ -100,6 +100,10 @@ class Images(_CommonItemInfoModel):
         verbose_name="Высота изображения",
     )
 
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
+
 
 class Audio(_CommonItemInfoModel):
     transcription = models.TextField(verbose_name="Текст песни", null=True, blank=True)
@@ -122,6 +126,16 @@ class Audio(_CommonItemInfoModel):
 
                 self.duration = timedelta(seconds=duration_seconds)
                 Audio.objects.filter(pk=self.pk).update(duration=self.duration)
+
+    class Meta:
+        verbose_name = "Аудио"
+        verbose_name_plural = "Аудио"
+
+    @property
+    def sound_display(self):
+        if self.audio:
+            return mark_safe(f'<audio controls name="media"><source src="{self.audio.url}" type="audio/mpeg"></audio>')
+        return ""
 
 
 class Video(_CommonItemInfoModel):
@@ -150,16 +164,35 @@ class Video(_CommonItemInfoModel):
             self.duration = timedelta(seconds=duration)
             Video.objects.filter(pk=self.pk).update(duration=self.duration)
 
+    class Meta:
+        verbose_name = "Видео"
+        verbose_name_plural = "Видео"
+
 
 class Genres(ExportModelOperationsMixin("genres"), _CommonItemInfoModel):
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name="subgenres", null=True, blank=True)
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        related_name="subgenres",
+        null=True,
+        blank=True,
+        verbose_name="Родительский жанр",
+    )
     rus_name = models.CharField(max_length=255, verbose_name="Русское название", blank=True, null=True)
     short_name = models.CharField(max_length=255, verbose_name="Краткое название", blank=True, null=True)
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
 
+    class Meta:
+        verbose_name = "Жанр"
+        verbose_name_plural = "Жанры"
+
 
 class Labels(ExportModelOperationsMixin("labels"), _CommonItemInfoModel):
     cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = "Лейбл"
+        verbose_name_plural = "Лейблы"
 
 
 class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
@@ -169,14 +202,18 @@ class Artists(ExportModelOperationsMixin("artist"), _CommonItemInfoModel):
         NS = "not_specified", "Не указан"
         OT = "other", "Другой"
 
-    label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE, null=True)
-    bio = models.TextField(verbose_name="Биография", null=True)
-    avatar = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
+    label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE, null=True, blank=True)
+    bio = models.TextField(verbose_name="Биография", null=True, blank=True)
+    avatar = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True, blank=True)
     birth_date = models.DateField(verbose_name="Дата рождения", null=True, blank=True)
     country = CountryField(verbose_name="Страна", default="RU")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры", blank=True)
     is_verified = models.BooleanField(verbose_name="Проверен", default=False)
     gender = EnumField(ArtistGender, verbose_name="Пол", default=ArtistGender.NS)
+
+    class Meta:
+        verbose_name = "Артист"  # единственное число
+        verbose_name_plural = "Артисты"  # множественное число
 
 
 class Releases(ExportModelOperationsMixin("releases"), _CommonItemInfoModel):
@@ -202,13 +239,33 @@ class Releases(ExportModelOperationsMixin("releases"), _CommonItemInfoModel):
     release_type = EnumField(TypesOfReleases, verbose_name="Тип релиза", default=TypesOfReleases.INDEFINITE)
     status = EnumField(Statuses, verbose_name="Статус", default=Statuses.MODERATION)
 
+    class Meta:
+        verbose_name = "Релиз"  # единственное число
+        verbose_name_plural = "Релизы"  # множественное число
+
 
 class Tracks(ExportModelOperationsMixin("tracks"), _CommonItemInfoModel):
-    release = models.ForeignKey(Releases, verbose_name="Альбом", on_delete=models.CASCADE)
-    label = models.OneToOneField(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
-    cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE)
+    class TypesOfTracks(models.TextChoices):
+        NON_MUSIC = "non_music", "Не музыка"
+        BOOK = "book", "Книга"
+        PODCAST = "podcast", "Подкаст"
+        ALBUM = "album", "Альбом"
+        SINGLE = "single", "Сингл"
+        INDEFINITE = "indefinite", "Неопределенный"
+
+    release = models.ForeignKey(Releases, verbose_name="Релиз трека", on_delete=models.CASCADE)
+    label = models.ForeignKey(Labels, verbose_name="Лейбл", on_delete=models.CASCADE)
+    cover_image = models.ForeignKey(Images, verbose_name="Изображение", on_delete=models.CASCADE, null=True)
     track = models.OneToOneField(Audio, verbose_name="Трек", on_delete=models.CASCADE)
     video = models.ForeignKey(Video, verbose_name="Видео", on_delete=models.CASCADE, null=True)
     artists = models.ManyToManyField(Artists, verbose_name="Исполнители")
     genres = models.ManyToManyField(Genres, verbose_name="Жанры")
     status = EnumField(Statuses, verbose_name="Статус", default=Statuses.MODERATION)
+    track_type = EnumField(TypesOfTracks, verbose_name="Тип трека", default=TypesOfTracks.INDEFINITE, null=True)
+    age_related_content = models.BooleanField(verbose_name="18+", default=False)
+    release_date = models.DateField(verbose_name="Дата выхода", null=True, blank=True)
+    publication_time = models.TimeField(verbose_name="Время публикации", null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Трек"  # единственное число
+        verbose_name_plural = "Треки"  # множественное число
