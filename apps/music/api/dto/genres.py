@@ -30,7 +30,7 @@ class GetFilteredGenreIn(FilterSchema):
     name: str | None = None
 
 
-class GetFilteredGenreInOut(Schema):
+class GetFilteredGenreOut(Schema):
     pk: PositiveInt
     name: str
     slug: str

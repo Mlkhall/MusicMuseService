@@ -14,7 +14,7 @@ from apps.music.api.dto.genres import (
     AddNewGenreIn,
     AddNewGenreOut,
     GetFilteredGenreIn,
-    GetFilteredGenreInOut,
+    GetFilteredGenreOut,
     GetGenrePagesOut,
     UpdateGenreIn,
     UpdateGenreOut,
@@ -82,7 +82,7 @@ def add_new_genre(
 
 @router_v1.get(
     path="/filter/",
-    response=GetFilteredGenreInOut,
+    response=GetFilteredGenreOut,
     summary="Получить жанр по фильтру",
 )
 def get_filtered_genre(request, genre_filter: GetFilteredGenreIn = Query(...)):
@@ -101,7 +101,7 @@ def get_filtered_genre(request, genre_filter: GetFilteredGenreIn = Query(...)):
             message=f"Жанр для {genre_filter.dict()} не найден",
         )
 
-    return GetFilteredGenreInOut(
+    return GetFilteredGenreOut(
         pk=genre.pk,
         name=genre.name,
         slug=genre.slug,
