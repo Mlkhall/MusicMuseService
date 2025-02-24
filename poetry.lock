@@ -864,6 +864,9 @@ files = [
     {file = "flake8_plugin_utils-1.3.3-py3-none-any.whl", hash = "sha256:e4848c57d9d50f19100c2d75fa794b72df068666a9041b4b0409be923356a3ed"},
 ]
 
+[package.dependencies]
+flake8-plugin-utils = ">=1.3.2,<2.0.0"
+
 [[package]]
 name = "flake8-pytest-style"
 version = "2.1.0"

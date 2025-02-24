@@ -195,6 +195,7 @@ OPENSEARCH_DSL = {
     },
 }
 
+
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
     # Add data like request headers and IP for users,
