@@ -19,6 +19,9 @@ from django.contrib import admin
 from django.urls import include, path
 from pictures.conf import get_settings
 
+from apps.music.views import music as music_views
+from apps.music.views import music_artist_page as music_artist_page_views
+from apps.music.views import music_track_page as music_track_page_views
 from core.api import api
 from core.settings import HEALTH_SECRET_TOKEN
 from core.views import index
@@ -26,6 +29,9 @@ from core.views import index
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", index),
+    path("music/", music_views),
+    path("music/artist/<int:artist_id>/", music_artist_page_views),
+    path("music/track/<int:track_id>/", music_track_page_views),
     path("api/", api.urls),
     path(rf"ht/{HEALTH_SECRET_TOKEN}/", include("health_check.urls")),
 ]

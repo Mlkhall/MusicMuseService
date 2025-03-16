@@ -1,0 +1,231 @@
+/* Основной контейнер подвала */
+.footer-container {
+  background-color: var(--bg-dark);
+  color: var(--text-secondary);
+  padding: 50px 30px 20px;
+  margin-top: 60px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Основная часть подвала с секциями */
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+  gap: 40px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Лого и слоган */
+.footer-logo-section {
+  padding-right: 20px;
+}
+
+.footer-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+  margin-bottom: 15px;
+}
+
+.footer-logo {
+  margin-right: 10px;
+}
+
+.footer-logo-section h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.footer-slogan {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+/* Секции ссылок */
+.footer-links-section h4 {
+  color: var(--text-color);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer-links-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-section li {
+  margin-bottom: 15px;
+}
+
+.footer-links-section a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.footer-links-section a:hover {
+  color: var(--orange-accent);
+}
+
+/* Соцсети */
+.footer-social-section h4 {
+  color: var(--text-color);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.social-icons {
+  display: flex;
+  gap: 16px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--card-bg);
+  border-radius: 50%;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: var(--orange-accent);
+  transform: translateY(-3px);
+}
+
+/* Нижняя часть подвала */
+.footer-bottom {
+  max-width: 1440px;
+  margin: 50px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-legal-links a {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-legal-links a:hover {
+  color: var(--text-color);
+}
+
+.footer-copyright p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 10px 0 0;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .footer-main {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .footer-logo-section {
+    grid-column: span 3;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-main {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .footer-logo-section {
+    grid-column: span 2;
+  }
+  
+  .footer-social-section {
+    grid-column: span 2;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-logo-section,
+  .footer-social-section {
+    grid-column: span 1;
+  }
+  
+  .footer-bottom {
+    margin-top: 30px;
+  }
+  
+  .footer-legal-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Анимации */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.footer-logo-section,
+.footer-links-section,
+.footer-social-section {
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+.footer-logo-section {
+  --i: 1;
+}
+
+.footer-links-section:nth-of-type(2) {
+  --i: 2;
+}
+
+.footer-links-section:nth-of-type(3) {
+  --i: 3;
+}
+
+.footer-links-section:nth-of-type(4) {
+  --i: 4;
+}
+
+.footer-social-section {
+  --i: 5;
+} 

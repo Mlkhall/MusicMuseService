@@ -1,0 +1,433 @@
+/* Стили для страницы трека */
+
+/* Шапка трека */
+.track-detail-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  color: var(--text-color);
+}
+
+.track-detail-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  z-index: -1;
+}
+
+.detail-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.detail-cover {
+  flex-shrink: 0;
+  width: 232px;
+  height: 232px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.detail-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0; /* Важно для корректной работы overflow */
+}
+
+.detail-type {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.detail-title {
+  font-size: 54px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin: 0 0 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.detail-artist-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.detail-artist-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.detail-artist-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-artist-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.detail-artist-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-artist-name:hover {
+  text-decoration: underline;
+}
+
+.detail-stats {
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.detail-stats > span {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.dot-separator {
+  font-size: 18px;
+  line-height: 1;
+  margin: 0 2px;
+}
+
+/* Кнопки управления */
+.detail-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.detail-play-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--orange-accent);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.detail-play-button:hover {
+  transform: scale(1.05);
+  background-color: #ffb52e;
+}
+
+.detail-action-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.detail-action-button:hover {
+  color: var(--text-color);
+  transform: scale(1.1);
+}
+
+/* Список треков */
+.detail-track-list-container {
+  padding: 0 30px 40px;
+}
+
+.detail-track-list-header {
+  display: grid;
+  grid-template-columns: 50px 1fr 120px;
+  padding: 0 16px 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.detail-track-title-header {
+  font-weight: 400;
+}
+
+.detail-track-duration {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.detail-track-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-track-item {
+  display: grid;
+  grid-template-columns: 50px 1fr 120px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease;
+}
+
+.detail-track-item:hover,
+.detail-track-item.active {
+  background-color: var(--card-hover);
+  color: var(--text-color);
+}
+
+.detail-track-item.active {
+  color: var(--orange-accent);
+}
+
+.detail-track-number {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.detail-track-index {
+  transition: opacity 0.2s ease;
+}
+
+.detail-play-button-small {
+  position: absolute;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.detail-track-item:hover .detail-track-index {
+  opacity: 0;
+}
+
+.detail-track-item:hover .detail-play-button-small {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.detail-track-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.detail-track-name {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-track-artists {
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-track-artist-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.detail-track-artist-link:hover {
+  color: var(--text-color);
+  text-decoration: underline;
+}
+
+/* Информация о выпуске */
+.detail-release-info {
+  margin-top: 40px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.detail-release-date {
+  margin-bottom: 8px;
+}
+
+.detail-copyright {
+  margin: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .detail-title {
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 900px) {
+  .detail-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .detail-cover {
+    margin-bottom: 20px;
+  }
+  
+  .detail-meta {
+    align-items: center;
+  }
+  
+  .detail-title {
+    font-size: 40px;
+    max-width: 100%;
+  }
+  
+  .detail-artist-info {
+    justify-content: center;
+    margin-top: 4px;
+  }
+  
+  .detail-controls {
+    justify-content: center;
+  }
+  
+  .detail-stats {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .track-detail-header {
+    padding: 30px 30px 20px;
+  }
+  
+  .detail-cover {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .detail-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+  
+  .detail-track-list-container {
+    padding: 0 20px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .track-detail-header {
+    padding: 20px 16px;
+  }
+  
+  .detail-cover {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .detail-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .detail-track-list-header {
+    grid-template-columns: 40px 1fr 60px;
+    padding: 0 8px 8px;
+  }
+  
+  .detail-track-item {
+    grid-template-columns: 40px 1fr 60px;
+    padding: 8px;
+  }
+  
+  .detail-track-list-container {
+    padding: 0 16px 20px;
+  }
+  
+  .detail-play-button {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Убираем подчеркивания у ссылок треков */
+.track-page-link {
+  text-decoration: none;
+  color: inherit; /* Наследует цвет текста от родительского элемента */
+  display: block; /* Чтобы ссылка занимала всю площадь карточки */
+}
+
+/* Убираем подсветку при клике */
+.track-page-link:focus {
+  outline: none;
+}
+
+/* При наведении не меняем цвет текста, только карточку */
+.track-page-link:hover {
+  color: inherit;
+}
