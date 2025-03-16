@@ -1,0 +1,267 @@
+/* Кнопка-гамбургер */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  background: var(--bg-sidebar);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 1px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.menu-toggle .bar {
+  display: block;
+  width: 24px;
+  height: 3px; /* Увеличиваем толщину для лучшей видимости */
+  margin: 5px auto;
+  background-color: var(--orange-accent);
+  transition: all 0.3s ease;
+  border-radius: 2px; /* Скругляем края для лучшего внешнего вида */
+}
+
+/* Боковая панель */
+.sidebar-wrapper {
+  display: flex;
+}
+
+.sidebar {
+  background-color: var(--bg-sidebar);
+  padding: 20px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+}
+
+/* Заголовок сайдбара */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* Кнопка закрытия */
+.close-menu {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--orange-accent);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Затемнение фона */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 90;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.logo h1 {
+  color: var(--orange-accent);
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  list-style: none;
+}
+
+.nav-links li {
+  margin-bottom: 20px;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-link:after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--orange-accent);
+  transition: width 0.3s;
+}
+
+.nav-link:hover:after,
+.nav-link.active:after {
+  width: 100%;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: var(--text-color);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-menu {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -280px; /* Начинаем за экраном */
+    top: 0;
+    height: 100%;
+    width: 280px;
+    transition: transform 0.3s ease;
+    z-index: 95;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.active {
+    transform: translateX(280px);
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .main-content {
+    width: 100%;
+    padding-left: 20px; /* Меньший отступ слева */
+  }
+
+  .music-player {
+    padding: 10px;
+  }
+
+  /* Анимация кнопки-гамбургера */
+  .menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+
+/* Анимация для плавного появления элементов бокового меню */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nav-links li {
+  animation: slideInLeft 0.3s ease forwards;
+  animation-delay: calc(0.1s * var(--item-index, 0));
+  opacity: 0;
+}
+
+.nav-links li:nth-child(1) {
+  --item-index: 1;
+}
+
+.nav-links li:nth-child(2) {
+  --item-index: 2;
+}
+
+.nav-links li:nth-child(3) {
+  --item-index: 3;
+}
+
+.nav-links li:nth-child(4) {
+  --item-index: 4;
+}
+
+/* Дополнительные медиа-запросы для полной адаптивности */
+@media (max-width: 480px) {
+
+  .main-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .main-header input[type="search"] {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .artist-card {
+    width: 140px;
+  }
+
+  .artist-image {
+    width: 140px;
+    height: 140px;
+  }
+
+  .music-card {
+    width: calc(50% - 15px);
+  }
+
+  .music-player {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 10px;
+  }
+
+  .player-left, .player-center, .player-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .player-right {
+    display: none; /* На самых маленьких экранах можно скрыть регулятор громкости */
+  }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sidebar {
+    padding-top: 10px;
+  }
+
+  .nav-links li {
+    margin-bottom: 10px;
+  }
+
+  .logo img {
+    max-width: 120px;
+  }
+}

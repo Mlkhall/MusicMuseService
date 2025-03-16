@@ -137,6 +137,19 @@ class Audio(_CommonItemInfoModel):
             return mark_safe(f'<audio controls name="media"><source src="{self.audio.url}" type="audio/mpeg"></audio>')
         return ""
 
+    @property
+    def duration_render(self) -> str:
+        pattern = "{minutes}:{seconds}"
+        if self.duration.seconds % 60 >= 10:
+            seconds = self.duration.seconds % 60
+        else:
+            seconds = f"0{self.duration.seconds % 60}"
+
+        return pattern.format(
+            minutes=self.duration.seconds // 60,
+            seconds=seconds,
+        )
+
 
 class Video(_CommonItemInfoModel):
     duration = models.DurationField(verbose_name="Длительность", null=True, blank=True)

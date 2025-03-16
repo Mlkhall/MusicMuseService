@@ -22,11 +22,6 @@ from dj_easy_log import load_loguru
 from dotenv import load_dotenv
 
 
-class FileStoragesTypes(StrEnum):
-    LOCAL = "local"
-    S3 = "s3"
-
-
 load_dotenv()
 
 load_loguru(globals())
@@ -226,7 +221,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-FILE_UPLOAD_STORAGE = env(var="FILE_UPLOAD_STORAGE", default=FileStoragesTypes.S3)
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 # Настройки AWS
@@ -247,55 +241,60 @@ default_storages_options = {
     "use_ssl": True,
 }
 
+# Настройки для хранения медиафайлов
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage" ,
+        "OPTIONS": default_storages_options,
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": default_storages_options,
+    },
+    "private": {
+        "BACKEND": "core.storage_backends.PrivateMediaStorage",
+        "OPTIONS": default_storages_options,
+    },
+    "public": {
+        "BACKEND": "core.storage_backends.PublicMediaStorage",
+        "OPTIONS": default_storages_options,
+    },
+}
 
-match FILE_UPLOAD_STORAGE:
-    case FileStoragesTypes.S3:
-        # Настройки для хранения медиафайлов
-        MEDIA_URL = f"https://{S3_CUSTOM_DOMAIN}/media/"
+if DEBUG:
+    STORAGES["default"] = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": os.path.join(BASE_DIR, "static"),
+            "base_url": "/static/",
+        },
+    }
+    STORAGES["staticfiles"] = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": os.path.join(BASE_DIR, "static"),
+            "base_url": "/static/",
+        },
+    }
 
-        STORAGES = {
-            "default": {
-                "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-                "OPTIONS": default_storages_options,
-            },
-            "staticfiles": {
-                "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-                "OPTIONS": default_storages_options,
-            },
-            "private": {
-                "BACKEND": "core.storage_backends.PrivateMediaStorage",
-                "OPTIONS": default_storages_options,
-            },
-            "public": {
-                "BACKEND": "core.storage_backends.PublicMediaStorage",
-                "OPTIONS": default_storages_options,
-            },
-        }
-
-        # Настройки для хранения статических файлов
-        STATIC_URL = f"https://{S3_CUSTOM_DOMAIN}/static/"
-        STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, "assets"),
-            os.path.join(BASE_DIR, "static"),
-        ]
-
-    case FileStoragesTypes.LOCAL:
-        MEDIA_ROOT_NAME = "media"
-        MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_ROOT_NAME)
-        MEDIA_URL = f"/{MEDIA_ROOT_NAME}/"
-
-        STATIC_URL = "/static/"
-        STATIC_ROOT = os.path.join(BASE_DIR, "static")
-        STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, "assets"),
-        ]
-
-    case _:
-        assert_never(FileStoragesTypes)
 
 S3_STATIC_LOCATION = "static"
 S3_PUBLIC_MEDIA_LOCATION = "media/public"
 S3_PRIVATE_MEDIA_LOCATION = "media/private"
+
+# Настройки для хранения статических файлов
+if DEBUG:
+    STATIC_URL = "static/"
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+
+else:
+    MEDIA_URL = f"https://{S3_CUSTOM_DOMAIN}/media/"
+    STATIC_URL = f"https://{S3_CUSTOM_DOMAIN}/static/"
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

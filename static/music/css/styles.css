@@ -1,0 +1,213 @@
+/* Сброс отступов и общие стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* Основные цвета */
+:root {
+  --bg-dark: #2b2b2b;         /* Тёмно-серый */
+  --bg-sidebar: #1f1f1f;      /* Ещё более тёмный серый для боковой панели */
+  --orange-accent: #FFA500;   /* Оранжевый акцент */
+  --text-color: #fff;         /* Основной текст - белый */
+  --text-secondary: #bebebe;  /* Вторичный текст - светло-серый */
+  --card-bg: #3a3a3a;         /* Фон для карточек */
+  --hover-scale: 1.05;        /* Масштаб при ховере */
+}
+
+/* Оформление страницы */
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Добавим плавную анимацию для всех элементов */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row; /* Изменяем с row на column */
+}
+
+/* Основная часть */
+.main-content {
+  display: flex;
+  flex-direction: column; /* Изменяем с row на column */
+  width: 100%; /* Ширина с учетом боковой панели */
+  min-height: 100vh;
+  /* Отступ для плеера снизу */
+  padding: 10px 20px 30px 100px;
+}
+
+/* Раздел с музыкой / альбомами */
+.music-section {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.music-section h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.music-card {
+  width: 200px;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  /* Добавим небольшую анимацию при появлении карточек */
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.music-card:hover {
+  transform: scale(var(--hover-scale));
+}
+
+.music-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.3s;
+}
+
+.music-card:hover img {
+  opacity: 0.9;
+}
+
+.music-info {
+  padding: 10px;
+}
+
+.music-info h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.music-info p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Анимации Keyframes */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+  .main-header input[type="search"] {
+    width: 200px;
+  }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ВАЖНО: добавляем правило для скрытия кнопки при открытом меню */
+  .sidebar.active ~ .menu-toggle {
+    visibility: hidden; /* Используем visibility вместо display, чтобы анимация работала */
+  }
+
+  .close-menu {
+    display: block;
+  }
+
+  /* Остальной CSS остается без изменений */
+
+  .logo h1 {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .nav-links li {
+    margin-bottom: 15px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+  }
+
+  .music-player {
+    left: 60px;
+    height: 70px;
+  }
+
+  .player-left img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .main-header input[type="search"] {
+    width: 150px;
+  }
+
+  .music-card {
+    width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header h2 {
+    font-size: 18px;
+  }
+
+  .main-header input[type="search"] {
+    width: 120px;
+    font-size: 12px;
+  }
+
+  .music-card {
+    width: 140px;
+  }
+
+  .music-player {
+    padding: 0 10px;
+    height: 60px;
+  }
+
+  .player-center {
+    gap: 5px;
+  }
+
+  .player-seek {
+    width: 80px;
+  }
+
+  .volume-bar {
+    width: 60px;
+  }
+
+  .track-title {
+    font-size: 14px;
+  }
+}

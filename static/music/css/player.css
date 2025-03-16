@@ -1,0 +1,587 @@
+:root {
+  /* Дополним существующие переменные плеером */
+  --player-bg: rgba(18, 18, 18, 0.95);
+  --player-highlight: var(--orange-accent);
+  --player-text: var(--text-color);
+  --player-secondary-text: var(--text-secondary);
+  --player-control-bg: rgba(255, 255, 255, 0.08);
+  --player-progress-bg: rgba(255, 255, 255, 0.3);
+  --player-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Основной контейнер плеера */
+.player-container {
+  position: fixed;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+/* Мини-плеер */
+.mini-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background-color: var(--player-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: transform 0.3s ease;
+}
+
+.mini-player-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 40%;
+}
+
+.mini-player-cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.mini-player-details {
+  overflow: hidden;
+}
+
+.mini-player-title {
+  color: var(--player-text);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-player-artist {
+  color: var(--player-secondary-text);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mini-player-control {
+  background: none;
+  border: none;
+  color: var(--player-text);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mini-player-control:hover {
+  background-color: var(--player-control-bg);
+  transform: scale(1.1);
+}
+
+.mini-player-control.play-button {
+  background-color: var(--player-highlight);
+  color: #000;
+}
+
+.mini-player-control.play-button:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Полноэкранный плеер */
+.full-player {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--player-bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 24px;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.full-player.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.player-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.player-close-button {
+  background: none;
+  border: none;
+  color: var(--player-secondary-text);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.player-close-button:hover {
+  background-color: var(--player-control-bg);
+  color: var(--player-text);
+}
+
+/* Область визуализации */
+.player-visualization-area {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  max-height: calc(100vh - 380px);
+  min-height: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background-color: #000;
+}
+
+.player-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.audio-visualizer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #111;
+}
+
+.player-cover-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #111;
+}
+
+.player-cover {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Информация о треке */
+.player-track-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.player-track-details {
+  overflow: hidden;
+}
+
+.player-track-title {
+  color: var(--player-text);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-track-artist {
+  color: var(--player-secondary-text);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-track-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.player-action-button {
+  background: none;
+  border: none;
+  color: var(--player-secondary-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-action-button:hover {
+  color: var(--player-text);
+  background-color: var(--player-control-bg);
+}
+
+.player-action-button.like-button.active {
+  color: var(--player-highlight);
+}
+
+/* Прогресс-бар */
+.player-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.player-current-time,
+.player-total-time {
+  color: var(--player-secondary-text);
+  font-size: 12px;
+  min-width: 40px;
+}
+
+.player-progress-bar-container {
+  flex: 1;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.player-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: var(--player-progress-bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.player-progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--player-highlight);
+  width: 0;
+  transition: width 0.1s linear;
+}
+
+.player-progress-handle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--player-highlight);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.player-progress-bar-container:hover .player-progress-handle {
+  opacity: 1;
+}
+
+/* Основные элементы управления */
+.player-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.player-control-button {
+  background: none;
+  border: none;
+  color: var(--player-secondary-text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-control-button:hover {
+  color: var(--player-text);
+  background-color: var(--player-control-bg);
+}
+
+.player-control-button.active {
+  color: var(--player-highlight);
+}
+
+.player-control-button.play-pause-button {
+  width: 64px;
+  height: 64px;
+  background-color: var(--player-highlight);
+  color: #000;
+}
+
+.player-control-button.play-pause-button:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Скрываем иконку паузы по умолчанию */
+.pause-icon {
+  display: none;
+}
+
+.playing .play-icon {
+  display: none;
+}
+
+.playing .pause-icon {
+  display: block;
+}
+
+/* Нижний блок управления */
+.player-bottom-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-volume-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 150px;
+}
+
+.player-volume-button {
+  background: none;
+  border: none;
+  color: var(--player-secondary-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-volume-button:hover {
+  color: var(--player-text);
+  background-color: var(--player-control-bg);
+}
+
+/* Скрываем неактивные иконки громкости */
+.volume-low-icon, .volume-mute-icon {
+  display: none;
+}
+
+.volume-medium .volume-high-icon {
+  display: none;
+}
+
+.volume-medium .volume-low-icon {
+  display: block;
+}
+
+.volume-muted .volume-high-icon,
+.volume-muted .volume-low-icon {
+  display: none;
+}
+
+.volume-muted .volume-mute-icon {
+  display: block;
+}
+
+.player-volume-slider-container {
+  flex: 1;
+  position: relative;
+}
+
+.player-volume-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--player-progress-bg);
+  outline: none;
+}
+
+.player-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--player-highlight);
+  cursor: pointer;
+}
+
+.player-volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--player-highlight);
+  cursor: pointer;
+  border: none;
+}
+
+.player-volume-slider::-ms-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--player-highlight);
+  cursor: pointer;
+}
+
+.player-additional-controls {
+  display: flex;
+  gap: 16px;
+}
+
+.player-additional-button {
+  background: none;
+  border: none;
+  color: var(--player-secondary-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-additional-button:hover {
+  color: var(--player-text);
+  background-color: var(--player-control-bg);
+}
+
+.player-additional-button.active {
+  color: var(--player-highlight);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .player-visualization-area {
+    max-height: calc(100vh - 420px);
+    min-height: 200px;
+  }
+  
+  .player-track-title {
+    font-size: 20px;
+  }
+  
+  .player-track-artist {
+    font-size: 14px;
+  }
+  
+  .player-controls {
+    gap: 16px;
+  }
+  
+  .player-control-button.play-pause-button {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .full-player {
+    padding: 16px;
+  }
+  
+  .player-visualization-area {
+    max-height: calc(100vh - 380px);
+    min-height: 160px;
+    margin-bottom: 16px;
+  }
+  
+  .player-track-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .player-track-actions {
+    align-self: flex-end;
+  }
+  
+  .player-controls {
+    gap: 12px;
+  }
+  
+  .player-bottom-controls {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .player-volume-container {
+    width: 100%;
+  }
+  
+  .player-additional-controls {
+    align-self: flex-end;
+  }
+}
+
+/* Анимации */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.player-control-button.play-pause-button:active {
+  animation: pulse 0.3s ease;
+}
+
+/* Анимация пульсации для визуализации */
+@keyframes visualizerPulse {
+  0% { height: 10%; }
+  50% { height: 90%; }
+  100% { height: 10%; }
+} 

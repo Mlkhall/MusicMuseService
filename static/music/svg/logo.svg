@@ -1,0 +1,41 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Радиальный градиент для фона -->
+  <defs>
+    <radialGradient id="logo-bg" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#3a3a3a" />
+      <stop offset="100%" stop-color="#1f1f1f" />
+    </radialGradient>
+
+    <!-- Тень для текста -->
+    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Фоновая форма для лучшей видимости -->
+  <rect x="0" y="0" width="200" height="60" rx="10" fill="url(#logo-bg)" opacity="0.8"/>
+
+  <!-- Музыкальная нота с волнами -->
+  <g fill="#FFA500">
+    <!-- Нота -->
+    <path d="M40 10c0-1.1-.9-2-2-2s-2 .9-2 2v24.1c-1.1-.5-2.5-.8-4-.8-5.5 0-10 3.4-10 7.5s4.5 7.5 10 7.5 10-3.4 10-7.5V17.5l15-2.5v11.1c-1.1-.5-2.5-.8-4-.8-5.5 0-10 3.4-10 7.5s4.5 7.5 10 7.5 10-3.4 10-7.5V10l-23-4v4z"/>
+
+    <!-- Звуковые волны -->
+    <path d="M80 25c5.5 0 10 1.8 10 4s-4.5 4-10 4-10-1.8-10-4 4.5-4 10-4zm0-2c-6.6 0-12 2.7-12 6s5.4 6 12 6 12-2.7 12-6-5.4-6-12-6z" opacity="0.7"/>
+    <path d="M80 35c7.7 0 14 2.1 14 4.7s-6.3 4.7-14 4.7-14-2.1-14-4.7 6.3-4.7 14-4.7zm0-2c-8.8 0-16 3-16 6.7s7.2 6.7 16 6.7 16-3 16-6.7-7.2-6.7-16-6.7z" opacity="0.5"/>
+    <path d="M80 15c3.3 0 6 1.5 6 3.3s-2.7 3.3-6 3.3-6-1.5-6-3.3 2.7-3.3 6-3.3zm0-2c-4.4 0-8 2.4-8 5.3s3.6 5.3 8 5.3 8-2.4 8-5.3-3.6-5.3-8-5.3z" opacity="0.9"/>
+  </g>
+
+  <!-- Текст "MusicMuse" с улучшенной видимостью -->
+  <g filter="url(#textShadow)">
+    <!-- Подложка для текста -->
+    <text x="106" y="37" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#000" text-anchor="middle" opacity="0.15">
+      MusicMuse
+    </text>
+
+    <!-- Основной текст с эффектом свечения -->
+    <text x="105" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#FFFFFF" text-anchor="middle">
+      Music<tspan fill="#FFA500">Muse</tspan>
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,48 @@
+{% load static %}
+<!-- файл: base.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>{% block title %}MusicMuse{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'music/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/artists.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/tracks.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/cards.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/track_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/player.css' %}">
+    <link rel="icon" href="{% static 'music/svg/favicon.svg' %}" type="image/svg+xml">
+    {% block extra_styles %}{% endblock %}
+</head>
+<body>
+
+    <div class="content-wrapper">
+<!-- Боковая панель -->
+        <aside class="sidebar-wrapper">
+            {% include 'sidebar.html' %}
+        </aside>
+        <!-- Блок для контента -->
+        <main class="main-content">
+            <header>
+                {% include 'header.html' %}
+            </header>
+            {% block content %}
+            {% endblock %}
+            <footer>
+                {% include 'footer.html' %}
+            </footer>
+        </main>
+    </div>
+
+    <script src="{% static 'music/js/script.js' %}"></script>
+    <script src="{% static 'music/js/sidebar.js' %}"></script>
+    <script src="{% static 'music/js/header.js' %}"></script>
+    <script src="{% static 'music/js/player.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
