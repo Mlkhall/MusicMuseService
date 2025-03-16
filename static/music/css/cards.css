@@ -153,23 +153,23 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 400px) {
   .cards {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 16px;
   }
-  
+
   .artist-image {
     width: 140px;
     height: 140px;
   }
-  
+
   .album-card, .artist-card {
     padding: 12px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 300px) {
   .cards {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
