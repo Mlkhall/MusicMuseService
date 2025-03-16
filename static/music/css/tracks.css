@@ -142,7 +142,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 400px) {
   .track-cards {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 16px;
@@ -157,14 +157,14 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 300px) {
   .track-cards {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 
   .track-card {
-    padding: 12px;
+    padding: 10px;
   }
 
   .track-title {
@@ -172,7 +172,7 @@
   }
 
   .track-artist {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .music-section {
