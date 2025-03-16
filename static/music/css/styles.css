@@ -176,7 +176,7 @@ body {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .main-header h2 {
     font-size: 18px;
   }

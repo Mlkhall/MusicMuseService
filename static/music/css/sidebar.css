@@ -3,7 +3,7 @@
   display: none;
   position: fixed;
   top: 20px;
-  left: 75px;
+  left: 20px;
   z-index: 100;
   background: var(--bg-sidebar);
   border: none;
@@ -210,7 +210,7 @@
 }
 
 /* Дополнительные медиа-запросы для полной адаптивности */
-@media (max-width: 400px) {
+@media (max-width: 480px) {
 
   .main-header {
     flex-direction: column;
