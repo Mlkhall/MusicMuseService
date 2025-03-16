@@ -1,7 +1,7 @@
 /* Стили для карточек исполнителей (круглые) */
 .artist-cards {
   display: flex;
-  gap: 40px;
+  gap: 24px;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
@@ -151,18 +151,14 @@
   }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 768px) {
   .artist-card {
-    width: 150px;
-  }
-
-  .artist-page-link {
-    width: 100px;
+    width: 120px;
   }
 
   .artist-image {
-    width: 70px;
-    height: 70px;
+    width: 120px;
+    height: 120px;
   }
 }
 
