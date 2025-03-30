@@ -210,58 +210,54 @@
 }
 
 /* Дополнительные медиа-запросы для полной адаптивности */
-@media (max-width: 400px) {
+/*@media (max-width: 400px) {*/
 
-  .main-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
+/*  .main-header {*/
+/*    flex-direction: column;*/
+/*    align-items: stretch;*/
+/*  }*/
 
-  .main-header input[type="search"] {
-    width: 100%;
-    margin-top: 10px;
-  }
+/*  .main-header input[type="search"] {*/
+/*    width: 100%;*/
+/*    margin-top: 10px;*/
+/*  }*/
 
-  .artist-card {
-    width: 140px;
-  }
+/*  .artist-card {*/
+/*    width: 140px;*/
+/*  }*/
 
-  .artist-image {
-    width: 140px;
-    height: 140px;
-  }
+/*  .artist-image {*/
+/*    width: 140px;*/
+/*    height: 140px;*/
+/*  }*/
 
-  .music-card {
-    width: calc(50% - 15px);
-  }
+/*  .music-player {*/
+/*    grid-template-columns: 1fr;*/
+/*    grid-template-rows: auto auto auto;*/
+/*    gap: 10px;*/
+/*  }*/
 
-  .music-player {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 10px;
-  }
+/*  .player-left, .player-center, .player-right {*/
+/*    width: 100%;*/
+/*    justify-content: center;*/
+/*  }*/
 
-  .player-left, .player-center, .player-right {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .player-right {
-    display: none; /* На самых маленьких экранах можно скрыть регулятор громкости */
-  }
-}
+/*  .player-right {*/
+/*    display: none; !* На самых маленьких экранах можно скрыть регулятор громкости *!*/
+/*  }*/
+/*}*/
 
 /* Ландшафтная ориентация на мобильных */
-@media (max-height: 500px) and (orientation: landscape) {
-  .sidebar {
-    padding-top: 10px;
-  }
+/*@media (max-height: 500px) and (orientation: landscape) {*/
+/*  .sidebar {*/
+/*    padding-top: 10px;*/
+/*  }*/
 
-  .nav-links li {
-    margin-bottom: 10px;
-  }
+/*  .nav-links li {*/
+/*    margin-bottom: 10px;*/
+/*  }*/
 
-  .logo img {
-    max-width: 120px;
-  }
-}
+/*  .logo img {*/
+/*    max-width: 120px;*/
+/*  }*/
+/*}*/

@@ -56,14 +56,39 @@ body {
   font-weight: 500;
 }
 
+/* Обновление сетки карточек для лучшей адаптивности */
+.track-cards,
+.artist-cards,
 .cards {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
-  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Обеспечение масштабируемости карточек */
+.track-card,
+.artist-card,
+.music-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Обеспечение правильного обрезания текста */
+.track-title,
+.artist-name,
+.music-info h4,
+.track-artist,
+.artist-info p,
+.music-info p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .music-card {
-  width: 200px;
   background-color: var(--card-bg);
   border-radius: 8px;
   overflow: hidden;
@@ -173,41 +198,5 @@ body {
 
   .music-card {
     width: 160px;
-  }
-}
-
-@media (max-width: 400px) {
-  .main-header h2 {
-    font-size: 18px;
-  }
-
-  .main-header input[type="search"] {
-    width: 120px;
-    font-size: 12px;
-  }
-
-  .music-card {
-    width: 140px;
-  }
-
-  .music-player {
-    padding: 0 10px;
-    height: 60px;
-  }
-
-  .player-center {
-    gap: 5px;
-  }
-
-  .player-seek {
-    width: 80px;
-  }
-
-  .volume-bar {
-    width: 60px;
-  }
-
-  .track-title {
-    font-size: 14px;
   }
 }

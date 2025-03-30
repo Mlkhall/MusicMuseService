@@ -4,7 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <title>{% block title %}MusicMuse{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'music/css/styles.css' %}">
@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'music/css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'music/css/track_detail.css' %}">
     <link rel="stylesheet" href="{% static 'music/css/player.css' %}">
+    <link rel="stylesheet" href="{% static 'music/css/mobile.css' %}">
     <link rel="icon" href="{% static 'music/svg/favicon.svg' %}" type="image/svg+xml">
     {% block extra_styles %}{% endblock %}
 </head>
