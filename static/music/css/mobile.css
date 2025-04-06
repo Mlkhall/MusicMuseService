@@ -5,13 +5,13 @@
     margin: 15px 0;
     padding: 0 12px;
   }
-  
+
   .music-section h3 {
     font-size: 18px;
     margin-bottom: 12px;
     padding: 0 4px;
   }
-  
+
   /* Настройка сетки для всех типов карточек */
   .track-cards,
   .artist-cards,
@@ -20,7 +20,7 @@
     gap: 12px;
     padding: 0 4px;
   }
-  
+
   /* Стили для карточек альбомов и синглов */
   .music-card {
     background-color: var(--card-bg);
@@ -28,24 +28,24 @@
     overflow: hidden;
     width: 100%;
   }
-  
+
   .album-image-container {
     width: 100%;
     aspect-ratio: 1/1;
     position: relative;
     overflow: hidden;
   }
-  
+
   .album-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
+
   .music-info {
     padding: 8px;
   }
-  
+
   .music-info h4 {
     font-size: 14px;
     margin-bottom: 4px;
@@ -58,7 +58,7 @@
     height: auto;
     max-height: 2.4em;
   }
-  
+
   .music-info p {
     font-size: 12px;
     color: var(--text-secondary);
@@ -68,7 +68,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   /* Стили для карточек исполнителей */
   .artist-card {
     background-color: var(--card-bg);
@@ -76,7 +76,7 @@
     overflow: hidden;
     width: 100%;
   }
-  
+
   .artist-image {
     width: 100%;
     aspect-ratio: 1/1;
@@ -84,18 +84,18 @@
     overflow: hidden;
     border-radius: 8px;
   }
-  
+
   .artist-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
+
   .artist-info {
     padding: 8px;
     text-align: center;
   }
-  
+
   .artist-info h4 {
     font-size: 14px;
     margin-bottom: 4px;
@@ -104,12 +104,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .artist-info p {
     font-size: 12px;
     color: var(--text-secondary);
   }
-  
+
   /* Стили для оверлея воспроизведения */
   .play-overlay {
     position: absolute;
@@ -124,7 +124,7 @@
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  
+
   .play-button {
     background: none;
     border: none;
@@ -132,19 +132,19 @@
     cursor: pointer;
     transform: scale(0.8);
   }
-  
+
   .play-button svg {
     width: 40px;
     height: 40px;
   }
-  
+
   /* Активное состояние для тач-устройств */
   .track-card:active .play-overlay,
   .artist-card:active .play-overlay,
   .music-card:active .play-overlay {
     opacity: 1;
   }
-  
+
   /* Убираем эффект наведения для мобильных */
   @media (hover: none) {
     .track-card:hover,
@@ -153,12 +153,12 @@
       transform: none;
     }
   }
-  
+
   /* Фиксы для контейнера */
   .content-container {
     padding: 0 8px;
   }
-  
+
   /* Исправление для no-content */
   .no-content {
     font-size: 14px;
@@ -166,7 +166,7 @@
     text-align: center;
     color: var(--text-secondary);
   }
-  
+
   /* Фикс для ссылок */
   .track-page-link,
   .artist-page-link {
@@ -184,12 +184,12 @@
     display: block;
     width: 100%;
   }
-  
+
   .main-content {
     width: 100%;
     padding-bottom: 60px;
   }
-  
+
   /* Фикс для сайдбара */
   .sidebar-wrapper {
     position: fixed;
@@ -199,48 +199,43 @@
     height: auto;
     z-index: 990;
   }
-  
-  .sidebar {
-    flex-direction: row;
-    height: 55px;
-    padding: 0;
-  }
-  
+
+
   .sidebar-menu {
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
     margin: 0;
   }
-  
+
   .sidebar-menu-item {
     padding: 8px;
   }
-  
+
   /* Фикс для мини-плеера */
   .mini-player {
     bottom: 55px;
   }
-  
+
   /* Фикс для хедера */
   .header-container {
     padding: 10px;
     gap: 10px;
   }
-  
+
   .search-container {
     max-width: 150px;
   }
-  
+
   .search-input {
     font-size: 13px;
-    padding: 6px 10px;
+    padding: 6px 6px 6px 30px;
   }
-  
+
   .auth-buttons {
     gap: 8px;
   }
-  
+
   .auth-button {
     padding: 6px 10px;
     font-size: 12px;
@@ -254,7 +249,7 @@
     overflow-x: hidden;
     width: 100%;
   }
-  
+
   /* Фикс для длинных названий */
   .track-title,
   .artist-name,
@@ -263,13 +258,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   /* Оптимизация отступов */
   .music-section:first-child {
     margin-top: 10px;
   }
-  
+
   .music-section:last-child {
     margin-bottom: 70px;
   }
-} 
+}
