@@ -1,10 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'music/css/artist_page.css' %}">
+{% endblock %}
+{% block content %}
 
-</body>
-</html>
+<!-- Шапка артиста -->
+<div class="artist-header">
+  <div class="artist-background" style="background-image: linear-gradient(rgba(0,0,0,0.3), var(--bg-dark)), url('{{ artist.avatar.image.url }}');"></div>
+  
+  <div class="artist-info">
+    {% if artist.verified %}
+    <div class="verified-badge">
+      <svg width="24" height="24" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+      </svg>
+      <span>Подтвержденный исполнитель</span>
+    </div>
+    {% endif %}
+    
+    <h1 class="artist-name">{{ artist.name }}</h1>
+    <div class="artist-stats">
+      <span>{{ monthly_listeners }} ежемесячных слушателей</span>
+    </div>
+  </div>
+  
+  <!-- Кнопки управления -->
+  <div class="artist-controls">
+    <button class="artist-play-button" id="playArtistButton">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M8 5V19L19 12L8 5Z" fill="currentColor"></path>
+      </svg>
+      <span>Слушать</span>
+    </button>
+  </div>
+</div>
+
+<!-- Популярные треки -->
+<section class="popular-tracks">
+  <h2>Популярные треки</h2>
+  <div class="tracks-list">
+    {% for track in popular_tracks %}
+    <div class="track-item" 
+         data-track-id="{{ track.id }}"
+         data-track-name="{{ track.name }}"
+         data-artist-name="{{ artist.name }}"
+         data-cover-url="{% if track.cover_image %}{{ track.cover_image.image.url }}{% else %}{{ track.release.cover_image.image.url }}{% endif %}"
+         data-audio-url="{{ track.track.audio.url }}">
+      <div class="track-number">
+        <span class="track-index">{{ forloop.counter }}</span>
+        <button class="play-button-small">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4.5 3.5V12.5L12.5 8L4.5 3.5Z" fill="currentColor"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="track-cover">
+        {% if track.cover_image %}
+            <img src="{{ track.cover_image.image.url }}" alt="{{ track.name }}">
+        {% else %}
+            <img src="{{ track.release.cover_image.image.url }}" alt="{{ track.name }}">
+        {% endif %}
+      </div>
+      <div class="track-info">
+        <div class="track-name">{{ track.name }}</div>
+      </div>
+      <div class="track-duration">{{ track.track.duration_render }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Дискография -->
+<section class="discography">
+  <h2>Дискография</h2>
+  <div class="releases-grid">
+    {% for release in releases %}
+    <div class="release-card">
+      <div class="release-cover">
+          <img src="{{ release.cover_image.image.url }}" alt="{{ release.name }}">
+        <button class="play-button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M8 5V19L19 12L8 5Z" fill="black"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="release-info">
+        <h3>{{ release.name }}</h3>
+        <span class="release-year">{{ release.release_date|date:"Y" }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% include 'player.html' %}
+
+{% endblock %}

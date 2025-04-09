@@ -28,10 +28,10 @@ from core.views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", index),
+    path("", index, name="index"),
     path("music/", music_views),
-    path("music/artist/<int:artist_id>/", music_artist_page_views),
-    path("music/track/<int:track_id>/", music_track_page_views),
+    path("music/artist/<int:artist_id>/", music_artist_page_views, name="music_artist_page"),
+    path("music/track/<int:track_id>/", music_track_page_views, name="music_track"),
     path("api/", api.urls),
     path(rf"ht/{HEALTH_SECRET_TOKEN}/", include("health_check.urls")),
 ]
