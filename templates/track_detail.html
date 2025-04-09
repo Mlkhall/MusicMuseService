@@ -17,7 +17,7 @@
       
       <div class="detail-artist-info">
         <div class="detail-artist-details">
-          <a href="music/artist/{{ track.artists.first.id }}/" class="detail-artist-name">{{ track.artists.first.name }}</a>
+          <a href="/music/artist/{{ track.artists.first.id }}/" class="detail-artist-name">{{ track.artists.first.name }}</a>
           <div class="detail-stats">
             <span>{{ track.release.release_date|date:"Y" }}</span>
             <span class="dot-separator">•</span>
@@ -84,11 +84,11 @@
         <div class="detail-track-name">{{ track_item.name }}</div>
         <div class="detail-track-artists">
           {% for artist in track_item.artists.all %}
-          <a href="music/artist/{{ artist.id }}" class="detail-track-artist-link">{{ artist.name }}{% if not forloop.last %}, {% endif %}</a>
+          <a href="/music/artist/{{ artist.id }}" class="detail-track-artist-link">{{ artist.name }}{% if not forloop.last %}, {% endif %}</a>
           {% endfor %}
         </div>
       </div>
-      <div class="detail-track-duration">{{ track_item.duration_formatted }}</div>
+      <div class="detail-track-duration">{{ track_item.track.duration_render }}</div>
     </div>
     {% endfor %}
   </div>

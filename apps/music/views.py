@@ -1,7 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
 from django.shortcuts import get_object_or_404
-from apps.music.models import Artists, Tracks
+from random import randint
+from apps.music.models import Artists, Tracks, Releases
 from apps.music.services.popular_extractor import popular_extractor
 
 
@@ -23,9 +24,12 @@ def music_artist_page(request: HttpRequest, artist_id: int) -> HttpResponse:
 
     artist = get_object_or_404(Artists, pk=artist_id)
     popular_tracks = Tracks.objects.filter(artists__id=artist_id).order_by("-created")[:10]
+    releases = Releases.objects.filter(artists__in=[artist])[:10]
     context = {
-        "artist": artist,
-        "tracks": popular_tracks,
+        'artist': artist,
+        'popular_tracks': popular_tracks,
+        'releases': releases,
+        'monthly_listeners': randint(1, 100),
     }
 
     return HttpResponse(template.render(context, request))

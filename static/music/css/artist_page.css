@@ -1,0 +1,316 @@
+/* Уменьшаем отступ для всего основного контента */
+#content {
+  padding-top: 60px; /* Уменьшили отступ под header */
+}
+
+.artist-header {
+  position: relative;
+  padding: 8rem 3rem 3rem;
+  color: var(--text-primary);
+  min-height: 45vh;
+  border-radius: 4rem;
+  overflow: hidden;
+  margin: 2rem 2rem 2rem 2rem; /* Уменьшили отступ сверху с 6rem до 2rem */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.artist-background {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background-size: cover;
+  background-position: center 25%;
+  z-index: -1;
+  filter: blur(2px) brightness(0.9);
+  transform: scale(1.03);
+  transition: all 0.3s ease;
+}
+
+.artist-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.1) 0%,
+    rgba(0,0,0,0.3) 40%,
+    rgba(0,0,0,0.7) 80%,
+    var(--bg-dark) 100%
+  );
+  border-radius: 4rem;
+}
+
+.artist-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 
+    inset 0 -10px 30px rgba(0, 0, 0, 0.4),
+    0 10px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 4rem 4rem;
+  z-index: -2;
+}
+
+.artist-info {
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
+
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.verified-badge svg {
+  fill: var(--accent-color);
+}
+
+.artist-name {
+  font-size: 6rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.artist-stats {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  opacity: 0.9;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.artist-controls {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.artist-play-button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.4rem 3rem;
+  border-radius: 3rem;
+  border: none;
+  background: var(--accent-color);
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 8px 20px rgba(var(--accent-color-rgb), 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.artist-play-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 
+    0 12px 24px rgba(var(--accent-color-rgb), 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+  background: var(--accent-color-hover);
+}
+
+.artist-play-button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 6px 16px rgba(var(--accent-color-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.artist-play-button svg {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.artist-follow-button,
+.artist-more-button {
+  display: none;
+}
+
+/* Популярные треки */
+.popular-tracks {
+  padding: 2rem;
+}
+
+.tracks-list {
+  margin-top: 1rem;
+}
+
+.track-item {
+  display: grid;
+  grid-template-columns: 50px 60px 1fr 100px;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.track-item:hover {
+  background-color: var(--bg-elevated);
+}
+
+.track-item:hover .track-index {
+  display: none;
+}
+
+.track-item:hover .play-button-small {
+  display: flex;
+}
+
+.track-cover img {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.track-plays {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.play-button-small {
+  display: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-color);
+  color: var(--text-dark);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-button-small:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.3);
+}
+
+/* Добавим анимацию для кнопок воспроизведения */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Дискография */
+.discography {
+  padding: 2rem;
+}
+
+.releases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.release-card {
+  background: var(--bg-elevated);
+  padding: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.release-card:hover {
+  background-color: var(--bg-elevated-hover);
+}
+
+.release-cover {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.release-cover img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 4px;
+}
+
+.release-info h3 {
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 0.25rem;
+}
+
+.release-year {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Обновленные медиа-запросы */
+@media (max-width: 1200px) {
+  .artist-header {
+    margin: 1.5rem 1.5rem 1.5rem; /* Уменьшили отступ */
+  }
+  
+  .artist-name {
+    font-size: 5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .artist-header {
+    margin: 1rem 1rem 1rem; /* Уменьшили отступ */
+  }
+
+  .artist-background::after {
+    border-radius: 3rem;
+  }
+
+  .artist-header::before {
+    border-radius: 0 0 3rem 3rem;
+  }
+
+  .artist-name {
+    font-size: 3.5rem;
+  }
+
+  .artist-play-button {
+    padding: 1.2rem 2.4rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .artist-header {
+    margin: 0.5rem 0.5rem 0.5rem; /* Уменьшили отступ */
+  }
+
+  .artist-name {
+    font-size: 2.8rem;
+  }
+
+  .artist-play-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+}
