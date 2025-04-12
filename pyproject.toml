@@ -42,6 +42,7 @@ ninja-put-patch-file-upload-middleware = "^0.1.4"
 ninja-api-key = "^1.0.2"
 boto3 = "1.35.92"
 sentry-sdk = "^2.25.1"
+poetry-core = "^2.1.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -76,8 +77,8 @@ ignore = [
     "ISC001", # may cause conflicts when used with the formatter
 ]
 
-[tool.poetry.plugins."poetry.application.plugin"]
-export = "poetry_plugin_export.plugins:ExportApplicationPlugin"
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
 
 [build-system]
 requires = ["poetry-core"]

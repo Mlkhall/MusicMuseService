@@ -22,6 +22,9 @@ make-migrations-music:
 update-requirements:
 	@poetry export -f requirements.txt --output requirements.txt --with docs --without-hashes
 
+update-requirements-without-version:
+	@poetry export --without-hashes --without-urls | awk '{ print $1 }' FS=';' > requirements.txt
+
 opensearch-index-create:
 	@poetry run python manage.py opensearch index create
 
