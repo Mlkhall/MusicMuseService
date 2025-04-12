@@ -59,6 +59,7 @@ ALLOWED_HOSTS = [
     "musicmuse-preprod.ru",
     "musicmuse.ru",
     "mlkhall-musicmuseservice-ef0e.twc1.net",
+    "mdchumakov-musicmuseservice-c5a4.twc1.net",
     "91.186.196.162",
 ]
 
