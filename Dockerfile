@@ -17,7 +17,7 @@ COPY . .
 
 # Устанавливаем зависимости проекта
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev
+    && poetry install --no-root
 
 
 # Открываем порт для приложения
