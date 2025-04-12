@@ -104,6 +104,7 @@ MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
     "ninja_put_patch_file_upload_middleware.middlewares.process_put_patch",
+    "ninja.compatibility.files.fix_request_files_middleware",
 ]
 
 ROOT_URLCONF = "core.urls"

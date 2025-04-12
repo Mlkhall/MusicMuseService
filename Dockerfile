@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev
 
 # Устанавливаем Poetry
-RUN pip install poetry
+RUN pip install -U poetry
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
