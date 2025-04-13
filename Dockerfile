@@ -23,4 +23,4 @@ RUN poetry run python manage.py migrate \
     && poetry run python manage.py collectstatic --noinput
 
 # Команда для запуска приложения
-CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi"]
+CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8080", "core.wsgi"]
