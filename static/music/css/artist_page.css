@@ -5,12 +5,12 @@
 
 .artist-header {
   position: relative;
-  padding: 8rem 3rem 3rem;
+  padding: 4rem 3rem 2.5rem; /* Уменьшили вертикальные отступы */
   color: var(--text-primary);
-  min-height: 45vh;
-  border-radius: 4rem;
+  min-height: 35vh; /* Уменьшили минимальную высоту */
+  border-radius: 3rem; /* Немного уменьшили радиус для баланса */
   overflow: hidden;
-  margin: 2rem 2rem 2rem 2rem; /* Уменьшили отступ сверху с 6rem до 2rem */
+  margin: 2rem 2rem 2rem 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   background: rgba(0, 0, 0, 0.2);
@@ -62,7 +62,7 @@
 }
 
 .artist-info {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem; /* Уменьшили нижний отступ */
   position: relative;
   z-index: 1;
   max-width: 900px;
@@ -80,66 +80,227 @@
 }
 
 .artist-name {
-  font-size: 6rem;
+  font-size: 4.5rem; /* Немного уменьшили размер шрифта */
   font-weight: 800;
-  margin: 0.5rem 0;
+  margin: 0.3rem 0; /* Уменьшили отступы */
   color: var(--text-primary);
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .artist-stats {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-secondary);
-  opacity: 0.9;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: 0.5rem; /* Добавили небольшой отступ сверху */
 }
 
 .artist-controls {
   display: flex;
   justify-content: flex-start;
-  margin-top: 3rem;
-  gap: 1rem;
+  margin-top: 1.5rem; /* Уменьшили отступ сверху */
 }
 
+/* Стилизация кнопки воспроизведения артиста */
 .artist-play-button {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.4rem 3rem;
+  padding: 1.4rem 3.2rem;
   border-radius: 3rem;
   border: none;
-  background: var(--accent-color);
+  background: linear-gradient(135deg, 
+    var(--accent-color) 0%,
+    rgba(var(--accent-color-rgb), 0.9) 100%
+  );
   color: var(--text-dark);
   font-weight: 700;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
-    0 8px 20px rgba(var(--accent-color-rgb), 0.4),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+    0 8px 25px -5px rgba(var(--accent-color-rgb), 0.5),
+    0 5px 15px -8px rgba(0, 0, 0, 0.3),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
+/* Эффект свечения */
+.artist-play-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1)
+  );
+  border-radius: 3rem;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Эффект блика */
+.artist-play-button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.6s ease, opacity 0.4s ease;
+}
+
+/* Анимация при наведении */
 .artist-play-button:hover {
-  transform: translateY(-2px) scale(1.05);
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg,
+    rgba(var(--accent-color-rgb), 0.95) 0%,
+    var(--accent-color) 100%
+  );
   box-shadow: 
-    0 12px 24px rgba(var(--accent-color-rgb), 0.5),
-    0 4px 8px rgba(0, 0, 0, 0.2);
-  background: var(--accent-color-hover);
+    0 12px 30px -8px rgba(var(--accent-color-rgb), 0.6),
+    0 8px 20px -6px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.artist-play-button:hover::before {
+  opacity: 1;
+}
+
+.artist-play-button:hover::after {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Стилизация иконки */
+.artist-play-button svg {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.artist-play-button:hover svg {
+  transform: scale(1.1) translateX(2px);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Стилизация текста */
+.artist-play-button span {
+  position: relative;
+  z-index: 2;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.artist-play-button:hover span {
+  transform: translateX(4px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Эффект нажатия */
 .artist-play-button:active {
   transform: translateY(1px) scale(0.98);
   box-shadow: 
-    0 6px 16px rgba(var(--accent-color-rgb), 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+    0 6px 20px -6px rgba(var(--accent-color-rgb), 0.4),
+    0 4px 12px -4px rgba(0, 0, 0, 0.3),
+    inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.artist-play-button svg {
-  width: 24px;
-  height: 24px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+/* Пульсирующая анимация */
+@keyframes buttonPulse {
+  0% {
+    box-shadow: 
+      0 8px 25px -5px rgba(var(--accent-color-rgb), 0.5),
+      0 5px 15px -8px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 12px 30px -5px rgba(var(--accent-color-rgb), 0.6),
+      0 8px 20px -8px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    box-shadow: 
+      0 8px 25px -5px rgba(var(--accent-color-rgb), 0.5),
+      0 5px 15px -8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Анимация свечения */
+@keyframes buttonGlow {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+/* Применяем анимации */
+.artist-play-button {
+  animation: buttonPulse 3s infinite;
+}
+
+.artist-play-button::before {
+  animation: buttonGlow 4s infinite;
+}
+
+/* Останавливаем анимации при наведении */
+.artist-play-button:hover {
+  animation: none;
+}
+
+.artist-play-button:hover::before {
+  animation: none;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .artist-play-button {
+    padding: 1.2rem 2.6rem;
+    font-size: 1.1rem;
+  }
+  
+  .artist-play-button svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .artist-play-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .artist-play-button svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .artist-follow-button,
@@ -214,13 +375,6 @@
   box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.3);
 }
 
-/* Добавим анимацию для кнопок воспроизведения */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
 /* Дискография */
 .discography {
   padding: 2rem;
@@ -247,12 +401,28 @@
 .release-cover {
   position: relative;
   margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.release-cover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
 .release-cover img {
   width: 100%;
   aspect-ratio: 1;
-  border-radius: 4px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .release-info h3 {
@@ -266,51 +436,244 @@
   color: var(--text-secondary);
 }
 
+/* Эффекты при наведении */
+.release-card:hover .release-cover::before {
+  opacity: 1;
+}
+
+.release-card:hover .release-play-button {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.release-card:hover .release-cover img {
+  transform: scale(1.05);
+}
+
+/* Эффект при нажатии на кнопку */
+.release-play-button:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.release-play-button:hover svg circle {
+  fill: #FFB52E; /* Немного светлее при наведении */
+}
+
 /* Обновленные медиа-запросы */
 @media (max-width: 1200px) {
   .artist-header {
-    margin: 1.5rem 1.5rem 1.5rem; /* Уменьшили отступ */
+    padding: 3.5rem 2.5rem 2rem;
+    min-height: 32vh;
   }
   
   .artist-name {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 }
 
 @media (max-width: 768px) {
   .artist-header {
-    margin: 1rem 1rem 1rem; /* Уменьшили отступ */
-  }
-
-  .artist-background::after {
-    border-radius: 3rem;
-  }
-
-  .artist-header::before {
-    border-radius: 0 0 3rem 3rem;
+    padding: 3rem 2rem 1.5rem;
+    min-height: 30vh;
+    border-radius: 2rem;
   }
 
   .artist-name {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
-  .artist-play-button {
-    padding: 1.2rem 2.4rem;
-    font-size: 1.1rem;
+  .artist-controls {
+    margin-top: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .artist-header {
-    margin: 0.5rem 0.5rem 0.5rem; /* Уменьшили отступ */
+    padding: 2.5rem 1.5rem 1.5rem;
+    min-height: 28vh;
+    border-radius: 1.5rem;
   }
 
   .artist-name {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
   }
 
-  .artist-play-button {
-    padding: 1rem 2rem;
-    font-size: 1rem;
+  .artist-stats {
+    font-size: 0.9rem;
+  }
+}
+
+/* Стили для списка треков */
+.detail-track-list-container {
+  padding: 2rem;
+}
+
+.detail-track-list-header {
+  display: grid;
+  grid-template-columns: 50px 1fr 100px;
+  align-items: center;
+  padding: 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.detail-track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-track-item {
+  display: grid;
+  grid-template-columns: 50px 1fr 100px;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.detail-track-item:hover {
+  background-color: var(--bg-elevated);
+}
+
+.detail-track-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.detail-track-index {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.detail-track-item:hover .detail-track-index {
+  display: none;
+}
+
+.detail-play-button-small {
+  display: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-color);
+  color: var(--text-dark);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.detail-track-item:hover .detail-play-button-small {
+  display: flex;
+}
+
+.detail-track-info-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.detail-track-cover {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.detail-track-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-track-name {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.detail-track-duration {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+/* Стили для кнопки воспроизведения в релизах */
+.release-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+
+.release-play-button svg {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.release-play-button svg circle {
+  fill: #FFA500; /* Оранжевый цвет как в music.html */
+  transition: fill 0.3s ease;
+}
+
+.release-play-button svg path {
+  fill: white;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .detail-track-list-container {
+    padding: 1.5rem;
+  }
+
+  .detail-track-item {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .detail-track-cover {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-track-list-container {
+    padding: 1rem;
+  }
+
+  .detail-track-list-header {
+    font-size: 0.8rem;
+  }
+
+  .detail-track-item {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .detail-track-cover {
+    width: 32px;
+    height: 32px;
   }
 }

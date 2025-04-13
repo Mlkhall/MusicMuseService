@@ -522,45 +522,45 @@
   }
 }
 
-@media (max-width: 480px) {
-  .full-player {
-    padding: 16px;
-  }
-  
-  .player-visualization-area {
-    max-height: calc(100vh - 380px);
-    min-height: 160px;
-    margin-bottom: 16px;
-  }
-  
-  .player-track-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  
-  .player-track-actions {
-    align-self: flex-end;
-  }
-  
-  .player-controls {
-    gap: 12px;
-  }
-  
-  .player-bottom-controls {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
-  
-  .player-volume-container {
-    width: 100%;
-  }
-  
-  .player-additional-controls {
-    align-self: flex-end;
-  }
-}
+/*@media (max-width: 480px) {*/
+/*  .full-player {*/
+/*    padding: 16px;*/
+/*  }*/
+/*  */
+/*  .player-visualization-area {*/
+/*    max-height: calc(100vh - 380px);*/
+/*    min-height: 160px;*/
+/*    margin-bottom: 16px;*/
+/*  }*/
+/*  */
+/*  .player-track-info {*/
+/*    flex-direction: column;*/
+/*    align-items: flex-start;*/
+/*    gap: 12px;*/
+/*  }*/
+/*  */
+/*  .player-track-actions {*/
+/*    align-self: flex-end;*/
+/*  }*/
+/*  */
+/*  .player-controls {*/
+/*    gap: 12px;*/
+/*  }*/
+/*  */
+/*  .player-bottom-controls {*/
+/*    flex-direction: column;*/
+/*    gap: 16px;*/
+/*    align-items: flex-start;*/
+/*  }*/
+/*  */
+/*  .player-volume-container {*/
+/*    width: 100%;*/
+/*  }*/
+/*  */
+/*  .player-additional-controls {*/
+/*    align-self: flex-end;*/
+/*  }*/
+/*}*/
 
 /* Анимации */
 @keyframes pulse {

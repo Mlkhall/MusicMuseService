@@ -212,11 +212,6 @@
     padding: 8px;
   }
 
-  /* Фикс для мини-плеера */
-  .mini-player {
-    bottom: 55px;
-  }
-
   /* Фикс для хедера */
   .header-container {
     padding: 10px;
