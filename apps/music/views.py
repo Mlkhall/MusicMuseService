@@ -50,6 +50,21 @@ def music_track_page(request: HttpRequest, track_id: int) -> HttpResponse:
     return HttpResponse(template.render(context, request))
 
 
+def music_release_page(request: HttpRequest, release_id: int) -> HttpResponse:
+    template = loader.get_template("release_detail.html")
+
+    release = get_object_or_404(Releases, pk=release_id)
+    tracks = Tracks.objects.filter(release__id=release_id)
+
+    context = {
+        "release": release,
+        "tracks": tracks,
+        "total_duration": _calculate_total_duration(tracks),
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
 def _calculate_total_duration(tracks: list[Tracks]) -> str:
     hours_minutes_seconds = "{hours} ч. {minutes} мин. {seconds} сек."
     minutes_seconds = "{minutes} мин. {seconds} сек."

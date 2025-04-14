@@ -70,21 +70,23 @@
   <div class="cards" id="albums-container" data-next-page="2">
     {% for release in releases %}
     <div class="music-card album-card" data-id="{{ release.id }}">
-      <div class="album-image-container">
-        <img src="{% if release.cover_image %}{{ release.cover_image.image.url }}{% else %}{% static 'music/svg/default-album.svg' %}{% endif %}" alt="{{ release.name }}" class="album-image">
-        <div class="play-overlay">
-          <button class="play-button">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="24" r="24" fill="#FFA500"></circle>
-              <path d="M33 24L19 32.6603L19 15.3397L33 24Z" fill="white"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="music-info">
-        <h4>{{ release.name }}</h4>
-        <p>{{ release.artists.all|join:", " }}</p>
-      </div>
+        <a href="/music/release/{{ release.id }}/" class="album-link">
+          <div class="album-image-container">
+            <img src="{% if release.cover_image %}{{ release.cover_image.image.url }}{% else %}{% static 'music/svg/default-album.svg' %}{% endif %}" alt="{{ release.name }}" class="album-image">
+            <div class="play-overlay">
+              <button class="play-button">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="24" fill="#FFA500"></circle>
+                  <path d="M33 24L19 32.6603L19 15.3397L33 24Z" fill="white"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="music-info">
+            <h4>{{ release.name }}</h4>
+            <p>{{ release.artists.all|join:", " }}</p>
+          </div>
+        </a>
     </div>
     {% empty %}
     <p class="no-content">Альбомы не найдены</p>
