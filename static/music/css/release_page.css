@@ -1,1 +1,137 @@
- 
+.release-detail-header {
+    position: relative;
+    padding: 70px 24px;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    margin-top: 55px;
+}
+
+.release-detail-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(30px);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+.detail-info {
+    display: flex;
+    gap: 24px;
+    align-items: flex-end;
+    margin-bottom: 24px;
+}
+
+.detail-cover {
+    width: 232px;
+    height: 232px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 60px rgba(0,0,0,0.5);
+}
+
+.detail-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.detail-meta {
+    flex-grow: 1;
+}
+
+.detail-type {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.detail-title {
+    font-size: 56px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    line-height: 1.1;
+}
+
+.detail-artist-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.detail-artist-name {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.detail-artist-name:hover {
+    text-decoration: underline;
+}
+
+.detail-stats {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.dot-separator {
+    margin: 0 4px;
+}
+
+.detail-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.detail-play-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 32px;
+    padding: 12px 24px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.detail-play-button:hover {
+    transform: scale(1.05);
+    background: var(--accent-hover);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .detail-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .detail-cover {
+        width: 192px;
+        height: 192px;
+    }
+
+    .detail-title {
+        font-size: 42px;
+    }
+
+    .detail-artist-info {
+        justify-content: center;
+    }
+}

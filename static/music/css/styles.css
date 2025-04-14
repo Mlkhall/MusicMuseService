@@ -29,6 +29,10 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+a {
+    text-decoration: none;
+}
+
 .content-wrapper {
   display: flex;
   flex-direction: row; /* Изменяем с row на column */
